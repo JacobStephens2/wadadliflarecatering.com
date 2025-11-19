@@ -52,11 +52,18 @@ Eggplant Parmesan
 
 **Wadadli Flare Catering Event Menu Suggestions:-**
 
-**$20 - $22 per person**
-one Salad, one Vegetable, two Starches and one Protein**
+Essentials Buffet Package
+**$20 - $24 per person**
+one Salad, one Vegetable, two Starches and one Protein
 
+Premium Buffet Package
 **$25 - $27 per person**
-one Salad, two Vegetable, two Starches and two Proteins.
+one Salad, two Vegetable, two Starches and two Proteins
+
+Luxury Buffet Package
+**$30 - $37 per person**
+Charcuterie Station, Grilled Vegetable Platter, one Salad, two Vegetable, two Starches and two Proteins
+
 
 **Fish, Steak and Veal cost may increase depending on the Market Price**
 

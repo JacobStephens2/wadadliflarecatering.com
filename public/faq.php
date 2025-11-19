@@ -42,7 +42,7 @@ include __DIR__ . '/includes/header.php';
             
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">What payment methods do you accept?</h2>
-                <p>We accept Visa and MasterCard (with a 3.25% processing fee) or Venmo. A 30% deposit is required at the time of booking.</p>
+                <p>We accept Visa and MasterCard (with a 3.25% processing fee) or Venmo. A 50% deposit is required at the time of booking.</p>
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">

@@ -5,7 +5,7 @@
 
 // Site information
 define('SITE_NAME', 'Wadadli Flare Catering');
-define('SITE_URL', 'https://wadadli.stephens.page');
+define('SITE_URL', 'https://wadadliflarecatering.com');
 define('SITE_EMAIL', 'wadadliflare.catering@gmail.com');
 define('SITE_PHONE', '(267) 481-5872');
 

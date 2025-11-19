@@ -131,13 +131,14 @@ include __DIR__ . '/includes/header.php';
         </div>
         
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
-            <h2 class="section-subtitle">Private Event Menu Packages</h2>
+            <h2 class="section-subtitle">Private Event Menu</h2>
             <p style="margin-bottom: 1.5rem; text-align: center;">
                 Flexible menu packages to fit your event and budget. Pricing (prices may vary based on selections and market prices):
             </p>
-            <div class="grid grid-2" style="max-width: 900px; margin: 0 auto;">
+            <div class="grid grid-3" style="max-width: 1200px; margin: 0 auto;">
                 <div class="card">
-                    <h3 class="card-title">$20 - $22 per person</h3>
+                    <h3 class="card-title">Essentials Buffet Package</h3>
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">$20 - $24 per person</p>
                     <ul style="margin-top: 1rem; padding-left: 1.5rem;">
                         <li>One Salad</li>
                         <li>One Vegetable</li>
@@ -146,8 +147,21 @@ include __DIR__ . '/includes/header.php';
                     </ul>
                 </div>
                 <div class="card">
-                    <h3 class="card-title">$25 - $27 per person</h3>
+                    <h3 class="card-title">Premium Buffet Package</h3>
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">$25 - $27 per person</p>
                     <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>One Salad</li>
+                        <li>Two Vegetables</li>
+                        <li>Two Starches</li>
+                        <li>Two Proteins</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Luxury Buffet Package</h3>
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">$30 - $37 per person</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Charcuterie Station</li>
+                        <li>Grilled Vegetable Platter</li>
                         <li>One Salad</li>
                         <li>Two Vegetables</li>
                         <li>Two Starches</li>

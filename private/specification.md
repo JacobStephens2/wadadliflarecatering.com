@@ -133,6 +133,12 @@ There should be a contact page which has the contact info as well as a form the 
 ## Quote request form page
 There should be a form the user can fill out to request a catering quote for an event.
 
+## BBQ Experience
+This page should have the prices from the Old_Site_Prices.md file.
+
+## Caribbean Experience
+This page should have the prices from the Old_Site_Prices.md file.
+
 # Mobile View
 The menu should be completely visible when opened on a mobile display.
 
@@ -161,8 +167,8 @@ This website has the following technologies available to it:
 # Directory Structure
 Files to be served publicly should be in the public folder, and files to be kept private should be in the private folder.
 
-# URL: https://wadadli.stephens.page
-The website should be accessible at https://wadadli.stephens.page. wadadli.stephens.page already points to this server. Apache Virtual Host records will probably need to be edited and certbot run to get an SSL certificate for serving the site by HTTPS.
+# URL: https://wadadliflarecatering.com
+The website should be accessible primarily at https://wadadliflarecatering.com. wadadli.stephens.page already points to this server. Apache Virtual Host records will probably need to be edited and certbot run to get an SSL certificate for serving the site by HTTPS. wadadliflarecatering.com should have Apache Virtual Host configuration to handle requests for that domain directed to this server.
 
 Web page addresses should not require filename suffixes.
 

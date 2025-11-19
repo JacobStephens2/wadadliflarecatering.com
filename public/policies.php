@@ -18,7 +18,7 @@ include __DIR__ . '/includes/header.php';
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">Payment</h2>
                 <ul style="padding-left: 1.5rem; margin-top: 1rem;">
-                    <li>A <strong>30% deposit</strong> of the total is required at the time of booking.</li>
+                    <li>A <strong>50% deposit</strong> of the total is required at the time of booking.</li>
                     <li>A <strong>6% Pennsylvania tax</strong> is added to all orders.</li>
                     <li>We accept:
                         <ul style="margin-top: 0.5rem;">
