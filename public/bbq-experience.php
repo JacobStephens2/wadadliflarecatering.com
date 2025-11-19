@@ -234,7 +234,7 @@ include __DIR__ . '/includes/header.php';
             </p>
         </div>
         
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold); color: var(--white); border-radius: 8px; text-align: center;">
+        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--very-dark-mustard-yellow); color: var(--white); border-radius: 8px; text-align: center;">
             <p style="font-style: italic; margin-bottom: 1rem; font-size: 1.1rem;">
                 "Let us take some work out of your summer BBQ so you have more time to chill."
             </p>

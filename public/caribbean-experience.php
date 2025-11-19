@@ -207,7 +207,7 @@ include __DIR__ . '/includes/header.php';
             </p>
         </div>
         
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold); color: var(--white); border-radius: 8px; text-align: center;">
+        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--very-dark-mustard-yellow); color: var(--white); border-radius: 8px; text-align: center;">
             <p style="font-style: italic; margin-top: 1rem;">
                 * Prices will depend on the quality
             </p>

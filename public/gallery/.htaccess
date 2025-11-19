@@ -1,0 +1,13 @@
+# Redirect gallery directory access to gallery.php
+# This prevents 403 errors when accessing /gallery/ directly
+RewriteEngine On
+RewriteBase /gallery/
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^$ /gallery.php [L]
+
+# Allow access to image files
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+

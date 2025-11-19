@@ -6,6 +6,11 @@ RewriteEngine On
 # Handle directories that have corresponding PHP files (serve the PHP file internally)
 # This must come first to avoid redirect loops when both directory and PHP file exist
 # When accessing /gallery/, internally serve gallery.php
+# Explicit rule for gallery directory to prevent 403 errors
+RewriteCond %{REQUEST_URI} ^/gallery/?$
+RewriteRule ^gallery/?$ gallery.php [L]
+
+# General rule for other directories with corresponding PHP files
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteCond %{REQUEST_URI} ^(.+)/$
 RewriteCond %{DOCUMENT_ROOT}%1.php -f

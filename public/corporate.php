@@ -169,12 +169,12 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
         
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold); color: var(--white); border-radius: 8px; text-align: center;">
+        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--very-dark-mustard-yellow); color: var(--white); border-radius: 8px; text-align: center;">
             <h2 style="margin-bottom: 1rem;">Ready to Cater Your Next Corporate Event?</h2>
             <p style="margin-bottom: 2rem; font-size: 1.1rem;">
                 Contact us to discuss your corporate catering needs and receive a custom quote.
             </p>
-            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--primary-gold-text);">Request a Quote</a>
+            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--very-dark-mustard-yellow);">Request a Quote</a>
             <a href="<?php echo BASE_URL; ?>contact.php" class="btn btn-secondary" style="margin-left: 1rem; background-color: rgba(255,255,255,0.2); color: var(--white); border: 2px solid var(--white);">Contact Us</a>
         </div>
     </div>
