@@ -133,7 +133,7 @@ include __DIR__ . '/includes/header.php';
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
             <h2 class="section-subtitle">Private Event Menu Packages</h2>
             <p style="margin-bottom: 1.5rem; text-align: center;">
-                Flexible menu packages to fit your event and budget. Sample pricing (prices may vary based on selections and market prices):
+                Flexible menu packages to fit your event and budget. Pricing (prices may vary based on selections and market prices):
             </p>
             <div class="grid grid-2" style="max-width: 900px; margin: 0 auto;">
                 <div class="card">

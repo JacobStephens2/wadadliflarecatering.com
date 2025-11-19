@@ -137,7 +137,7 @@ include __DIR__ . '/includes/header.php';
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Wedding Menu Packages</h2>
             <p style="text-align: center; margin-bottom: 2rem;">
-                We offer flexible menu packages. Sample pricing (prices may vary based on selections and market prices):
+                We offer flexible menu packages. Pricing (prices may vary based on selections and market prices):
             </p>
             <div class="grid grid-2" style="max-width: 900px; margin: 0 auto;">
                 <div class="card">
