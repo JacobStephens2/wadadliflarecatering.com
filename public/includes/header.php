@@ -55,7 +55,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="<?php echo CSS_URL; ?>style.css">
+    <?php
+    $cssFile = __DIR__ . '/../css/style.css';
+    $cssVersion = file_exists($cssFile) ? filemtime($cssFile) : time();
+    ?>
+    <link rel="stylesheet" href="<?php echo CSS_URL; ?>style.css?v=<?php echo $cssVersion; ?>">
     
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">

@@ -32,7 +32,11 @@
             <p>&copy; <?php echo date('Y'); ?> Wadadli Flare Catering. All rights reserved.</p>
         </div>
     </footer>
-    <script src="<?php echo JS_URL; ?>main.js"></script>
+    <?php
+    $jsFile = __DIR__ . '/../js/main.js';
+    $jsVersion = file_exists($jsFile) ? filemtime($jsFile) : time();
+    ?>
+    <script src="<?php echo JS_URL; ?>main.js?v=<?php echo $jsVersion; ?>"></script>
 </body>
 </html>
 
