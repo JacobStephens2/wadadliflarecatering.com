@@ -26,7 +26,7 @@ include __DIR__ . '/includes/header.php';
         </div>
         
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px; text-align: center;">
-            <h2 class="section-subtitle" style="color: var(--primary-gold);">Wadadli Flare Catering</h2>
+            <h2 class="section-subtitle">Wadadli Flare Catering</h2>
             <p style="font-size: 1.1rem; max-width: 800px; margin: 1rem auto;">
                 I am now the proud owner of Wadadli Flare Catering! Based on my experiences and knowledge mentioned above, I am looking forward to applying my unique culinary skills to satisfying my customers, and managing a successful business!
             </p>

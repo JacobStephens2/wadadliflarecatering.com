@@ -45,6 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <h1 class="section-title">Contact Us</h1>
         
+        <?php if ($success): ?>
+        <div class="alert alert-success" style="margin-top: 2rem;">
+            Thank you for your message! We'll get back to you as soon as possible.
+        </div>
+        <?php elseif ($error): ?>
+        <div class="alert alert-error" style="margin-top: 2rem;">
+            <?php echo htmlspecialchars($error); ?>
+        </div>
+        <?php endif; ?>
+        
         <div class="grid grid-2" style="margin-top: 3rem; gap: 3rem;">
             <div>
                 <h2 class="section-subtitle">Get in Touch</h2>
@@ -53,21 +63,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </p>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Phone / Text</h3>
+                    <h3 style="color: var(--dark-ocean-blue); margin-bottom: 0.5rem;">Phone / Text</h3>
                     <p style="font-size: 1.1rem;">
                         <a href="tel:<?php echo str_replace([' ', '(', ')', '-'], '', CONTACT_PHONE); ?>"><?php echo CONTACT_PHONE; ?></a>
                     </p>
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Email</h3>
+                    <h3 style="color: var(--dark-ocean-blue); margin-bottom: 0.5rem;">Email</h3>
                     <p style="font-size: 1.1rem;">
                         <a href="mailto:<?php echo CONTACT_EMAIL; ?>"><?php echo CONTACT_EMAIL; ?></a>
                     </p>
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Location</h3>
+                    <h3 style="color: var(--dark-ocean-blue); margin-bottom: 0.5rem;">Location</h3>
                     <p>Based in Elverson, Pennsylvania</p>
                     <p style="margin-top: 0.5rem;">
                         <a href="<?php echo GOOGLE_MAPS_URL; ?>" target="_blank" rel="noopener noreferrer">Find us on Google Maps</a>
@@ -75,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Follow Us</h3>
+                    <h3 style="color: var(--dark-ocean-blue); margin-bottom: 0.5rem;">Follow Us</h3>
                     <div class="social-links">
                         <a href="<?php echo FACEBOOK_URL; ?>" target="_blank" rel="noopener noreferrer">Facebook</a>
                         <a href="<?php echo INSTAGRAM_URL; ?>" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -91,16 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div>
                 <h2 class="section-subtitle">Send Us a Message</h2>
-                
-                <?php if ($success): ?>
-                <div class="alert alert-success">
-                    Thank you for your message! We'll get back to you as soon as possible.
-                </div>
-                <?php elseif ($error): ?>
-                <div class="alert alert-error">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
-                <?php endif; ?>
                 
                 <form method="POST" action="" onsubmit="return validateForm(this);">
                     <div class="form-group">
@@ -129,6 +129,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </section>
+
+<?php if ($success || $error): ?>
+<script>
+    // Scroll to top when status message is displayed
+    window.addEventListener('DOMContentLoaded', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
 

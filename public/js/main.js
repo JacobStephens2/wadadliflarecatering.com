@@ -5,11 +5,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const hasSubmenuItems = document.querySelectorAll('.has-submenu');
+    const header = document.querySelector('header');
+    
+    // Set mobile menu top position based on header height
+    function setMenuPosition() {
+        if (window.innerWidth <= 768 && navMenu && header) {
+            const headerHeight = header.offsetHeight;
+            navMenu.style.top = headerHeight + 'px';
+        }
+    }
+    
+    // Set initial position
+    setMenuPosition();
+    
+    // Update on resize
+    window.addEventListener('resize', setMenuPosition);
     
     if (mobileMenuToggle && navMenu) {
         mobileMenuToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             this.classList.toggle('active');
+            // Ensure position is correct when menu opens
+            setMenuPosition();
         });
     }
     
@@ -230,29 +247,77 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Hero slideshow - automatically cycle through images
+// Hero slideshow - automatically cycle through images with manual navigation
 function initHeroSlideshow() {
     const slides = document.querySelectorAll('.hero-slide');
+    const prevButton = document.querySelector('.hero-nav-prev');
+    const nextButton = document.querySelector('.hero-nav-next');
+    
     if (slides.length === 0) return;
     
     let currentSlide = 0;
     const slideInterval = 5000; // Change image every 5 seconds
+    let autoSlideInterval = null;
     
-    function nextSlide() {
+    function showSlide(index) {
         // Remove active class from current slide
         slides[currentSlide].classList.remove('active');
         
-        // Move to next slide
-        currentSlide = (currentSlide + 1) % slides.length;
+        // Update current slide index
+        currentSlide = index;
+        
+        // Ensure index is within bounds
+        if (currentSlide < 0) {
+            currentSlide = slides.length - 1;
+        } else if (currentSlide >= slides.length) {
+            currentSlide = 0;
+        }
         
         // Add active class to new slide
         slides[currentSlide].classList.add('active');
+        
+        // Reset auto-advance timer
+        resetAutoSlide();
+    }
+    
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+    
+    function startAutoSlide() {
+        if (slides.length > 1) {
+            autoSlideInterval = setInterval(nextSlide, slideInterval);
+        }
+    }
+    
+    function resetAutoSlide() {
+        if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+        }
+        startAutoSlide();
+    }
+    
+    // Add click handlers for navigation buttons
+    if (prevButton) {
+        prevButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            prevSlide();
+        });
+    }
+    
+    if (nextButton) {
+        nextButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            nextSlide();
+        });
     }
     
     // Start the slideshow
-    if (slides.length > 1) {
-        setInterval(nextSlide, slideInterval);
-    }
+    startAutoSlide();
 }
 
 // Initialize hero slideshow if on home page

@@ -24,10 +24,16 @@ include __DIR__ . '/includes/header.php';
         <div class="hero-slide<?php echo $index === 0 ? ' active' : ''; ?>" style="background-image: url('<?php echo GALLERY_URL . htmlspecialchars($image); ?>');"></div>
         <?php endforeach; ?>
         <div class="hero-overlay"></div>
+        <button class="hero-nav hero-nav-prev" aria-label="Previous image">
+            <span>&#8249;</span>
+        </button>
+        <button class="hero-nav hero-nav-next" aria-label="Next image">
+            <span>&#8250;</span>
+        </button>
     </div>
     <div class="hero-content">
         <h1>Wadadli Flare Catering</h1>
-        <p>Bringing diverse culinary excellence to Pennsylvania. From Caribbean flavors to American favorites, French, Italian, and more - we create custom menus for your special events.</p>
+        <p>Bringing diverse culinary excellence to Southeastern Pennsylvania. From American favorites to Caribbean flavors, French, Italian, and more - we create custom menus for your special events.</p>
         <a href="<?php echo BASE_URL; ?>quote-request.php" class="cta-button">Request a Quote</a>
     </div>
 </div>
@@ -48,7 +54,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             <div class="card">
                 <h3 class="card-title">Diverse Cuisines</h3>
-                <p>Not just Caribbean - we specialize in American, French, Italian, Asian, and Caribbean cuisine. Custom menus tailored to your taste.</p>
+                <p>We specialize in American, French, Italian, Asian, and Caribbean cuisine. Custom menus tailored to your taste.</p>
             </div>
             <div class="card">
                 <h3 class="card-title">Flexible Service</h3>
@@ -80,8 +86,10 @@ include __DIR__ . '/includes/header.php';
             <div class="card">
                 <h3 class="card-title">BBQ & Caribbean Experiences</h3>
                 <p>Smoked meats, jerk specialties, and authentic Caribbean flavors. Perfect for summer BBQs and special occasions.</p>
-                <a href="<?php echo BASE_URL; ?>bbq-experience.php" class="btn">BBQ Experience</a>
-                <a href="<?php echo BASE_URL; ?>caribbean-experience.php" class="btn" style="margin-left: 0.5rem;">Caribbean Experience</a>
+                <div class="button-group">
+                    <a href="<?php echo BASE_URL; ?>bbq-experience.php" class="btn">BBQ Experience</a>
+                    <a href="<?php echo BASE_URL; ?>caribbean-experience.php" class="btn">Caribbean Experience</a>
+                </div>
             </div>
         </div>
     </div>

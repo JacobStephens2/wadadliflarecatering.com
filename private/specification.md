@@ -80,6 +80,8 @@ The buttons should be red by default, and another color on hover.
 
 Sub headers should be green.
 
+## Elements
+The buttons should be spaced apart from one another. They should have some space betwen them and text above them.
 
 ## Font
 Here are some good fonts for this site:
@@ -89,6 +91,9 @@ Here are some good fonts for this site:
 
 ## Accessibility Readability
 Ensure that the text at least meets AA WCAG contrast readability standards.
+
+## Logo
+The logo file is logo.webp. This should be incorporated into the website design.
 
 
 # Pages
@@ -100,7 +105,15 @@ The home page should use a green for sub headers.
 
 On the home page, the user should be able to see red, green, and blue without having to scroll.
 
-The hero section on the home page should have images that automatically change, to show the visitor different foods that Chef Jamie makes and caters (like on https://www.kristinascatering.com).
+The hero section on the home page should have images that automatically change, to show the visitor different foods that Chef Jamie makes and caters (like on https://www.kristinascatering.com). The user should be able to click somewhere to get the carousel to go to the next or previous image.
+
+## Contact Page
+The message send status message should appear at the top of the page after the user sends a message, this way they don't need to scroll down to see what happened after submission.
+
+The email the contact form sends should have the reply to address as the email which was entered into the contact form, making it easy to reply to whoever filled out the contact form.
+
+# Mobile View
+The menu should be completely visible when opened on a mobile display.
 
 
 
@@ -109,6 +122,8 @@ This website has the following technologies available to it:
 - Ubuntu 24.04.3
 - Apache 2.4.58
 - PHP 8.3.6
+    - composer for package management
+    - phpdotenv for environment variables
 - MySQL 8.0.43 (credentials in .env file)
 - JavaScript (Primarily run in Google Chrome)
 - CSS

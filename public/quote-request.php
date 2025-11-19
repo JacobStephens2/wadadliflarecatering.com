@@ -53,8 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $error = 'Your quote request was saved but we had trouble sending the email. We will still receive your request.';
             }
+        } catch (PDOException $e) {
+            error_log("Quote request database error: " . $e->getMessage());
+            error_log("Quote request error trace: " . $e->getTraceAsString());
+            $error = 'Sorry, there was an error processing your request. Please try again or call us directly.';
         } catch (Exception $e) {
             error_log("Quote request error: " . $e->getMessage());
+            error_log("Quote request error trace: " . $e->getTraceAsString());
             $error = 'Sorry, there was an error processing your request. Please try again or call us directly.';
         }
     }
