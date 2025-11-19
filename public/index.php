@@ -33,6 +33,7 @@ include __DIR__ . '/includes/header.php';
     </div>
     <div class="hero-content">
         <h1>Wadadli Flare Catering</h1>
+        <p class="tagline" style="font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3);">The two main ingredients in our dishes are LOVE & PASSION.</p>
         <p>Bringing diverse culinary excellence to Southeastern Pennsylvania. From American favorites to Caribbean flavors, French, Italian, and more - we create custom menus for your special events.</p>
         <a href="<?php echo BASE_URL; ?>quote-request.php" class="cta-button">Request a Quote</a>
     </div>
@@ -51,14 +52,23 @@ include __DIR__ . '/includes/header.php';
             <div class="card">
                 <h3 class="card-title">34 Years of Experience</h3>
                 <p>Chef Jamie brings decades of culinary expertise from 5-star resorts, including the Ritz Carlton, to every event.</p>
+                <div style="margin-top: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20250612_chefs_kitchen_range.jpg" alt="Chef Jamie's professional kitchen">
+                </div>
             </div>
             <div class="card">
                 <h3 class="card-title">Diverse Cuisines</h3>
                 <p>We specialize in American, French, Italian, Asian, and Caribbean cuisine. Custom menus tailored to your taste.</p>
+                <div style="margin-top: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20251119_Wadadli_Flare_Dish_Collage.jpeg" alt="Wadadli Flare Catering - Diverse Cuisine Collage">
+                </div>
             </div>
             <div class="card">
                 <h3 class="card-title">Flexible Service</h3>
                 <p>Pick up, drop off, or full service options. We work with your venue and your needs to make your event perfect.</p>
+                <div style="margin-top: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>buffet_line_with_meat_starch_and_veggie.webp" alt="Professional buffet setup">
+                </div>
             </div>
         </div>
     </div>
@@ -71,21 +81,33 @@ include __DIR__ . '/includes/header.php';
             <div class="card">
                 <h3 class="card-title">Weddings</h3>
                 <p>Elegant charcuterie stations, custom buffets, and beautifully presented dishes to make your special day unforgettable.</p>
+                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20250921_charcuterie_fancy_display.jpg" alt="Elegant wedding charcuterie display">
+                </div>
                 <a href="<?php echo BASE_URL; ?>weddings.php" class="btn">Learn More</a>
             </div>
             <div class="card">
                 <h3 class="card-title">Corporate Events</h3>
                 <p>Professional catering for meetings, holiday parties, and company events. Impress your clients and colleagues.</p>
+                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20250506_cocktail_platters.jpg" alt="Professional corporate catering presentation">
+                </div>
                 <a href="<?php echo BASE_URL; ?>corporate.php" class="btn">Learn More</a>
             </div>
             <div class="card">
                 <h3 class="card-title">Private Events</h3>
                 <p>Graduations, birthdays, memorials, and more. We handle events of all sizes with care and attention to detail.</p>
+                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20250726_salads_and_table_settings.jpg" alt="Beautiful table settings for private events">
+                </div>
                 <a href="<?php echo BASE_URL; ?>private-events.php" class="btn">Learn More</a>
             </div>
             <div class="card">
                 <h3 class="card-title">BBQ & Caribbean Experiences</h3>
                 <p>Smoked meats, jerk specialties, and authentic Caribbean flavors. Perfect for summer BBQs and special occasions.</p>
+                <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden;">
+                    <img src="<?php echo GALLERY_URL; ?>20251003_smoked_beef_short_ribs_finished.jpg" alt="Smoked BBQ ribs and Caribbean specialties">
+                </div>
                 <div class="button-group">
                     <a href="<?php echo BASE_URL; ?>bbq-experience.php" class="btn">BBQ Experience</a>
                     <a href="<?php echo BASE_URL; ?>caribbean-experience.php" class="btn">Caribbean Experience</a>
@@ -106,7 +128,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             <div class="review-card">
                 <div class="stars">★★★★★</div>
-                <p>"Chef Jamie crafts mouth watering fall off the bone smoked ribs that you can't stop eating. The spices the Jamie creates are so unique that it keeps you coming back for more."</p>
+                <p>"Chef Jamie crafts mouth watering smoked ribs that you can't stop eating. The spices the Jamie creates are so unique that it keeps you coming back for more."</p>
                 <div class="review-author">- Fred Rife</div>
             </div>
         </div>

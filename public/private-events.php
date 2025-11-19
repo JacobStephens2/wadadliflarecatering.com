@@ -47,10 +47,93 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
         
+        <div style="margin-top: 3rem;">
+            <h2 class="section-subtitle">Suggested Private Event Menu</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">
+                Diverse, customizable options perfect for any private celebration. We'll work with you to create a menu that reflects your preferences and accommodates your guests.
+            </p>
+            
+            <div class="menu-section">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Entree Options</h3>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Chicken Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Chicken Marsala</li>
+                            <li>Chicken Cacciatore</li>
+                            <li>Tuscan Style Chicken</li>
+                            <li>Sundried Tomato Chicken</li>
+                            <li>Chicken Hunter Style</li>
+                            <li>Chicken Piccata</li>
+                            <li>Chicken Caprese</li>
+                            <li>Chicken in a Supreme Sauce</li>
+                            <li>Indian Butter Chicken</li>
+                            <li>General Tso Chicken</li>
+                            <li>Southwest Chicken Casserole</li>
+                            <li>Date & Apricot Stuffed Chicken</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Fish Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Pan Seared Salmon with Leek</li>
+                            <li>Salmon with Dill White Wine Sauce</li>
+                            <li>Maple & Ginger Glaze Salmon</li>
+                            <li>Thai Curry Salmon</li>
+                            <li>Herb Crusted Salmon Fillet</li>
+                            <li>Creole Tilapia</li>
+                            <li>Wadadli Style Tilapia</li>
+                            <li>Garlic Butter Tilapia</li>
+                            <li>Pan Seared Tilapia with Cajun Cream</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Pork Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Smoked Pork Loin with Cranberry Apple Gravy</li>
+                            <li>Herb Stuffed Pork Loin with Rosemary Jus</li>
+                            <li>Smoked Pork Loin with Sour Cherry Glaze</li>
+                            <li>Boneless Pork Loin Chop with Port Wine Mushroom Sauce</li>
+                            <li>Sweet & Sour Pineapple Pork Loin</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Beef & Veal Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Curry Beef</li>
+                            <li>Red Wine Beef Stew</li>
+                            <li>Flat Iron Steak with Spinach, Sundried Tomato and Mushroom</li>
+                            <li>Grilled Flat Iron Steak with Chimichurri</li>
+                            <li>Grilled Flat Iron with Cracked Black Pepper and Bourbon Cream</li>
+                            <li>Veal Marsala</li>
+                            <li>Veal Piccata</li>
+                            <li>Veal Milanese</li>
+                            <li>Veal with Mustard-Sage Crust</li>
+                            <li>Veal with Mushroom & Wine</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetarian Options</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Stuffed Polenta with Smoked Tomato Sauce</li>
+                            <li>Pasta Primavera</li>
+                            <li>Curried Vegetable Stew</li>
+                            <li>Eggplant Parmesan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
-            <h2 class="section-subtitle">Menu Options</h2>
-            <p style="margin-bottom: 1.5rem;">
-                We offer flexible menu packages to fit your event and budget. Sample pricing (prices may vary based on selections and market prices):
+            <h2 class="section-subtitle">Private Event Menu Packages</h2>
+            <p style="margin-bottom: 1.5rem; text-align: center;">
+                Flexible menu packages to fit your event and budget. Sample pricing (prices may vary based on selections and market prices):
             </p>
             <div class="grid grid-2" style="max-width: 900px; margin: 0 auto;">
                 <div class="card">
@@ -76,39 +159,6 @@ include __DIR__ . '/includes/header.php';
                 * Fish, Steak and Veal may cost more depending on market price<br>
                 * Large events may receive lower pricing per person
             </p>
-        </div>
-        
-        <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Cuisine Options</h2>
-            <p style="text-align: center; margin-bottom: 2rem;">
-                Our diverse culinary expertise allows us to create menus featuring:
-            </p>
-            <div class="grid grid-3">
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">American Favorites</h3>
-                    <p>Classic comfort foods</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Caribbean Flavors</h3>
-                    <p>Jerk, curry, and island specialties</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">BBQ Experience</h3>
-                    <p>Smoked meats and traditional sides</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">International Cuisine</h3>
-                    <p>French, Italian, Asian options</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Vegetarian Options</h3>
-                    <p>Delicious plant-based choices</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Custom Creations</h3>
-                    <p>We'll work with you to create something special</p>
-                </div>
-            </div>
         </div>
         
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold-bg); color: var(--white); border-radius: 8px; text-align: center;">

@@ -86,6 +86,9 @@ function initGalleryFilters() {
                     }, 300);
                 }
             });
+            
+            // Update visible images list for lightbox navigation
+            updateVisibleImages();
         });
     });
 }
@@ -96,25 +99,67 @@ if (document.querySelector('.gallery-filters')) {
 }
 
 // Lightbox functionality for gallery
+let currentLightbox = null;
+let visibleImages = [];
+let currentImageIndex = 0;
+
 function initLightbox() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     
-    galleryItems.forEach(item => {
+    galleryItems.forEach((item, index) => {
         item.addEventListener('click', function() {
             const img = this.querySelector('img');
             if (img) {
+                // Get all currently visible gallery items
+                updateVisibleImages();
+                // Find the index of the clicked image
+                const clickedIndex = Array.from(document.querySelectorAll('.gallery-item')).indexOf(this);
+                currentImageIndex = visibleImages.indexOf(clickedIndex);
+                if (currentImageIndex === -1) {
+                    currentImageIndex = 0;
+                }
                 openLightbox(img.src, img.alt);
             }
         });
     });
 }
 
+function updateVisibleImages() {
+    const allItems = document.querySelectorAll('.gallery-item');
+    visibleImages = [];
+    allItems.forEach((item, index) => {
+        const style = window.getComputedStyle(item);
+        if (style.display !== 'none' && style.opacity !== '0') {
+            visibleImages.push(index);
+        }
+    });
+}
+
+function getImageData(index) {
+    const allItems = document.querySelectorAll('.gallery-item');
+    if (index >= 0 && index < allItems.length) {
+        const item = allItems[index];
+        const img = item.querySelector('img');
+        if (img) {
+            return { src: img.src, alt: img.alt };
+        }
+    }
+    return null;
+}
+
 function openLightbox(src, alt) {
+    // Close existing lightbox if open
+    if (currentLightbox) {
+        closeLightbox();
+    }
+    
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.innerHTML = `
         <div class="lightbox-content">
             <span class="lightbox-close">&times;</span>
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous image">&#8249;</button>
+            <button class="lightbox-nav lightbox-next" aria-label="Next image">&#8250;</button>
             <img src="${src}" alt="${alt}">
         </div>
     `;
@@ -146,6 +191,7 @@ function openLightbox(src, alt) {
         max-width: 100%;
         max-height: 90vh;
         object-fit: contain;
+        transition: opacity 0.3s ease;
     `;
     
     const closeBtn = lightbox.querySelector('.lightbox-close');
@@ -157,37 +203,153 @@ function openLightbox(src, alt) {
         font-size: 40px;
         cursor: pointer;
         line-height: 1;
+        z-index: 10001;
     `;
     
+    const prevBtn = lightbox.querySelector('.lightbox-prev');
+    const nextBtn = lightbox.querySelector('.lightbox-next');
+    
+    // Style navigation buttons
+    [prevBtn, nextBtn].forEach(btn => {
+        btn.style.cssText = `
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        `;
+        btn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+            this.style.transform = 'translateY(-50%) scale(1.1)';
+        });
+        btn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            this.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+            this.style.transform = 'translateY(-50%) scale(1)';
+        });
+    });
+    
+    prevBtn.style.left = '20px';
+    nextBtn.style.right = '20px';
+    
+    // Hide navigation buttons if only one image
+    if (visibleImages.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
+    
     document.body.appendChild(lightbox);
+    currentLightbox = lightbox;
+    
     setTimeout(() => {
         lightbox.style.opacity = '1';
     }, 10);
     
+    function showImage(index) {
+        if (visibleImages.length === 0) return;
+        
+        // Ensure index is within bounds
+        if (index < 0) {
+            index = visibleImages.length - 1;
+        } else if (index >= visibleImages.length) {
+            index = 0;
+        }
+        
+        currentImageIndex = index;
+        const imageData = getImageData(visibleImages[currentImageIndex]);
+        
+        if (imageData) {
+            // Fade out current image
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = imageData.src;
+                img.alt = imageData.alt;
+                // Fade in new image
+                setTimeout(() => {
+                    img.style.opacity = '1';
+                }, 10);
+            }, 150);
+        }
+    }
+    
+    function nextImage() {
+        if (visibleImages.length > 1) {
+            showImage(currentImageIndex + 1);
+        }
+    }
+    
+    function prevImage() {
+        if (visibleImages.length > 1) {
+            showImage(currentImageIndex - 1);
+        }
+    }
+    
     closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        prevImage();
+    });
+    nextBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        nextImage();
+    });
+    
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             closeLightbox();
         }
     });
     
-    document.addEventListener('keydown', function escHandler(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
-            document.removeEventListener('keydown', escHandler);
-        }
+    // Prevent image click from closing lightbox
+    img.addEventListener('click', function(e) {
+        e.stopPropagation();
     });
     
-    function closeLightbox() {
-        lightbox.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(lightbox);
-        }, 300);
+    function keyHandler(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+            prevImage();
+        } else if (e.key === 'ArrowRight') {
+            nextImage();
+        }
     }
+    
+    document.addEventListener('keydown', keyHandler);
+    
+    function closeLightbox() {
+        if (lightbox && lightbox.parentNode) {
+            lightbox.style.opacity = '0';
+            setTimeout(() => {
+                if (lightbox.parentNode) {
+                    document.body.removeChild(lightbox);
+                }
+                currentLightbox = null;
+            }, 300);
+        }
+    }
+    
+    // Store close function for external access
+    lightbox.closeLightbox = closeLightbox;
 }
 
 // Initialize lightbox if on gallery page
 if (document.querySelector('.gallery-item')) {
+    updateVisibleImages(); // Initialize visible images list
     initLightbox();
 }
 

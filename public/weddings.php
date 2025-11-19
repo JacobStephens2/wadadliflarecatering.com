@@ -68,7 +68,74 @@ include __DIR__ . '/includes/header.php';
         </div>
         
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Menu Options</h2>
+            <h2 class="section-subtitle">Suggested Wedding Menu</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">
+                We create elegant, memorable menus for your special day. Below are some of our popular wedding options. All menus can be customized to your preferences.
+            </p>
+            
+            <div class="menu-section">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Elegant Entrees</h3>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Chicken Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Chicken Marsala</li>
+                            <li>Chicken Piccata</li>
+                            <li>Chicken Caprese</li>
+                            <li>Tuscan Style Chicken</li>
+                            <li>Sundried Tomato Chicken</li>
+                            <li>Date & Apricot Stuffed Chicken</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Fish Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Pan Seared Salmon with Leek</li>
+                            <li>Salmon with Dill White Wine Sauce</li>
+                            <li>Maple & Ginger Glaze Salmon</li>
+                            <li>Herb Crusted Salmon Fillet</li>
+                            <li>Pan Seared Tilapia with Cajun Cream</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Beef & Veal Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Grilled Flat Iron Steak with Chimichurri</li>
+                            <li>Flat Iron Steak with Spinach, Sundried Tomato and Mushroom</li>
+                            <li>Veal Marsala</li>
+                            <li>Veal Piccata</li>
+                            <li>Veal Milanese</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Pork Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Smoked Pork Loin with Cranberry Apple Gravy</li>
+                            <li>Herb Stuffed Pork Loin with Rosemary Jus</li>
+                            <li>Smoked Pork Loin with Sour Cherry Glaze</li>
+                            <li>Boneless Pork Loin Chop with Port Wine Mushroom Sauce</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetarian Options</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Stuffed Polenta with Smoked Tomato Sauce</li>
+                            <li>Pasta Primavera</li>
+                            <li>Curried Vegetable Stew</li>
+                            <li>Eggplant Parmesan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 3rem;">
+            <h2 class="section-subtitle">Wedding Menu Packages</h2>
             <p style="text-align: center; margin-bottom: 2rem;">
                 We offer flexible menu packages. Sample pricing (prices may vary based on selections and market prices):
             </p>

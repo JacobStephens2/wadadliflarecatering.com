@@ -3,12 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    
+    <!-- Primary Meta Tags -->
     <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering</title>
+    <meta name="title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
+    <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta name="keywords" content="catering, Pennsylvania, Elverson, West Chester, Main Line, wedding catering, corporate catering, Caribbean food, BBQ catering, Chef Jamie Francis, Twin Valley catering, private events catering">
+    <meta name="author" content="Wadadli Flare Catering">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Canonical URL -->
+    <?php
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+    // Remove query string for canonical URL
+    $requestUri = strtok($requestUri, '?');
+    // Remove .php extension if present
+    $requestUri = preg_replace('/\.php$/', '', $requestUri);
+    // Ensure leading slash
+    if (substr($requestUri, 0, 1) !== '/') {
+        $requestUri = '/' . $requestUri;
+    }
+    // Remove trailing slash except for root
+    $requestUri = ($requestUri !== '/') ? rtrim($requestUri, '/') : '/';
+    $currentUrl = SITE_URL . $requestUri;
+    ?>
+    <link rel="canonical" href="<?php echo htmlspecialchars($currentUrl); ?>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo htmlspecialchars($currentUrl); ?>">
+    <meta property="og:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
+    <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta property="og:image" content="<?php echo SITE_URL; ?><?php echo ASSETS_URL; ?>logo.webp">
+    <meta property="og:site_name" content="Wadadli Flare Catering">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<?php echo htmlspecialchars($currentUrl); ?>">
+    <meta name="twitter:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
+    <meta name="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta name="twitter:image" content="<?php echo SITE_URL; ?><?php echo ASSETS_URL; ?>logo.webp">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?php echo ASSETS_URL; ?>favicon.ico">
+    
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="<?php echo CSS_URL; ?>style.css">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        "name": "Wadadli Flare Catering",
+        "image": "<?php echo SITE_URL; ?><?php echo ASSETS_URL; ?>logo.webp",
+        "@id": "<?php echo SITE_URL; ?>",
+        "url": "<?php echo SITE_URL; ?>",
+        "telephone": "<?php echo CONTACT_PHONE; ?>",
+        "email": "<?php echo CONTACT_EMAIL; ?>",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Elverson",
+            "addressRegion": "PA",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.1568",
+            "longitude": "-75.8327"
+        },
+        "servesCuisine": ["Caribbean", "American", "French", "Italian", "BBQ", "Asian"],
+        "priceRange": "$$",
+        "description": "Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.",
+        "areaServed": [
+            {
+                "@type": "City",
+                "name": "Elverson"
+            },
+            {
+                "@type": "City",
+                "name": "West Chester"
+            },
+            {
+                "@type": "City",
+                "name": "Twin Valley"
+            },
+            {
+                "@type": "City",
+                "name": "Main Line"
+            }
+        ],
+        "founder": {
+            "@type": "Person",
+            "name": "Chef Jamie Francis"
+        },
+        "sameAs": [
+            "<?php echo FACEBOOK_URL; ?>",
+            "<?php echo INSTAGRAM_URL; ?>"
+        ]
+    }
+    </script>
 </head>
 <body<?php echo isset($bodyClass) ? ' class="' . htmlspecialchars($bodyClass) . '"' : ''; ?>>
     <header>

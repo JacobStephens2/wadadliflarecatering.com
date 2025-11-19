@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://wadadli.stephens.page/sitemap.xml
+
+# Disallow private directories
+Disallow: /private/
+Disallow: /includes/
+Disallow: /vendor/
+
+# Allow CSS and JS for proper rendering
+Allow: /css/
+Allow: /js/
+Allow: /gallery/
+Allow: /assets/
+

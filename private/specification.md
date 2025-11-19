@@ -15,15 +15,15 @@ Let us take some work out of your summer BBQ so you have more time to chill.
 
 If you don't see something you'd like on the menu, please feel free to ask.
 
-We love our customers, so feel free to contact us at (267) 481-5872.
+We love our customers, so feel free to contact us at [phone number].
 
 
-# Gallery
-The gallery should have a menu section featuring the menu images in the menu directory.
+# Tag Line
+The two main ingredients in our dishes are LOVE & PASSION.
 
 
-# Catering Menu
-Suggested_Menu.md has menu options. Old_Site_Prices.md has pricing that is on the current website. Further, the images, Wadadli_Flare_Menu_Page_1.png and Wadadli_Flare_Menu_Page_2.png, have menu information. Chef Jamie doesn't want to be pigeonholed as a solely Caribbean chef, but rather as a more broadly capable and higher end caterer.
+# Catering Menus
+Suggested_Menu.md has menu options. Old_Site_Prices.md has pricing that is on the current website. Chef Jamie doesn't want to be pigeonholed as a solely Caribbean chef, but rather as a more broadly capable and higher end caterer.
 
 Different menus should be displayed on different pages (different pages for different service types, such as weddings, corporate events, and private events).
 
@@ -31,8 +31,9 @@ Different menus should be displayed on different pages (different pages for diff
 # Reviews
 WFC has Facebook Reviews and Google Reviews. 
 
-# Sitemap, pages, and website menu structure
-Wadadli_Flare_Sitemap.md contains a sitemap, or list of pages that the website should have. There are also some notes about menu and page structure in the Call_notes.md file.
+
+# Sitemap, pages, and website navigation structure
+Wadadli_Flare_Sitemap.md contains a sitemap, or list of pages that the website should have. There are also some notes about navigation and page structure in the Call_notes.md file.
 
 
 # Policies
@@ -47,6 +48,7 @@ I then moved to Pennsylvania, where I am currently living with my family for the
 
 I am now the proud owner of Wadadli Flare Catering!  Based on my experiences and knowledge mentioned above, I am looking forward to applying my unique culinary skills to satisfying my customers, and managing a successful business!
 
+
 # Contact Info and Social Media
 Phone / Text number: (267) 481-5872
 Email: wadadliflare.catering@gmail.com
@@ -54,14 +56,10 @@ Facebook: https://www.facebook.com/people/wadadli-flare-Catering/100093105235894
 Instagram: https://www.instagram.com/wadadli_flare_catering/
 Google Maps: https://maps.app.goo.gl/rwZ2hSf6WmHhSUde6
 
-# Contact Page
-There should be a contact page which has the contact info as well as a form the user can fill out to have an email sent to Chef Jamie.
 
-# Quote request form
-There should be a form the user can fill out to request a catering quote for an event.
 
 # Style
-Chef Jamie likes the simple, clean, readable design of https://www.kristinascatering.com, however, he wants more of the color and Wadadli Island-flare style found in his current website, https://wadadliflarecatering.com/, and in the menu images, Wadadli_Flare_Menu_Page_1.png and Wadadli_Flare_Menu_Page_2.png.
+Chef Jamie likes the simple, clean, readable design of https://www.kristinascatering.com, however, he wants more of the color and Wadadli Island-flare style found in his current website, https://wadadliflarecatering.com/, and in the style inspiration images, Wadadli_Flare_Menu_Page_1.png and Wadadli_Flare_Menu_Page_2.png.
 
 ## Color
 As seen in Wadadli_Flare_Menu_Page_1.png, the color palette should include:
@@ -73,6 +71,7 @@ As seen in Wadadli_Flare_Menu_Page_1.png, the color palette should include:
 - dark palm leaf green (hex 468931)
 - light yellow (hex ffffac)
 - dark pineapple yellow (hex fedb53)
+- very dark mustard yellow (hex 8a6f1f)
 
 Make the site colorful, but avoid rainbow motifs.
 
@@ -98,6 +97,15 @@ The logo file is logo.webp. This should be incorporated into the website design.
 
 # Pages
 
+## Weddings Page
+The weddings page should display the suggested menu found at Suggested_Menu.md, highlighted in such a way that is relevant to weddings.
+
+## Corporate Events Page
+The corporate events page should display the suggested menu found at Suggested_Menu.md, highlighted in such a way that is relevant to corporate events.
+
+## Private Events Page
+The private events page should display the suggested menu found at Suggested_Menu.md, highlighted in such a way that is relevant to private events.
+
 ## Home Page
 The hero section on the home page, if it has text in it, should make sure to have a good (at least WCAG AA) contrast with the background to amek sure it is easily legible.
 
@@ -112,9 +120,23 @@ The message send status message should appear at the top of the page after the u
 
 The email the contact form sends should have the reply to address as the email which was entered into the contact form, making it easy to reply to whoever filled out the contact form.
 
+## Gallery Page
+The gallery should have a menu section featuring the menu images in the menu directory.
+
+When looking at an image, a user should be able to click something to view the next image, without having to exit back out to the gallery overview and click another image.
+
+## Contact Page
+There should be a contact page which has the contact info as well as a form the user can fill out to have an email sent to Chef Jamie.
+
+## Quote request form page
+There should be a form the user can fill out to request a catering quote for an event.
+
 # Mobile View
 The menu should be completely visible when opened on a mobile display.
 
+
+# Search Engine Optimization
+The website should be optimized for display in search engines.
 
 
 # Technology Stack

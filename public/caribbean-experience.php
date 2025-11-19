@@ -29,7 +29,7 @@ include __DIR__ . '/includes/header.php';
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-name">Jerk Ribs</div>
-                        <div class="menu-item-description">Fall-off-the-bone ribs with Caribbean jerk flavor</div>
+                        <div class="menu-item-description">Ribs with Caribbean jerk flavor</div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-name">Curry Goat</div>
@@ -94,6 +94,14 @@ include __DIR__ . '/includes/header.php';
 </section>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
+
+
+
+
+
+
+
+
 
 
 

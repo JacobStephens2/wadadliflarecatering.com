@@ -15,7 +15,7 @@ Shana Kennedy - 7/1/2024
 
 
 
-"Chef Jamie crafts mouth watering fall off the bone smoked ribs that you can’t stop eating.  The spices the Jamie creates are so unique that it keeps you coming back for more.  The smoked Mac n cheese is the perfect side along with his other wonderful creations.  I would most definitely use Wadadli Flare Catering again and would most definitely recommend to anyone looking for deliciously prepared handcrafted food."
+"Chef Jamie crafts mouth watering smoked ribs that you can’t stop eating.  The spices the Jamie creates are so unique that it keeps you coming back for more.  The smoked Mac n cheese is the perfect side along with his other wonderful creations.  I would most definitely use Wadadli Flare Catering again and would most definitely recommend to anyone looking for deliciously prepared handcrafted food."
 
 Read full review
 Fred Rife - 8/5/2023

@@ -25,7 +25,7 @@ include __DIR__ . '/includes/header.php';
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-name">Pork Ribs</div>
-                        <div class="menu-item-description">Fall-off-the-bone tender ribs, perfectly seasoned and smoked</div>
+                        <div class="menu-item-description">Tender smoked ribs, perfectly seasoned</div>
                     </div>
                     <div class="menu-item">
                         <div class="menu-item-name">Beef Ribs</div>
@@ -97,6 +97,14 @@ include __DIR__ . '/includes/header.php';
 </section>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
+
+
+
+
+
+
+
+
 
 
 

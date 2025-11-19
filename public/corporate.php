@@ -37,25 +37,100 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
         
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
-            <h2 class="section-subtitle">Custom Buffet Menus</h2>
-            <p style="margin-bottom: 1.5rem;">
-                We work with you to create menus that fit your corporate culture and budget. Our diverse culinary expertise includes:
+        <div style="margin-top: 3rem;">
+            <h2 class="section-subtitle">Suggested Corporate Event Menu</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">
+                Professional, crowd-pleasing options perfect for corporate events. All menus can be customized to fit your company culture and budget.
             </p>
-            <div class="grid grid-3">
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">American Classics</h3>
-                    <p>Familiar favorites that appeal to everyone</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">International Options</h3>
-                    <p>French, Italian, Asian, and Caribbean selections</p>
-                </div>
-                <div>
-                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Healthy Choices</h3>
-                    <p>Fresh salads, grilled vegetables, and lighter options</p>
+            
+            <div class="menu-section">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Popular Entrees</h3>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Chicken Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Chicken Marsala</li>
+                            <li>Chicken Cacciatore</li>
+                            <li>Tuscan Style Chicken</li>
+                            <li>Chicken Piccata</li>
+                            <li>General Tso Chicken</li>
+                            <li>Indian Butter Chicken</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Fish Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Pan Seared Salmon with Leek</li>
+                            <li>Salmon with Dill White Wine Sauce</li>
+                            <li>Maple & Ginger Glaze Salmon</li>
+                            <li>Herb Crusted Salmon Fillet</li>
+                            <li>Garlic Butter Tilapia</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Beef Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Curry Beef</li>
+                            <li>Red Wine Beef Stew</li>
+                            <li>Grilled Flat Iron Steak with Chimichurri</li>
+                            <li>Grilled Flat Iron with Cracked Black Pepper and Bourbon Cream</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 class="card-title" style="font-size: 1.2rem;">Pork Entrees</h4>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Smoked Pork Loin with Cranberry Apple Gravy</li>
+                            <li>Herb Stuffed Pork Loin with Rosemary Jus</li>
+                            <li>Sweet & Sour Pineapple Pork Loin</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            
+            <div class="menu-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetarian Options</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Stuffed Polenta with Smoked Tomato Sauce</li>
+                            <li>Pasta Primavera</li>
+                            <li>Curried Vegetable Stew</li>
+                            <li>Eggplant Parmesan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
+            <h2 class="section-subtitle">Corporate Menu Packages</h2>
+            <p style="margin-bottom: 1.5rem; text-align: center;">
+                Flexible pricing options to fit your corporate budget:
+            </p>
+            <div class="grid grid-2" style="max-width: 900px; margin: 0 auto;">
+                <div class="card">
+                    <h3 class="card-title">$20 - $22 per person</h3>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>One Salad</li>
+                        <li>One Vegetable</li>
+                        <li>Two Starches</li>
+                        <li>One Protein</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">$25 - $27 per person</h3>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>One Salad</li>
+                        <li>Two Vegetables</li>
+                        <li>Two Starches</li>
+                        <li>Two Proteins</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 2rem; font-style: italic; color: var(--medium-gray);">
+                * Fish, Steak and Veal may cost more depending on market price<br>
+                * Large events may receive lower pricing per person
+            </p>
         </div>
         
         <div style="margin-top: 3rem;">

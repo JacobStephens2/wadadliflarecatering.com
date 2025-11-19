@@ -10,30 +10,35 @@ $images = [];
 if (is_dir($galleryPath)) {
     $files = scandir($galleryPath);
     foreach ($files as $file) {
-        if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
-            $images[] = ['file' => $file, 'path' => 'gallery/', 'type' => 'gallery'];
+        if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
+            $filePath = $galleryPath . $file;
+            $images[] = [
+                'file' => $file, 
+                'path' => 'gallery/', 
+                'type' => 'gallery',
+                'mtime' => filemtime($filePath),
+                'hasDate' => preg_match('/^\d{8}_/', $file)
+            ];
         }
     }
-    // Sort by filename (which includes date)
+    // Sort: images with dates first (by date descending), then images without dates (by modification time descending)
     usort($images, function($a, $b) {
-        return strcmp($a['file'], $b['file']);
-    });
-    $images = array_reverse($images); // Most recent first
-}
-
-// Get menu images
-$menuPath = __DIR__ . '/menu/';
-$menuImages = [];
-if (is_dir($menuPath)) {
-    $files = scandir($menuPath);
-    foreach ($files as $file) {
-        if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
-            $menuImages[] = ['file' => $file, 'path' => 'menu/', 'type' => 'menu'];
+        // If both have dates, sort by filename (date descending)
+        if ($a['hasDate'] && $b['hasDate']) {
+            return strcmp($b['file'], $a['file']);
         }
-    }
-    // Sort menu images by filename
-    usort($menuImages, function($a, $b) {
-        return strcmp($a['file'], $b['file']);
+        // If only one has a date, date-prefixed images come first
+        if ($a['hasDate'] && !$b['hasDate']) {
+            return -1;
+        }
+        if (!$a['hasDate'] && $b['hasDate']) {
+            return 1;
+        }
+        // If neither has a date, sort by modification time (newest first)
+        if (!$a['hasDate'] && !$b['hasDate']) {
+            return $b['mtime'] - $a['mtime'];
+        }
+        return 0;
     });
 }
 
@@ -43,30 +48,61 @@ function getImageCategories($imageData) {
     $filename = $imageData['file'];
     $lower = strtolower($filename);
     
-    // Menu images always get the menu category
-    if ($imageData['type'] === 'menu') {
-        $categories[] = 'menu';
-        return $categories;
-    }
-    
+    // Charcuterie (also wedding)
     if (strpos($lower, 'charcuterie') !== false) {
         $categories[] = 'charcuterie';
         $categories[] = 'wedding';
     }
-    if (strpos($lower, 'jerk') !== false || strpos($lower, 'caribbean') !== false) {
+    
+    // Caribbean
+    if (strpos($lower, 'jerk') !== false || strpos($lower, 'caribbean') !== false || strpos($lower, 'wadadli') !== false) {
         $categories[] = 'caribbean';
     }
-    if (strpos($lower, 'smoked') !== false || strpos($lower, 'bbq') !== false || strpos($lower, 'ribs') !== false) {
+    
+    // BBQ (includes smoked meats, ribs, wings, grilling)
+    if (strpos($lower, 'smoked') !== false || strpos($lower, 'bbq') !== false || strpos($lower, 'ribs') !== false || 
+        strpos($lower, 'wings') !== false || strpos($lower, 'grilling') !== false || strpos($lower, 'grilled') !== false ||
+        strpos($lower, 'brisket') !== false || strpos($lower, 'pork_butts') !== false || strpos($lower, 'smoker') !== false) {
         $categories[] = 'bbq';
     }
-    if (strpos($lower, 'buffet') !== false || strpos($lower, 'chafing') !== false || strpos($lower, 'table') !== false) {
+    
+    // Buffet/Setup
+    if (strpos($lower, 'buffet') !== false || strpos($lower, 'chafing') !== false || strpos($lower, 'table') !== false ||
+        strpos($lower, 'cutlery') !== false || strpos($lower, 'plates') !== false) {
         $categories[] = 'buffet';
     }
+    
+    // Wedding
     if (strpos($lower, 'wedding') !== false) {
         $categories[] = 'wedding';
     }
-    if (strpos($lower, 'vegetable') !== false || strpos($lower, 'vegan') !== false || strpos($lower, 'salad') !== false) {
+    
+    // Vegetarian
+    if (strpos($lower, 'vegetable') !== false || strpos($lower, 'vegan') !== false || strpos($lower, 'salad') !== false ||
+        strpos($lower, 'vegetarian') !== false) {
         $categories[] = 'vegetarian';
+    }
+    
+    // Appetizers/Cocktail
+    if (strpos($lower, 'cocktail') !== false || strpos($lower, 'appetizer') !== false) {
+        $categories[] = 'appetizers';
+    }
+    
+    // Seafood
+    if (strpos($lower, 'salmon') !== false || strpos($lower, 'tilapia') !== false || strpos($lower, 'shrimp') !== false ||
+        strpos($lower, 'fish') !== false || strpos($lower, 'lox') !== false) {
+        $categories[] = 'seafood';
+    }
+    
+    // Mexican/Latin
+    if (strpos($lower, 'enchilada') !== false || strpos($lower, 'fajita') !== false || strpos($lower, 'taco') !== false) {
+        $categories[] = 'mexican';
+    }
+    
+    // Sides
+    if (strpos($lower, 'rice') !== false || strpos($lower, 'mac_and_cheese') !== false || 
+        strpos($lower, 'macaroni') !== false || strpos($lower, 'beans') !== false) {
+        $categories[] = 'sides';
     }
     
     return $categories;
@@ -78,14 +114,8 @@ function generateAltText($imageData) {
     $name = pathinfo($filename, PATHINFO_FILENAME);
     $name = str_replace(['_', '-'], ' ', $name);
     $name = preg_replace('/\d{8}\s*/', '', $name); // Remove date prefix
-    if ($imageData['type'] === 'menu') {
-        return 'Wadadli Flare Catering Menu - ' . ucwords($name);
-    }
     return ucwords($name) . ' - Wadadli Flare Catering';
 }
-
-// Combine all images
-$allImages = array_merge($menuImages, $images);
 ?>
 
 <section class="section">
@@ -95,24 +125,27 @@ $allImages = array_merge($menuImages, $images);
             Browse our gallery to see examples of our diverse cuisine offerings, beautiful presentations, and the quality you can expect for your event.
         </p>
         
-        <?php if (!empty($allImages)): ?>
+        <?php if (!empty($images)): ?>
         <div class="gallery-filters">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="menu">Menu</button>
             <button class="filter-btn" data-filter="charcuterie">Charcuterie</button>
-            <button class="filter-btn" data-filter="caribbean">Caribbean</button>
+            <button class="filter-btn" data-filter="appetizers">Appetizers</button>
             <button class="filter-btn" data-filter="bbq">BBQ</button>
+            <button class="filter-btn" data-filter="caribbean">Caribbean</button>
+            <button class="filter-btn" data-filter="seafood">Seafood</button>
+            <button class="filter-btn" data-filter="mexican">Mexican</button>
+            <button class="filter-btn" data-filter="sides">Sides</button>
+            <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
             <button class="filter-btn" data-filter="buffet">Buffet</button>
             <button class="filter-btn" data-filter="wedding">Weddings</button>
-            <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
         </div>
         
         <div class="gallery-grid">
-            <?php foreach ($allImages as $imageData): 
+            <?php foreach ($images as $imageData): 
                 $categories = getImageCategories($imageData);
                 $categoryString = implode(' ', $categories);
                 $altText = generateAltText($imageData);
-                $imageUrl = ($imageData['path'] === 'menu/') ? MENU_URL : GALLERY_URL;
+                $imageUrl = GALLERY_URL;
             ?>
             <div class="gallery-item" data-categories="<?php echo htmlspecialchars($categoryString); ?>">
                 <img src="<?php echo $imageUrl . htmlspecialchars($imageData['file']); ?>" alt="<?php echo htmlspecialchars($altText); ?>" loading="lazy">
