@@ -18,6 +18,9 @@ If you don't see something you'd like on the menu, please feel free to ask.
 We love our customers, so feel free to contact us at (267) 481-5872.
 
 
+# Gallery
+The gallery should have a menu section featuring the menu images in the menu directory.
+
 
 # Catering Menu
 Suggested_Menu.md has menu options. Old_Site_Prices.md has pricing that is on the current website. Further, the images, Wadadli_Flare_Menu_Page_1.png and Wadadli_Flare_Menu_Page_2.png, have menu information. Chef Jamie doesn't want to be pigeonholed as a solely Caribbean chef, but rather as a more broadly capable and higher end caterer.
@@ -60,6 +63,47 @@ There should be a form the user can fill out to request a catering quote for an 
 # Style
 Chef Jamie likes the simple, clean, readable design of https://www.kristinascatering.com, however, he wants more of the color and Wadadli Island-flare style found in his current website, https://wadadliflarecatering.com/, and in the menu images, Wadadli_Flare_Menu_Page_1.png and Wadadli_Flare_Menu_Page_2.png.
 
+## Color
+As seen in Wadadli_Flare_Menu_Page_1.png, the color palette should include:
+- light sky blue (hex b2f9fe)
+- dark ocean blue (hex 00b3c5)
+- light coral red (hex ff4c54)
+- dark crab red (hex eb444a)
+- light grass green (hex 9bd83d)
+- dark palm leaf green (hex 468931)
+- light yellow (hex ffffac)
+- dark pineapple yellow (hex fedb53)
+
+Make the site colorful, but avoid rainbow motifs.
+
+The buttons should be red by default, and another color on hover.
+
+Sub headers should be green.
+
+
+## Font
+Here are some good fonts for this site:
+- Lango Regular or Nervatica Bold for headers
+- Helsinki, Martines N50, or Kipp Clean No. 2 for sub headers
+- Helvetica for text
+
+## Accessibility Readability
+Ensure that the text at least meets AA WCAG contrast readability standards.
+
+
+# Pages
+
+## Home Page
+The hero section on the home page, if it has text in it, should make sure to have a good (at least WCAG AA) contrast with the background to amek sure it is easily legible.
+
+The home page should use a green for sub headers.
+
+On the home page, the user should be able to see red, green, and blue without having to scroll.
+
+The hero section on the home page should have images that automatically change, to show the visitor different foods that Chef Jamie makes and caters (like on https://www.kristinascatering.com).
+
+
+
 # Technology Stack
 This website has the following technologies available to it:
 - Ubuntu 24.04.3
@@ -71,6 +115,16 @@ This website has the following technologies available to it:
 - HTML
 - Playwright MCP Server for browsing
 - MailChimp SMTP (Mandrill)
+- certbot for SSL certificates
 
 # Directory Structure
 Files to be served publicly should be in the public folder, and files to be kept private should be in the private folder.
+
+# URL: https://wadadli.stephens.page
+The website should be accessible at https://wadadli.stephens.page. wadadli.stephens.page already points to this server. Apache Virtual Host records will probably need to be edited and certbot run to get an SSL certificate for serving the site by HTTPS.
+
+Web page addresses should not require filename suffixes.
+
+Incorrect: https://wadadli.stephens.page/about.php
+
+Correct: https://wadadli.stephens.page/about
