@@ -2,7 +2,7 @@
 /**
  * Quick script to check for leads in quote_requests table
  */
-require_once __DIR__ . '/private/includes/db.php';
+require_once __DIR__ . '/includes/db.php';
 
 try {
     // Count total leads
@@ -39,5 +39,4 @@ try {
     exit(1);
 }
 ?>
-
 

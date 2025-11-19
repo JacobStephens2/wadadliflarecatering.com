@@ -115,6 +115,8 @@ On the home page, the user should be able to see red, green, and blue without ha
 
 The hero section on the home page should have images that automatically change, to show the visitor different foods that Chef Jamie makes and caters (like on https://www.kristinascatering.com). The user should be able to click somewhere to get the carousel to go to the next or previous image.
 
+The cards on the home page shoudl have images with cropped display of images so they are a consistent height in the cards.
+
 ## Contact Page
 The message send status message should appear at the top of the page after the user sends a message, this way they don't need to scroll down to see what happened after submission.
 
@@ -134,6 +136,8 @@ There should be a form the user can fill out to request a catering quote for an 
 # Mobile View
 The menu should be completely visible when opened on a mobile display.
 
+# Checking Quotes
+There should be a script which can check the leads in the database.
 
 # Search Engine Optimization
 The website should be optimized for display in search engines.
