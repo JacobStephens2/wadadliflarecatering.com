@@ -65,7 +65,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             <div class="card">
                 <h3 class="card-title">Flexible Service</h3>
-                <p>Pick up, drop off, or full service options. We work with your venue and your needs to make your event perfect.</p>
+                <p>Pick up, drop off, or Partial Service options. We work with your venue and your needs to make your event perfect.</p>
                 <div style="margin-top: 1.5rem; border-radius: 8px; overflow: hidden;">
                     <img src="<?php echo GALLERY_URL; ?>buffet_line_with_meat_starch_and_veggie.webp" alt="Professional buffet setup">
                 </div>

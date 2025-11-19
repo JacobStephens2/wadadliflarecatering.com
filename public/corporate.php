@@ -163,7 +163,7 @@ include __DIR__ . '/includes/header.php';
                     <p>We deliver and set up your buffet. You handle service.</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title">Full Service</h3>
+                    <h3 class="card-title">Partial Service</h3>
                     <p>We deliver, set up, serve, and clean up. (10% service fee applies)</p>
                 </div>
             </div>

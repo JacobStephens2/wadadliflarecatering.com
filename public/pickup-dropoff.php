@@ -11,7 +11,7 @@ include __DIR__ . '/includes/header.php';
         
         <div style="max-width: 800px; margin: 2rem auto; text-align: center;">
             <p style="font-size: 1.1rem;">
-                Convenient catering options for when you want great food without the full service. Perfect for smaller events, family gatherings, or when you prefer to handle the setup yourself.
+                Convenient catering options for when you want great food without the Partial Service. Perfect for smaller events, family gatherings, or when you prefer to handle the setup yourself.
             </p>
         </div>
         

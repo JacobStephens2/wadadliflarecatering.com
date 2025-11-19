@@ -32,7 +32,7 @@ include __DIR__ . '/includes/header.php';
             
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">What service options do you provide?</h2>
-                <p>We offer pick up, drop off, drop off with set-up, and full service (delivery, set-up, serving, and clean-up). A 10% service fee is added for full service that includes serving and breakdown.</p>
+                <p>We offer pick up, drop off, drop off with set-up, and Partial Service (delivery, set-up, serving, and clean-up). A 10% service fee is added for Partial Service that includes serving and breakdown.</p>
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">

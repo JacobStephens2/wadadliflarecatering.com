@@ -179,7 +179,7 @@ include __DIR__ . '/includes/header.php';
             </p>
         </div>
         
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold); color: var(--white); border-radius: 8px; text-align: center;">
+        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--primary-gold-bg); color: var(--white); border-radius: 8px; text-align: center;">
             <h2 style="margin-bottom: 1rem;">Ready to Plan Your Wedding Menu?</h2>
             <p style="margin-bottom: 2rem; font-size: 1.1rem;">
                 Contact us to discuss your vision and receive a custom quote for your special day.

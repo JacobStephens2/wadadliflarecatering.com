@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 $pageTitle = 'Services';
-$pageDescription = 'Wadadli Flare Catering offers partial catering services including pick up, drop off, and full service options for weddings, corporate events, and private parties.';
+$pageDescription = 'Wadadli Flare Catering offers partial catering services including pick up, drop off, and Partial Service options for weddings, corporate events, and private parties.';
 include __DIR__ . '/includes/header.php';
 ?>
 
@@ -32,7 +32,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             
             <div class="card">
-                <h2 class="card-title">Full Service</h2>
+                <h2 class="card-title">Partial Service</h2>
                 <p>We deliver, set up, serve during the event, and clean up the buffet. A 10% service fee is added for serving and breakdown of the buffet.</p>
             </div>
         </div>
