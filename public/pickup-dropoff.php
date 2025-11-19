@@ -69,7 +69,7 @@ include __DIR__ . '/includes/header.php';
             </p>
             <div class="grid grid-2" style="max-width: 800px; margin: 0 auto;">
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Serving Estimates</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Serving Estimates</h3>
                     <ul style="padding-left: 1.5rem;">
                         <li>Full half pan: 10-12 people</li>
                         <li>Full shallow pan: 18-20 people</li>
@@ -77,7 +77,7 @@ include __DIR__ . '/includes/header.php';
                     </ul>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Protein Serving</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Protein Serving</h3>
                     <ul style="padding-left: 1.5rem;">
                         <li>Single protein: 6-8 oz per person</li>
                         <li>Multiple proteins: 4-5 oz per person each</li>

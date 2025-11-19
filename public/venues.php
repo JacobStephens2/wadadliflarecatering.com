@@ -48,7 +48,7 @@ include __DIR__ . '/includes/header.php';
             <h2 class="section-subtitle">What We Provide</h2>
             <div class="grid grid-2" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Food & Service</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Food & Service</h3>
                     <ul style="padding-left: 1.5rem;">
                         <li>Custom menu tailored to your event</li>
                         <li>Professional food preparation</li>
@@ -58,7 +58,7 @@ include __DIR__ . '/includes/header.php';
                     </ul>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Equipment (Available)</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Equipment (Available)</h3>
                     <ul style="padding-left: 1.5rem;">
                         <li>Disposable tableware (plates, bowls, cups, napkins, utensils)</li>
                         <li>Chafing dishes with sternos</li>
@@ -81,7 +81,7 @@ include __DIR__ . '/includes/header.php';
             <p style="margin-bottom: 2rem; font-size: 1.1rem;">
                 Contact us to discuss your venue and event needs. We'll work with you and your venue to create a seamless catering experience.
             </p>
-            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--primary-gold);">Request a Quote</a>
+            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--primary-gold-text);">Request a Quote</a>
             <a href="<?php echo BASE_URL; ?>contact.php" class="btn btn-secondary" style="margin-left: 1rem; background-color: rgba(255,255,255,0.2); color: var(--white); border: 2px solid var(--white);">Contact Us</a>
         </div>
     </div>

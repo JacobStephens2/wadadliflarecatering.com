@@ -41,27 +41,27 @@ include __DIR__ . '/includes/header.php';
             </p>
             <div class="grid grid-3">
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">American Favorites</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">American Favorites</h3>
                     <p>Classic dishes that everyone loves</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">French Cuisine</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">French Cuisine</h3>
                     <p>Elegant and sophisticated options</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Italian Specialties</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Italian Specialties</h3>
                     <p>Timeless favorites for any celebration</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Caribbean Flavors</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Caribbean Flavors</h3>
                     <p>Unique and vibrant options</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Asian Fusion</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Asian Fusion</h3>
                     <p>Modern and exciting choices</p>
                 </div>
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Custom Creations</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 0.5rem;">Custom Creations</h3>
                     <p>We'll work with you to create something unique</p>
                 </div>
             </div>
@@ -103,7 +103,7 @@ include __DIR__ . '/includes/header.php';
             <p style="margin-bottom: 2rem; font-size: 1.1rem;">
                 Contact us to discuss your vision and receive a custom quote for your special day.
             </p>
-            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--primary-gold);">Request a Quote</a>
+            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn" style="background-color: var(--white); color: var(--primary-gold-text);">Request a Quote</a>
             <a href="<?php echo BASE_URL; ?>contact.php" class="btn btn-secondary" style="margin-left: 1rem; background-color: rgba(255,255,255,0.2); color: var(--white); border: 2px solid var(--white);">Contact Us</a>
         </div>
     </div>

@@ -123,7 +123,7 @@ include __DIR__ . '/includes/header.php';
             Based in Elverson, Pennsylvania, we proudly serve Twin Valley, West Chester, the Main Line west of Philadelphia, and surrounding areas. Let us bring our culinary expertise to your next event.
         </p>
         <div style="text-align: center; margin-top: 2rem;">
-            <p style="font-style: italic; color: var(--primary-gold); font-size: 1.2rem;">
+            <p style="font-style: italic; color: var(--primary-gold-text); font-size: 1.2rem;">
                 "Let us take some work out of your summer BBQ so you have more time to chill."
             </p>
             <p style="margin-top: 1rem;">

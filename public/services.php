@@ -41,19 +41,19 @@ include __DIR__ . '/includes/header.php';
             <h2 class="section-subtitle">Service Types</h2>
             <div class="grid grid-3" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Weddings</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Weddings</h3>
                     <p>Elegant charcuterie stations, custom buffets, and beautifully presented dishes for your special day.</p>
                     <a href="<?php echo BASE_URL; ?>weddings.php" class="btn" style="margin-top: 1rem;">Learn More</a>
                 </div>
                 
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Corporate Events</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Corporate Events</h3>
                     <p>Professional catering for meetings, holiday parties, and company events.</p>
                     <a href="<?php echo BASE_URL; ?>corporate.php" class="btn" style="margin-top: 1rem;">Learn More</a>
                 </div>
                 
                 <div>
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Private Events</h3>
+                    <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Private Events</h3>
                     <p>Graduations, funerals, birthdays, and other personal celebrations.</p>
                     <a href="<?php echo BASE_URL; ?>private-events.php" class="btn" style="margin-top: 1rem;">Learn More</a>
                 </div>
