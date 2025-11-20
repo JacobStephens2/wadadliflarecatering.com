@@ -9,6 +9,8 @@ Wadadli Flare Catering (WFC) is owned and operated by Chef Jamie Francis, based 
 
 Given Chef Jamie's vast array of culinary experience, he can prepare a wide variety of foods, including American, French, Italian, Caribbean, and more. He specializes in custom menus.
 
+# Marketing Strategy
+Anywhere American and Caribbean cuisines are mentioned together, mention American cuisine first, so as to limit initial impressions that WFC is primarily an island cooking company, and instead to help give the impression that WFC does many styles of cuisine at a high level.
 
 # Sayings
 Let us take some work out of your summer BBQ so you have more time to chill.

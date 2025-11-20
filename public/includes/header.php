@@ -7,7 +7,7 @@
     <!-- Primary Meta Tags -->
     <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering</title>
     <meta name="title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
-    <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta name="description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
     <meta name="keywords" content="catering, Pennsylvania, Elverson, West Chester, Main Line, wedding catering, corporate catering, Caribbean food, BBQ catering, Chef Jamie Francis, Twin Valley catering, private events catering">
     <meta name="author" content="Wadadli Flare Catering">
     <meta name="robots" content="index, follow">
@@ -35,7 +35,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo htmlspecialchars($currentUrl); ?>">
     <meta property="og:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
-    <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta property="og:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
     <meta property="og:image" content="<?php echo SITE_URL; ?><?php echo ASSETS_URL; ?>logo.webp">
     <meta property="og:site_name" content="Wadadli Flare Catering">
     <meta property="og:locale" content="en_US">
@@ -44,7 +44,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="<?php echo htmlspecialchars($currentUrl); ?>">
     <meta name="twitter:title" content="<?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) . ' - ' : ''; ?>Wadadli Flare Catering">
-    <meta name="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
+    <meta name="twitter:description" content="<?php echo isset($pageDescription) ? htmlspecialchars($pageDescription) : 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.'; ?>">
     <meta name="twitter:image" content="<?php echo SITE_URL; ?><?php echo ASSETS_URL; ?>logo.webp">
     
     <!-- Favicon -->
@@ -83,9 +83,9 @@
             "latitude": "40.1568",
             "longitude": "-75.8327"
         },
-        "servesCuisine": ["Caribbean", "American", "French", "Italian", "BBQ", "Asian"],
+        "servesCuisine": ["American", "French", "Italian", "BBQ", "Caribbean", "Asian"],
         "priceRange": "$$",
-        "description": "Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.",
+        "description": "Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.",
         "areaServed": [
             {
                 "@type": "City",

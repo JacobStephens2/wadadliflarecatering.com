@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 $pageTitle = 'Home';
-$pageDescription = 'Wadadli Flare Catering - Professional catering services in Pennsylvania. Caribbean, BBQ, American, French, Italian cuisine. Serving Twin Valley, West Chester, and Main Line.';
+$pageDescription = 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.';
 $bodyClass = 'home-page';
 include __DIR__ . '/includes/header.php';
 ?>
@@ -15,7 +15,7 @@ include __DIR__ . '/includes/header.php';
             '20250614_smoked_pork_ribs.jpg', // BBQ
             '20251003_smoked_beef_short_ribs.jpg', // BBQ
             '20251003_vegan_curried_veggie_stew.jpg', // Diverse/Vegan
-            '20250921_charcuterie_spread_wedding.jpg', // Elegant/Weddings
+            '20250921_charcuterie_spread_funeral.jpg', // Elegant/Weddings
             '20250819_egg_rolls.jpg', // Diverse
             '20250506_charcuterie_board.jpg', // Elegant
         ];
