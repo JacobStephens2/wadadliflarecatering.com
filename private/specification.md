@@ -177,3 +177,16 @@ Web page addresses should not require filename suffixes.
 Incorrect: https://wadadli.stephens.page/about.php
 
 Correct: https://wadadli.stephens.page/about
+
+# Analytics by Google Tag
+Here is the Google Tag for this site's Analytics:
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8L71SEC9J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Z8L71SEC9J');
+</script>
