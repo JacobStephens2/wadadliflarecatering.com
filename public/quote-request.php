@@ -10,7 +10,8 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once PRIVATE_PATH . '/includes/db.php';
     require_once PRIVATE_PATH . '/includes/email.php';
-    
+    require_once PRIVATE_PATH . '/includes/spam_protection.php';
+
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
@@ -19,22 +20,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $guest_count = trim($_POST['guest_count'] ?? '');
     $location = trim($_POST['location'] ?? '');
     $message = trim($_POST['message'] ?? '');
-    
-    // Validation
-    if (empty($name) || empty($email) || empty($event_type)) {
+
+    // 1. Honeypot check
+    if (check_honeypot()) {
+        error_log("Honeypot triggered on quote form - IP: {$_SERVER['REMOTE_ADDR']}");
+        $success = true; // Fake success
+    }
+    // 2. Rate limit check
+    elseif (!check_rate_limit('quote', 3)) {
+        $error = 'Please wait before submitting again.';
+    }
+    // 3. Turnstile verification
+    elseif (!verify_turnstile($_POST['cf-turnstile-response'] ?? '')) {
+        $error = 'Verification failed. Please try again.';
+    }
+    // 4. Content spam filter
+    elseif (is_spam_content($message, $name) || isSpamMessage($message, $name, $email)) {
+        error_log("Spam quote request blocked - Email: $email, Name: $name");
+        $success = true; // Fake success
+    }
+    // 5. Standard field validation
+    elseif (empty($name) || empty($email) || empty($event_type)) {
         $error = 'Please fill in all required fields.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
-    } else {
+    }
+    // 6. Send via Mandrill
+    else {
         try {
             // Convert event_date to proper format or null
             $event_date_db = !empty($event_date) ? date('Y-m-d', strtotime($event_date)) : null;
             $guest_count_db = !empty($guest_count) ? (int)$guest_count : null;
-            
+
             // Save to database
             $stmt = $pdo->prepare("INSERT INTO quote_requests (name, email, phone, event_type, event_date, guest_count, location, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$name, $email, $phone, $event_type, $event_date_db, $guest_count_db, $location, $message]);
-            
+
             // Prepare data for email
             $emailData = [
                 'name' => $name,
@@ -44,9 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'event_date' => $event_date,
                 'guest_count' => $guest_count,
                 'location' => $location,
-                'message' => $message
+                'message' => $message,
             ];
-            
+
             // Send email
             if (sendQuoteRequestEmail($emailData)) {
                 $success = true;
@@ -63,6 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Sorry, there was an error processing your request. Please try again or call us directly.';
         }
     }
+
+    // Periodically clean up stale rate limit files
+    purge_stale_rate_limits();
 }
 ?>
 
@@ -85,6 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             
             <form method="POST" action="" onsubmit="return validateForm(this);" class="card" style="padding: 2rem;">
+                <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                    <label for="website_url">Leave this empty</label>
+                    <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off" value="">
+                </div>
+
                 <div class="form-group">
                     <label for="name">Your Name *</label>
                     <input type="text" id="name" name="name" required value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
@@ -135,6 +164,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <textarea id="message" name="message" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
                 </div>
                 
+                <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                <div class="cf-turnstile" data-sitekey="<?php echo defined('TURNSTILE_SITE_KEY') ? TURNSTILE_SITE_KEY : ''; ?>" data-theme="light"></div>
+
                 <button type="submit" class="btn">Submit Quote Request</button>
             </form>
             

@@ -80,6 +80,35 @@ function sendEmailPHPMailer($to, $subject, $message, $fromEmail, $fromName, $smt
 }
 
 /**
+ * Check if message contains spam patterns
+ */
+function isSpamMessage($message, $name = '', $email = '') {
+    $text = strtolower($message . ' ' . $name . ' ' . $email);
+    
+    // Common spam patterns from contactpageads.com and similar services
+    $spamPatterns = [
+        'contactpageads\.com',
+        'limited.*run.*opportunity',
+        'send your ad to.*million.*sites',
+        '\$49.*million.*sites',
+        'delivery network.*reliable.*aggressive',
+        'competitors.*take.*visibility',
+        'secure your campaign',
+        'price.*reset',
+        'million sites.*\$49',
+        'campaign.*needs',
+    ];
+    
+    foreach ($spamPatterns as $pattern) {
+        if (preg_match('/' . $pattern . '/i', $text)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+/**
  * Send contact form email
  */
 function sendContactEmail($name, $email, $phone, $message) {

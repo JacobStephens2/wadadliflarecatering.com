@@ -3,6 +3,9 @@
  * Site-wide Configuration
  */
 
+// Load environment variables early so they're available for all constants
+require_once __DIR__ . '/../../private/includes/env.php';
+
 // Site information
 define('SITE_NAME', 'Wadadli Flare Catering');
 define('SITE_URL', 'https://wadadliflarecatering.com');
@@ -30,6 +33,10 @@ define('CONTACT_EMAIL', 'wadadliflare.catering@gmail.com');
 define('FACEBOOK_URL', 'https://www.facebook.com/people/wadadli-flare-Catering/100093105235894/');
 define('INSTAGRAM_URL', 'https://www.instagram.com/wadadli_flare_catering/');
 define('GOOGLE_MAPS_URL', 'https://maps.app.goo.gl/rwZ2hSf6WmHhSUde6');
+
+// Cloudflare Turnstile (anti-spam CAPTCHA)
+define('TURNSTILE_SITE_KEY', $_ENV['TURNSTILE_SITE_KEY'] ?? getenv('TURNSTILE_SITE_KEY') ?: '');
+define('TURNSTILE_SECRET', $_ENV['TURNSTILE_SECRET'] ?? getenv('TURNSTILE_SECRET') ?: '');
 
 // Timezone
 date_default_timezone_set('America/New_York');

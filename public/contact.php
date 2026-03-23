@@ -10,23 +10,44 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once PRIVATE_PATH . '/includes/db.php';
     require_once PRIVATE_PATH . '/includes/email.php';
-    
+    require_once PRIVATE_PATH . '/includes/spam_protection.php';
+
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $message = trim($_POST['message'] ?? '');
-    
-    // Validation
-    if (empty($name) || empty($email) || empty($message)) {
+
+    // 1. Honeypot check
+    if (check_honeypot()) {
+        error_log("Honeypot triggered on contact form - IP: {$_SERVER['REMOTE_ADDR']}");
+        $success = true; // Fake success to avoid revealing filtering
+    }
+    // 2. Rate limit check
+    elseif (!check_rate_limit('contact', 3)) {
+        $error = 'Please wait before submitting again.';
+    }
+    // 3. Turnstile verification
+    elseif (!verify_turnstile($_POST['cf-turnstile-response'] ?? '')) {
+        $error = 'Verification failed. Please try again.';
+    }
+    // 4. Content spam filter
+    elseif (is_spam_content($message, $name) || isSpamMessage($message, $name, $email)) {
+        error_log("Spam contact form submission blocked - Email: $email, Name: $name");
+        $success = true; // Fake success
+    }
+    // 5. Standard field validation
+    elseif (empty($name) || empty($email) || empty($message)) {
         $error = 'Please fill in all required fields.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
-    } else {
+    }
+    // 6. Send via Mandrill
+    else {
         try {
             // Save to database
             $stmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message) VALUES (?, ?, ?, ?)");
             $stmt->execute([$name, $email, $phone, $message]);
-            
+
             // Send email
             if (sendContactEmail($name, $email, $phone, $message)) {
                 $success = true;
@@ -38,6 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Sorry, there was an error processing your message. Please try again or call us directly.';
         }
     }
+
+    // Periodically clean up stale rate limit files
+    purge_stale_rate_limits();
 }
 ?>
 
@@ -103,6 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2 class="section-subtitle">Send Us a Message</h2>
                 
                 <form method="POST" action="" onsubmit="return validateForm(this);">
+                    <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                        <label for="website_url">Leave this empty</label>
+                        <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off" value="">
+                    </div>
+
                     <div class="form-group">
                         <label for="name">Name *</label>
                         <input type="text" id="name" name="name" required value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
@@ -123,6 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <textarea id="message" name="message" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
                     </div>
                     
+                    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                    <div class="cf-turnstile" data-sitekey="<?php echo defined('TURNSTILE_SITE_KEY') ? TURNSTILE_SITE_KEY : ''; ?>" data-theme="light"></div>
+
                     <button type="submit" class="btn">Send Message</button>
                 </form>
             </div>
