@@ -72,34 +72,7 @@ include __DIR__ . '/includes/header.php';
                 </div>
             </div>
         </div>
-        
-        <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Sauce Flavors</h2>
-            <div class="grid grid-3" style="max-width: 800px; margin: 0 auto;">
-                <div class="card">
-                    <p>Jerk</p>
-                </div>
-                <div class="card">
-                    <p>BBQ</p>
-                </div>
-                <div class="card">
-                    <p>Buffalo</p>
-                </div>
-                <div class="card">
-                    <p>Parmesan Garlic</p>
-                </div>
-                <div class="card">
-                    <p>Sweet & Spicy</p>
-                </div>
-                <div class="card">
-                    <p>Mango Habanero & Mexican Achiote</p>
-                </div>
-            </div>
-            <p style="text-align: center; margin-top: 1.5rem;">
-                <strong>Extra sauce on the side:</strong> 4oz - $2.50 | 8oz - $5.00 | 12oz - $8.00
-            </p>
-        </div>
-        
+
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Hot Sides</h2>
             <div class="grid grid-2">
