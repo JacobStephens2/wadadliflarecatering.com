@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Functions using Mandrill/Mailchimp SMTP
+ * Email Functions using Resend SMTP
  */
 
 // Load config for constants
@@ -10,10 +10,10 @@ require_once __DIR__ . '/../../public/includes/config.php';
 require_once __DIR__ . '/env.php';
 
 /**
- * Send email using SMTP (Mandrill/Mailchimp)
+ * Send email using SMTP (Resend)
  */
 function sendEmail($to, $subject, $message, $fromEmail = null, $fromName = null, $replyTo = null, $replyToName = null) {
-    $smtpHost = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.mandrillapp.com';
+    $smtpHost = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.resend.com';
     $smtpPort = $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?: 587;
     $smtpUser = $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '';
     $smtpPass = $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '';
