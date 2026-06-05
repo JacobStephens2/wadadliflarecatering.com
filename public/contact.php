@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
     }
-    // 6. Send via Mandrill
+    // 6. Send via Resend (SMTP)
     else {
         try {
             // Save to database
