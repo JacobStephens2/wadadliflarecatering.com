@@ -158,3 +158,89 @@ sudo -u www-data php /var/www/wadadliflarecatering.com/private/refresh-google-re
 | Landed on a "Places API" page with no "(New)" | Wrong product | Use the Step 4 URL verbatim |
 | Asked to create a billing account | None exists | Stop and report - Jacob decides |
 | Two-factor / recovery prompt | Account security | Stop and report - do not attempt to bypass |
+
+---
+
+# Follow-up task: remove the unrestricted key the wizard created
+
+Enabling Places API (New) auto-launched a Google Maps Platform onboarding wizard,
+which created a second key named **"Maps Platform API Key"** with ~35 APIs
+enabled and **no restrictions at all**. Nothing uses it. It was created by the
+wizard on 2026-08-07, after which no code was written against it, so it has never
+had a legitimate caller.
+
+An unrestricted key on a billing-enabled project is the liability here: anyone who
+obtains it can call 35 billable APIs from anywhere, charged to this account. Delete
+it. Restricting it is the fallback only if deletion is blocked.
+
+**Do not touch `wadadliflarecatering-places`.** That is the key the site uses.
+
+## Step 1 - Confirm it is unused
+
+Go to https://console.cloud.google.com/apis/credentials with project
+`wadadli-flare-catering` selected.
+
+Find the row named **Maps Platform API Key**. Click into it and note its creation
+date.
+
+Then check usage at
+https://console.cloud.google.com/google/maps-apis/metrics - set the date range to
+the last 30 days and look for any traffic attributable to that key.
+
+**Check:** zero requests. If you see real traffic, **stop and report** - something
+is using it and deleting it would break that thing.
+
+## Step 2 - Delete it
+
+On the credentials list, tick the checkbox next to **Maps Platform API Key**, then
+click **Delete** in the toolbar (or use the row's ⋮ menu → **Delete**). Confirm
+the dialog.
+
+**Check:** the credentials list now shows exactly one API key,
+`wadadliflarecatering-places`, and no key named "Maps Platform API Key".
+
+## Step 2b - If deletion is blocked
+
+If the console refuses to delete it, restrict it instead so it is inert:
+
+- *Application restrictions* → **IP addresses** → `68.183.62.24`
+- *API restrictions* → **Restrict key** → select **Places API (New)** only
+
+That leaves it unable to call the other ~34 APIs and unusable from any machine
+other than the droplet.
+
+## Step 3 - Disable the APIs the wizard turned on
+
+The wizard enabled roughly 35 APIs that this project does not use. Each one is
+extra billable surface area.
+
+Go to https://console.cloud.google.com/apis/dashboard and review the enabled list.
+Disable everything **except**:
+
+- **Places API (New)** - the site depends on this
+- Anything with real traffic in the last 30 days
+
+Disable them one at a time via each API's **Manage** → **Disable API**.
+
+**Check:** Places API (New) is still enabled. Re-run the server-side verification
+below to prove the site still works.
+
+## Report back
+
+```
+Maps Platform API Key: deleted / restricted / left alone (reason)
+30-day usage on it:    <request count>
+APIs disabled:         <count, or "none">
+Places API (New):      still enabled - yes / no
+wadadliflarecatering-places: untouched - yes / no
+Problems hit:          <anything unexpected, or "none">
+```
+
+After this, the server-side check must still succeed:
+
+```
+sudo -u www-data php /var/www/wadadliflarecatering.com/private/refresh-google-reviews.php
+```
+
+If it fails with 403 or `REQUEST_DENIED`, Step 3 disabled something Places API
+(New) depends on. Re-enable Places API (New) first and report.
