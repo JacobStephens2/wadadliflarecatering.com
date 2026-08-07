@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
+require_once PRIVATE_PATH . '/includes/google_reviews.php';
 $pageTitle = 'Home';
 $pageDescription = 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.';
 $bodyClass = 'home-page';
@@ -121,16 +122,9 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h2 class="section-title">What Our Customers Say</h2>
         <div class="grid grid-2">
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"We hosted a large party this past weekend to celebrate our son's graduation. Everything about our experience with Wadadli Flare Catering was exceptional. The food and service was outstanding!"</p>
-                <div class="review-author">- Shana Kennedy</div>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"Chef Jamie crafts mouth watering smoked ribs that you can't stop eating. The spices the Jamie creates are so unique that it keeps you coming back for more."</p>
-                <div class="review-author">- Fred Rife</div>
-            </div>
+            <?php foreach (array_slice(get_reviews(), 0, 2) as $review): ?>
+                <?php include __DIR__ . '/includes/review-card.php'; ?>
+            <?php endforeach; ?>
         </div>
         <div class="button-group" style="justify-content: center; margin-top: 2rem;">
             <a href="<?php echo BASE_URL; ?>reviews.php" class="btn">Read More Reviews</a>

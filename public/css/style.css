@@ -670,6 +670,39 @@ main {
     margin-bottom: 1rem;
 }
 
+/* Byline: avatar beside author and date, below the review text */
+.review-byline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.review-byline .review-author,
+.review-byline .review-date {
+    margin-bottom: 0;
+}
+
+.review-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Aggregate Google rating above the review list */
+.review-summary {
+    text-align: center;
+    color: var(--medium-gray);
+    margin-bottom: 2rem;
+}
+
+.review-summary .stars {
+    display: inline;
+    margin-bottom: 0;
+}
+
 .stars {
     color: var(--dark-yellow-text);
     margin-bottom: 1rem;

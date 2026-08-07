@@ -1,3 +1,4 @@
 vendor/*
 .env
 private/rate_limits/
+private/cache/
