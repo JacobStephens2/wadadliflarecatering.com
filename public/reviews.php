@@ -11,7 +11,12 @@ include __DIR__ . '/includes/header.php';
         <p style="text-align: center; max-width: 800px; margin: 2rem auto;">
             We're proud of the relationships we've built with our customers. Here's what they have to say about their experience with Wadadli Flare Catering.
         </p>
-        
+
+        <?php
+        $reviewCtaId = 'leave-a-review';
+        include __DIR__ . '/includes/review-cta.php';
+        ?>
+
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Facebook Reviews</h2>
             
@@ -97,13 +102,14 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
-            <h2 style="margin-bottom: 1rem;">Share Your Experience</h2>
-            <p style="margin-bottom: 2rem;">
-                Have you worked with us? We'd love to hear about your experience! Leave us a review on <a href="<?php echo FACEBOOK_URL; ?>" target="_blank">Facebook</a> or <a href="https://www.google.com/maps" target="_blank">Google</a>.
-            </p>
-            <a href="<?php echo BASE_URL; ?>quote-request.php" class="btn">Request a Quote</a>
-        </div>
+        <?php
+        $reviewCtaHeading = 'Share Your Experience';
+        include __DIR__ . '/includes/review-cta.php';
+        ?>
+
+        <p style="text-align: center; margin-top: 2rem;">
+            Planning something of your own? <a href="<?php echo BASE_URL; ?>quote-request.php">Request a quote</a>.
+        </p>
     </div>
 </section>
 

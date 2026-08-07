@@ -24,6 +24,7 @@
                 <ul>
                     <li><a href="<?php echo BASE_URL; ?>about.php">About Chef Jamie</a></li>
                     <li><a href="<?php echo BASE_URL; ?>quote-request.php">Request a Quote</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>reviews.php#leave-a-review">Leave a Review</a></li>
                     <li><a href="<?php echo BASE_URL; ?>policies.php">Policies</a></li>
                 </ul>
             </div>

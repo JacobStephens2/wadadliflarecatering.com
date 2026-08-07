@@ -156,7 +156,13 @@
                         </ul>
                     </li>
                     <li><a href="<?php echo BASE_URL; ?>gallery.php">Gallery</a></li>
-                    <li><a href="<?php echo BASE_URL; ?>reviews.php">Reviews</a></li>
+                    <li class="has-submenu">
+                        <a href="<?php echo BASE_URL; ?>reviews.php">Reviews <span class="arrow">▼</span></a>
+                        <ul class="submenu">
+                            <li><a href="<?php echo BASE_URL; ?>reviews.php">Read Reviews</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>reviews.php#leave-a-review">Leave a Review</a></li>
+                        </ul>
+                    </li>
                     <li><a href="<?php echo BASE_URL; ?>policies.php">Policies</a></li>
                     <li><a href="<?php echo BASE_URL; ?>contact.php">Contact</a></li>
                     <li><a href="<?php echo BASE_URL; ?>quote-request.php" class="cta-button">Get Quote</a></li>

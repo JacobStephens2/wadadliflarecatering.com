@@ -132,8 +132,9 @@ include __DIR__ . '/includes/header.php';
                 <div class="review-author">- Fred Rife</div>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 2rem;">
+        <div class="button-group" style="justify-content: center; margin-top: 2rem;">
             <a href="<?php echo BASE_URL; ?>reviews.php" class="btn">Read More Reviews</a>
+            <a href="<?php echo BASE_URL; ?>reviews.php#leave-a-review" class="btn btn-facebook">★ Leave a Review</a>
         </div>
     </div>
 </section>

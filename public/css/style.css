@@ -545,6 +545,23 @@ main {
     background-color: var(--dark-gray);
 }
 
+/* Review buttons - two variants so Google and Facebook are told apart at a glance */
+.btn-google {
+    background-color: var(--dark-crab-red);
+}
+
+.btn-google:hover {
+    background-color: var(--dark-ocean-blue);
+}
+
+.btn-facebook {
+    background-color: var(--dark-ocean-blue);
+}
+
+.btn-facebook:hover {
+    background-color: var(--dark-crab-red);
+}
+
 /* Button Groups */
 .button-group {
     display: flex;
@@ -656,6 +673,44 @@ main {
 .stars {
     color: var(--dark-yellow-text);
     margin-bottom: 1rem;
+}
+
+/* Leave-a-review call to action */
+.review-cta {
+    background-color: var(--light-gray);
+    border: 2px solid var(--dark-ocean-blue);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+    /* Clear the sticky header when linked to via #leave-a-review */
+    scroll-margin-top: 8rem;
+}
+
+.review-cta h2 {
+    margin-bottom: 0.75rem;
+}
+
+.review-cta > p {
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
+}
+
+.review-cta-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.review-cta-buttons .btn {
+    min-width: 260px;
+}
+
+.review-cta-note {
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+    margin-top: 1.5rem;
 }
 
 /* Footer */
@@ -937,6 +992,16 @@ footer {
     .gallery-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 1rem;
+    }
+
+    .review-cta {
+        padding: 1.5rem 1rem;
+        margin: 2rem 0;
+    }
+
+    .review-cta-buttons .btn {
+        min-width: 0;
+        width: 100%;
     }
 }
 
