@@ -14,6 +14,7 @@
 require_once __DIR__ . '/env.php';
 
 define('GOOGLE_REVIEWS_CACHE', dirname(__DIR__) . '/cache/google-reviews.json');
+define('CAPTURED_REVIEWS_FILE', dirname(__DIR__) . '/data/captured-reviews.json');
 define('GOOGLE_REVIEWS_PLACE_ID', 'ChIJKfbIeN9nxokR6Jbbm66babk');
 
 /**
@@ -128,6 +129,80 @@ function refresh_google_reviews_cache()
 }
 
 /**
+ * Read the harvest store: every Google review the API has ever handed us.
+ *
+ * The API only ever returns 5 reviews, ranked by relevance, so a review can
+ * appear one week and be gone the next. Recording each one the first time it is
+ * seen means the site accumulates reviews instead of only ever showing whichever
+ * 5 Google currently favours.
+ */
+function read_captured_reviews()
+{
+    if (!is_readable(CAPTURED_REVIEWS_FILE)) {
+        return [];
+    }
+    $decoded = json_decode((string) file_get_contents(CAPTURED_REVIEWS_FILE), true);
+    return is_array($decoded['reviews'] ?? null) ? $decoded['reviews'] : [];
+}
+
+/**
+ * Add any reviews we have not seen before to the harvest store.
+ *
+ * Only writes when something actually changed, so the file's mtime is a true
+ * record of when a review was last discovered. Returns the newly captured
+ * reviews so the caller can report them.
+ *
+ * @throws RuntimeException if the store cannot be written.
+ */
+function capture_new_reviews(array $live)
+{
+    $existing = read_captured_reviews();
+    $byIdentity = [];
+    foreach ($existing as $review) {
+        $byIdentity[review_identity($review)] = $review;
+    }
+
+    $added = [];
+    foreach ($live as $review) {
+        $key = review_identity($review);
+        if (!isset($byIdentity[$key])) {
+            $byIdentity[$key] = $review;
+            $added[] = $review;
+        } elseif (($byIdentity[$key]['text'] ?? '') !== ($review['text'] ?? '')) {
+            // Reviewer edited their review; keep the current wording.
+            $byIdentity[$key] = $review;
+        }
+    }
+
+    if (empty($added) && $existing === array_values($byIdentity)) {
+        return [];
+    }
+
+    $reviews = array_values($byIdentity);
+    usort($reviews, function ($a, $b) {
+        return ($b['time'] ?? 0) <=> ($a['time'] ?? 0);
+    });
+
+    $payload = [
+        'note' => 'Machine-maintained by refresh-google-reviews.php. Every Google review ever returned by the Places API, kept so none is lost when it drops out of the API\'s 5-review window.',
+        'updated_at' => time(),
+        'reviews' => $reviews,
+    ];
+
+    $dir = dirname(CAPTURED_REVIEWS_FILE);
+    if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+        throw new RuntimeException('Could not create data directory ' . $dir);
+    }
+
+    $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    if ($json === false || file_put_contents(CAPTURED_REVIEWS_FILE, $json, LOCK_EX) === false) {
+        throw new RuntimeException('Could not write ' . CAPTURED_REVIEWS_FILE);
+    }
+
+    return $added;
+}
+
+/**
  * Read the cache. Returns null when it is missing or unreadable.
  */
 function read_google_reviews_cache()
@@ -186,9 +261,16 @@ function get_reviews($source = null)
     static $all = null;
 
     if ($all === null) {
-        $archive = require dirname(__DIR__) . '/reviews-data.php';
+        // Three layers, each overriding the one before it:
+        //   curated  - hand-maintained floor, includes Facebook and anything
+        //              typed in by hand before Google's API ever surfaced it
+        //   captured - every review the API has returned at any point
+        //   live     - this hour's fetch, the most current wording and ratings
+        $curated = require dirname(__DIR__) . '/reviews-data.php';
         $cache = read_google_reviews_cache();
-        $all = merge_reviews($archive, $cache['reviews'] ?? []);
+
+        $all = merge_reviews($curated, read_captured_reviews());
+        $all = merge_reviews($all, $cache['reviews'] ?? []);
     }
 
     if ($source === null) {
