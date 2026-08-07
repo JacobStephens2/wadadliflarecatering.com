@@ -29,6 +29,18 @@
 return [
     // --- Google ---
     [
+        // Added by hand on 2026-08-07: Google had this review but the Places API
+        // did not return it, since the API caps at 5 and ranks by relevance. The
+        // merge will swap in the live copy, with its exact publishTime, if it
+        // ever makes the top 5. Text is verbatim, typo included.
+        'source' => 'google',
+        'author' => 'Don Menya',
+        'rating' => 5,
+        'text' => "We had the pleasure of enjoying an excellent catering service from Chef Jamie Francis and Wadadil Flare Catering. We requested several Caribbean Experience dishes (Jerk and Airline Chicken, Plantains, and tropical juices - Tamarind and Passion Fruit) which our 60 birthday party guests thoroughly enjoyed!\n\nI have no hesitation recommending Chef Francis and his company to help make your event special, with your guests happily enjoying his well-prepared culinary delights!",
+        'time' => 1786108500, // 2026-08-07, posted the morning it was added
+        'precision' => 'day',
+    ],
+    [
         'source' => 'google',
         'author' => 'Taylore Harris',
         'rating' => 5,
