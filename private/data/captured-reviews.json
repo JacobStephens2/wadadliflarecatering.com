@@ -1,6 +1,6 @@
 {
     "note": "Machine-maintained by refresh-google-reviews.php. Every Google review ever returned by the Places API, kept so none is lost when it drops out of the API's 5-review window.",
-    "updated_at": 1786112968,
+    "updated_at": 1786417005,
     "reviews": [
         {
             "source": "google",
@@ -21,6 +21,17 @@
             "rating": 5,
             "text": "We hosted a large party this past weekend to celebrate our son’s high school graduation. Everything about our experience with Wadadli Flare Catering was exceptional.  The food was outstanding and we received many compliments on the variety of smoked meats and delicious sides.  The service and attention to detail was equally as impressive.  Do not hesitate to contact them for your next event.  You will not be disappointed and your guests will thank you!",
             "time": 1719873044,
+            "precision": "day",
+            "live": true
+        },
+        {
+            "source": "google",
+            "author": "deborah Hargreaves",
+            "author_url": "https://www.google.com/maps/contrib/103831503983047471230/reviews",
+            "photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLm8I-OQFuG5OIK1gKxNXP0C6-0SKp6NTylGUfOlMeN3zSXVA=s128-c0x00000000-cc-rp-mo",
+            "rating": 5,
+            "text": "The food was delicious n so beautifully prepared n presented in celebrating a friend's life who loved parties n great food..she would have loved it too! What a great tribute..God bless you as u bless others with the joy of great food n a wonderful experience!  I will recommend with pleasure!",
+            "time": 1698108582,
             "precision": "day",
             "live": true
         },
