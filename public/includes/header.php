@@ -124,6 +124,9 @@
         ]
     }
     </script>
+  <!-- Umami (self-hosted) -->
+  <script defer src="https://analytics.stephens.page/script.js" data-website-id="5a9aff4e-0e7b-41c9-b175-c88c369b3605" data-domains="wadadliflarecatering.com,www.wadadliflarecatering.com,wadadli.stephens.page"></script>
+  <script defer src="https://analytics.stephens.page/recorder.js" data-website-id="5a9aff4e-0e7b-41c9-b175-c88c369b3605"></script>
 </head>
 <body<?php echo isset($bodyClass) ? ' class="' . htmlspecialchars($bodyClass) . '"' : ''; ?>>
     <header>
