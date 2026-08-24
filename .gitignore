@@ -2,3 +2,6 @@ vendor/*
 .env
 private/rate_limits/
 private/cache/
+
+# Runtime cache written by wadadli-reviews-refresh.service
+private/data/captured-reviews.json
