@@ -61,7 +61,7 @@ Premium Buffet Package
 one Salad, two Vegetable, two Starches and two Proteins
 
 Luxury Buffet Package
-**$30 - $37 per person**
+**$42 - $50 per person**
 Charcuterie Station, Grilled Vegetable Platter, one Salad, two Vegetable, two Starches and two Proteins
 
 

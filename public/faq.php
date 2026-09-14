@@ -27,7 +27,7 @@ include __DIR__ . '/includes/header.php';
             
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">Do you offer vegetarian or vegan options?</h2>
-                <p>Yes! We offer vegetarian and vegan options. Please let us know about any dietary restrictions when you request a quote, and we'll work with you to create a menu that accommodates everyone.</p>
+                <p>Yes! We offer vegetarian and vegan options, including garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and grilled vegetable platters. See the <a href="<?php echo BASE_URL; ?>vegetables.php">vegetable menu</a> for pan pricing. Please let us know about any dietary restrictions when you request a quote, and we'll work with you to create a menu that accommodates everyone.</p>
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">

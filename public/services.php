@@ -69,7 +69,7 @@ include __DIR__ . '/includes/header.php';
                 <li style="padding: 0.5rem 0;">✓ A salad, Rolls & Butter & Dressing</li>
                 <li style="padding: 0.5rem 0;">✓ One or Two Protein Options</li>
                 <li style="padding: 0.5rem 0;">✓ One or Two Starch Options</li>
-                <li style="padding: 0.5rem 0;">✓ One or Two Vegetable Options</li>
+                <li style="padding: 0.5rem 0;">✓ One or Two Vegetable Options — see our <a href="<?php echo BASE_URL; ?>vegetables.php">vegetable menu</a></li>
             </ul>
         </div>
         

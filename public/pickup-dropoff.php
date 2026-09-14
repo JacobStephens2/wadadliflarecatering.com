@@ -41,7 +41,7 @@ include __DIR__ . '/includes/header.php';
         
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Available Options</h2>
-            <div class="grid grid-3">
+            <div class="grid grid-2">
                 <div class="card">
                     <h3 class="card-title">Caribbean Experience</h3>
                     <p>Jerk specialties, curry dishes, oxtail, and traditional Caribbean sides. Perfect for adding island flavor to your event.</p>
@@ -54,6 +54,11 @@ include __DIR__ . '/includes/header.php';
                     <a href="<?php echo BASE_URL; ?>bbq-experience.php" class="btn" style="margin-top: 1rem;">View Menu</a>
                 </div>
                 
+                <div class="card">
+                    <h3 class="card-title">Vegetables</h3>
+                    <p>Garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and more — priced by half pan, full pan, and deep pan.</p>
+                    <a href="<?php echo BASE_URL; ?>vegetables.php" class="btn" style="margin-top: 1rem;">View Menu</a>
+                </div>
                 <div class="card">
                     <h3 class="card-title">International Buffet Items</h3>
                     <p>American, French, Italian, Asian, and other international options. Mix and match to create your perfect menu.</p>
@@ -71,8 +76,8 @@ include __DIR__ . '/includes/header.php';
                 <div>
                     <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Serving Estimates</h3>
                     <ul style="padding-left: 1.5rem;">
-                        <li>Full half pan: 10-12 people</li>
-                        <li>Full shallow pan: 18-20 people</li>
+                        <li>Half pan: 10-12 people</li>
+                        <li>Full pan (small): 20-25 people</li>
                         <li>Full deep pan: 30-35 people</li>
                     </ul>
                 </div>

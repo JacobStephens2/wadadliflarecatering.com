@@ -103,6 +103,7 @@ include __DIR__ . '/includes/header.php';
                 <div class="card">
                     <h3 class="card-title">Vegetable Medley</h3>
                     <p>Half Pan - $40<br>Full Shallow Pan - $85<br>Full Deep Pan - $140</p>
+                    <p style="margin-top: 0.75rem;"><a href="<?php echo BASE_URL; ?>vegetables.php">See all vegetable options</a></p>
                 </div>
             </div>
         </div>

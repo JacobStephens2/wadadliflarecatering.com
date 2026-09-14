@@ -33,7 +33,8 @@ include __DIR__ . '/includes/header.php';
             
             <div class="card">
                 <h2 class="card-title">Charcuterie Stations</h2>
-                <p>Elegant displays of artisan cheeses, meats, breads, crackers, preserves, dried fruits, hummus, and more. Perfect for networking events.</p>
+                <p>Elegant displays with an assortment of 4 cheeses and 4 meats, plus breads, crackers, preserves, dried fruits, hummus, and more. Perfect for networking events.</p>
+                <p style="margin-top: 1rem;"><strong>$16 per person</strong> · 25 person minimum · $50 setup fee</p>
             </div>
         </div>
         
@@ -89,16 +90,31 @@ include __DIR__ . '/includes/header.php';
             
             <div class="menu-section" style="margin-top: 2rem;">
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetarian Options</h3>
-                <div class="grid grid-3">
+                <div class="grid grid-2">
                     <div class="card">
                         <ul style="padding-left: 1.5rem; line-height: 1.8;">
                             <li>Stuffed Polenta with Smoked Tomato Sauce</li>
                             <li>Pasta Primavera</li>
                             <li>Curried Vegetable Stew</li>
                             <li>Eggplant Parmesan</li>
+                            <li>Garlic Asparagus with Lemon Zest</li>
+                            <li>Roasted Seasonal Veg Medley</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                            <li>Ratatouille</li>
+                            <li>Green Beans Almondine</li>
+                            <li>Citrus Glazed Carrots with Fresh Thyme</li>
+                            <li>Sautéed Broccoli, Carrots, Red Onion &amp; Peppers</li>
+                            <li>Stir Fry Vegetables</li>
+                            <li>Grilled Vegetable Platter</li>
                         </ul>
                     </div>
                 </div>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="<?php echo BASE_URL; ?>vegetables.php">See vegetable pan pricing</a>
+                </p>
             </div>
         </div>
         
@@ -130,7 +146,7 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 <div class="card">
                     <h3 class="card-title">Luxury Buffet Package</h3>
-                    <p style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">$30 - $37 per person</p>
+                    <p style="font-size: 1.2rem; font-weight: bold; margin: 1rem 0;">$42 - $50 per person</p>
                     <ul style="margin-top: 1rem; padding-left: 1.5rem;">
                         <li>Charcuterie Station</li>
                         <li>Grilled Vegetable Platter</li>
