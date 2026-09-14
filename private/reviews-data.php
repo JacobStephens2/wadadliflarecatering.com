@@ -21,13 +21,38 @@
  *
  * Reviews.md recorded Google dates as relative ages ("2 years ago"), which is
  * not enough to date a review. Where the Places API has since supplied a real
- * publishTime it is recorded below. The three reviews the API does not return
- * carry time => 0 rather than a guess: showing an invented date is worse than
- * showing none. If Google ever surfaces them, the merge fills in the real date.
+ * publishTime it is recorded below. Reviews the API has never returned carry
+ * either a date derived from Google's relative age ("1 week ago") or time => 0
+ * when even that is missing. If Google ever surfaces them, the merge fills in
+ * the real publishTime and the full wording.
  */
 
 return [
     // --- Google ---
+    [
+        // Added by hand on 2026-09-14 from the Google knowledge-panel listing.
+        // Places API still does not return this one (cap of 5, relevance-ranked).
+        // Date is "1 week ago" as of 2026-09-14. Text is the panel snippet;
+        // the merge will replace it with the full review if the API ever
+        // includes it.
+        'source' => 'google',
+        'author' => 'Darlene Edlund',
+        'rating' => 5,
+        'text' => 'We had Jamie of Wadadli Flare cate our daughters wedding for 75 people.It was a pleasant experience from start to...',
+        'time' => 1788796800, // 2026-09-07 noon ET
+        'precision' => 'day',
+    ],
+    [
+        // Added by hand on 2026-09-14 from the Google knowledge-panel listing.
+        // Places API still does not return this one. Date is "3 weeks ago" as
+        // of 2026-09-14. Text is the panel snippet.
+        'source' => 'google',
+        'author' => 'Hes',
+        'rating' => 5,
+        'text' => 'Chef Jamie and his wife were fantastic! From the initial contact of such a quick and friendly reply to the final...',
+        'time' => 1787587200, // 2026-08-24 noon ET
+        'precision' => 'day',
+    ],
     [
         // Added by hand on 2026-08-07: Google had this review but the Places API
         // did not return it, since the API caps at 5 and ranks by relevance. The
