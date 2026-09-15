@@ -31,6 +31,11 @@ include __DIR__ . '/includes/header.php';
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">
+                <h2 class="card-title">Do you offer desserts?</h2>
+                <p>Yes. We offer cake shooters, cupcakes, celebration cakes, brownies and bars, and Rice Krispie treats, with custom flavors, fillings, and decorations. See the <a href="<?php echo BASE_URL; ?>desserts.php">dessert menu</a> for starting prices.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">What service options do you provide?</h2>
                 <p>We offer pick up, drop off, drop off with set-up, and Partial Service (delivery, set-up, serving, and clean-up). A 10% service fee is added for Partial Service that includes serving and breakdown.</p>
             </div>

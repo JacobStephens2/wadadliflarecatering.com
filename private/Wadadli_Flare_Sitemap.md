@@ -89,3 +89,9 @@ We will work with any Venue in our Service area that allows outside catering and
 
 **Desserts: \-**
 
+- Cake Shooters (5oz) — starting at $44/dozen
+- Cupcakes — classic $36/dozen, filled $42/dozen
+- Cakes (6–12in rounds) — 2 layers from $60, 3 layers from $75; filled from $68 / $83
+- Brownies & Bars — starting at $36/dozen
+- Rice Krispie Treats — starting at $30/dozen
+

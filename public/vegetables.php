@@ -26,7 +26,7 @@ include __DIR__ . '/includes/header.php';
                     <p><strong>Half Pan:</strong> 10 - 12 people</p>
                 </div>
                 <div>
-                    <p><strong>Full Pan (small):</strong> 20 - 25 people</p>
+                    <p><strong>Full Shallow Pan:</strong> 20 - 25 people</p>
                 </div>
                 <div>
                     <p><strong>Full Deep Pan:</strong> 30 - 35 people</p>
@@ -39,37 +39,37 @@ include __DIR__ . '/includes/header.php';
             <div class="grid grid-2">
                 <div class="card">
                     <h3 class="card-title">Garlic Asparagus with Lemon Zest</h3>
-                    <p>Half Pan - $60<br>Full Pan (small) - $120<br>Full Deep Pan - $150</p>
+                    <p>Half Pan - $60<br>Full Shallow Pan - $120<br>Full Deep Pan - $150</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Roasted Seasonal Veg Medley</h3>
-                    <p>Half Pan - $50<br>Full Pan (small) - $120</p>
+                    <p>Half Pan - $50<br>Full Shallow Pan - $120</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Eggplant Parmesan</h3>
-                    <p>Full Pan (small) - $120<br>Full Deep Pan - $160</p>
+                    <p>Full Shallow Pan - $120<br>Full Deep Pan - $160</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Ratatouille</h3>
                     <p style="margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--medium-gray);">Zucchini, yellow squash, eggplant, onion, tomato, garlic, herbs, and olive oil</p>
-                    <p>Half Pan - $60<br>Full Pan (small) - $120<br>Full Deep Pan - $150</p>
+                    <p>Half Pan - $60<br>Full Shallow Pan - $120<br>Full Deep Pan - $150</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Green Beans Almondine</h3>
-                    <p>Half Pan - $55<br>Full Pan (small) - $115<br>Full Deep Pan - $140</p>
+                    <p>Half Pan - $55<br>Full Shallow Pan - $115<br>Full Deep Pan - $140</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Citrus Glazed Carrots with Fresh Thyme</h3>
-                    <p>Half Pan - $50<br>Full Pan (small) - $110<br>Full Deep Pan - $140</p>
+                    <p>Half Pan - $50<br>Full Shallow Pan - $110<br>Full Deep Pan - $140</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Sautéed Broccoli, Carrots, Red Onion &amp; Peppers</h3>
-                    <p>Half Pan - $50<br>Full Pan (small) - $100<br>Full Deep Pan - $140</p>
+                    <p>Half Pan - $50<br>Full Shallow Pan - $100<br>Full Deep Pan - $140</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Stir Fry Vegetables</h3>
                     <p style="margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--medium-gray);">Broccoli, bell peppers, and mushrooms with soy, ginger, garlic, and sesame oil</p>
-                    <p>Half Pan - $55<br>Full Pan (small) - $120</p>
+                    <p>Half Pan - $55<br>Full Shallow Pan - $120</p>
                 </div>
             </div>
         </div>
@@ -85,27 +85,13 @@ include __DIR__ . '/includes/header.php';
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Charcuterie Station</h2>
             <div class="card" style="max-width: 700px; margin: 0 auto;">
-                <p>An assortment of 4 cheeses and 4 meats, beautifully arranged for your event.</p>
+                <p>Beautifully arranged assortment of 4 cheeses and 4 meats, plus breads, crackers, preserves &amp; jams, dried fruits, hummus, and crisps.</p>
                 <ul style="margin-top: 1rem; padding-left: 1.5rem; line-height: 1.8;">
                     <li><strong>$16 per person</strong></li>
                     <li>25 person minimum</li>
                     <li>$50 setup fee</li>
                 </ul>
             </div>
-        </div>
-
-        <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
-            <h2 class="section-subtitle">Luxury Buffet Package</h2>
-            <p style="text-align: center; margin-bottom: 1rem;">
-                Charcuterie station, grilled vegetable platter, one salad, two vegetables, two starches, and two proteins.
-            </p>
-            <p style="text-align: center; font-size: 1.2rem; font-weight: bold;">$42 - $50 per person</p>
-            <p style="text-align: center; margin-top: 1rem;">
-                See full buffet packages on our
-                <a href="<?php echo BASE_URL; ?>weddings.php">Weddings</a>,
-                <a href="<?php echo BASE_URL; ?>corporate.php">Corporate</a>, and
-                <a href="<?php echo BASE_URL; ?>private-events.php">Private Events</a> pages.
-            </p>
         </div>
 
         <div style="margin-top: 3rem; text-align: center;">
