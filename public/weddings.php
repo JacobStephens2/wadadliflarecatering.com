@@ -33,6 +33,10 @@ include __DIR__ . '/includes/header.php';
                 <a href="<?php echo BASE_URL; ?>vegetables.php" class="btn" style="margin-top: 1rem;">View Vegetable Menu</a>
             </div>
         </div>
+        <p style="text-align: center; margin-top: 2rem;">
+            Finish the reception with cake shooters, cupcakes, or a celebration cake from our
+            <a href="<?php echo BASE_URL; ?>desserts.php">dessert menu</a>.
+        </p>
         
         <div style="margin-top: 3rem; padding: 2rem; background-color: var(--light-gray); border-radius: 8px;">
             <h2 class="section-subtitle">Custom Wedding Menus</h2>

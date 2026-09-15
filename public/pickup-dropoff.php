@@ -56,8 +56,13 @@ include __DIR__ . '/includes/header.php';
                 
                 <div class="card">
                     <h3 class="card-title">Vegetables</h3>
-                    <p>Garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and more — priced by half pan, full pan, and deep pan.</p>
+                    <p>Garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and more — priced by half pan, full shallow pan, and full deep pan.</p>
                     <a href="<?php echo BASE_URL; ?>vegetables.php" class="btn" style="margin-top: 1rem;">View Menu</a>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Desserts</h3>
+                    <p>Cake shooters, cupcakes, brownies, bars, and Rice Krispie treats priced by the dozen; celebration cakes priced per cake. Custom flavors and decorations available.</p>
+                    <a href="<?php echo BASE_URL; ?>desserts.php" class="btn" style="margin-top: 1rem;">View Menu</a>
                 </div>
                 <div class="card">
                     <h3 class="card-title">International Buffet Items</h3>
@@ -77,7 +82,7 @@ include __DIR__ . '/includes/header.php';
                     <h3 style="color: var(--primary-gold-text); margin-bottom: 1rem;">Serving Estimates</h3>
                     <ul style="padding-left: 1.5rem;">
                         <li>Half pan: 10-12 people</li>
-                        <li>Full pan (small): 20-25 people</li>
+                        <li>Full shallow pan: 20-25 people</li>
                         <li>Full deep pan: 30-35 people</li>
                     </ul>
                 </div>

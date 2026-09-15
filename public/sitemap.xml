@@ -53,7 +53,13 @@
     </url>
     <url>
         <loc>https://wadadliflarecatering.com/vegetables</loc>
-        <lastmod>2026-09-13</lastmod>
+        <lastmod>2026-09-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://wadadliflarecatering.com/desserts</loc>
+        <lastmod>2026-09-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>

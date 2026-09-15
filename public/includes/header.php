@@ -155,6 +155,7 @@
                             <li><a href="<?php echo BASE_URL; ?>bbq-experience.php">BBQ Experience</a></li>
                             <li><a href="<?php echo BASE_URL; ?>caribbean-experience.php">Caribbean Experience</a></li>
                             <li><a href="<?php echo BASE_URL; ?>vegetables.php">Vegetables</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>desserts.php">Desserts</a></li>
                             <li><a href="<?php echo BASE_URL; ?>pickup-dropoff.php">Pick Up & Drop Off</a></li>
                             <li><a href="<?php echo BASE_URL; ?>venues.php">Venues</a></li>
                         </ul>
