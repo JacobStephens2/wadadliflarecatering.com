@@ -117,21 +117,32 @@ include __DIR__ . '/includes/header.php';
             
             <div class="menu-section" style="margin-top: 2rem;">
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetarian Options</h3>
+                <div class="card">
+                    <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                        <li>Stuffed Polenta with Smoked Tomato Sauce</li>
+                        <li>Pasta Primavera</li>
+                        <li>Curried Vegetable Stew</li>
+                        <li>Eggplant Parmesan</li>
+                    </ul>
+                </div>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="<?php echo BASE_URL; ?>vegetables.php#vegetarian-options">See vegetarian options</a>
+                </p>
+            </div>
+
+            <div class="menu-section" style="margin-top: 2rem;">
+                <h3 style="color: var(--primary-green); margin-bottom: 1rem; font-size: 1.3rem;">Vegetables</h3>
                 <div class="grid grid-2">
                     <div class="card">
                         <ul style="padding-left: 1.5rem; line-height: 1.8;">
-                            <li>Stuffed Polenta with Smoked Tomato Sauce</li>
-                            <li>Pasta Primavera</li>
-                            <li>Curried Vegetable Stew</li>
-                            <li>Eggplant Parmesan</li>
                             <li>Garlic Asparagus with Lemon Zest</li>
                             <li>Roasted Seasonal Veg Medley</li>
+                            <li>Ratatouille</li>
+                            <li>Green Beans Almondine</li>
                         </ul>
                     </div>
                     <div class="card">
                         <ul style="padding-left: 1.5rem; line-height: 1.8;">
-                            <li>Ratatouille</li>
-                            <li>Green Beans Almondine</li>
                             <li>Citrus Glazed Carrots with Fresh Thyme</li>
                             <li>Sautéed Broccoli, Carrots, Red Onion &amp; Peppers</li>
                             <li>Stir Fry Vegetables</li>

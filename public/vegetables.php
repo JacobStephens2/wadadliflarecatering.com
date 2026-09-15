@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
 $pageTitle = 'Vegetables';
-$pageDescription = 'Vegetable catering from Wadadli Flare: garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, grilled vegetable platters, and more. Pan pricing for pick up and drop off.';
+$pageDescription = 'Vegetable sides from Wadadli Flare: garlic asparagus, ratatouille, stir fry vegetables, grilled vegetable platters, and more. Pan pricing for pick up and drop off.';
 include __DIR__ . '/includes/header.php';
 ?>
 
@@ -11,7 +11,7 @@ include __DIR__ . '/includes/header.php';
 
         <div style="max-width: 800px; margin: 2rem auto; text-align: center;">
             <p style="font-size: 1.1rem;">
-                Fresh vegetable sides and vegetarian dishes for buffets, pick up, and drop off. Choose a pan size that fits your guest count, or add a grilled vegetable platter to any event.
+                Fresh vegetable sides for buffets, pick up, and drop off. Choose a pan size that fits your guest count, or add a grilled vegetable platter to any event. Vegetarian entrees are listed separately.
             </p>
         </div>
 
@@ -46,10 +46,6 @@ include __DIR__ . '/includes/header.php';
                     <p>Half Pan - $50<br>Full Shallow Pan - $120</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title">Eggplant Parmesan</h3>
-                    <p>Full Shallow Pan - $120<br>Full Deep Pan - $160</p>
-                </div>
-                <div class="card">
                     <h3 class="card-title">Ratatouille</h3>
                     <p style="margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--medium-gray);">Zucchini, yellow squash, eggplant, onion, tomato, garlic, herbs, and olive oil</p>
                     <p>Half Pan - $60<br>Full Shallow Pan - $120<br>Full Deep Pan - $150</p>
@@ -79,6 +75,27 @@ include __DIR__ . '/includes/header.php';
             <div class="card" style="max-width: 700px; margin: 0 auto;">
                 <p>A colorful grilled vegetable platter priced by the guest. Price depends on the vegetable selection.</p>
                 <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary-red); margin-top: 1rem;">$4.50 - $5.00 per person</p>
+            </div>
+        </div>
+
+        <div id="vegetarian-options" style="margin-top: 3rem; scroll-margin-top: 6rem;">
+            <h2 class="section-subtitle">Vegetarian Options</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 1.5rem;">
+                Vegetarian entrees for guests who want a main dish, not a vegetable side.
+            </p>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 class="card-title">Eggplant Parmesan</h3>
+                    <p>Full Shallow Pan - $120<br>Full Deep Pan - $160</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Also Available</h3>
+                    <ul style="padding-left: 1.5rem; line-height: 1.8;">
+                        <li>Stuffed Polenta with Smoked Tomato Sauce</li>
+                        <li>Pasta Primavera</li>
+                        <li>Curried Vegetable Stew</li>
+                    </ul>
+                </div>
             </div>
         </div>
 

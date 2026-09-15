@@ -12,7 +12,7 @@ include __DIR__ . '/includes/header.php';
         <div style="max-width: 900px; margin: 2rem auto;">
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">How far in advance should I book?</h2>
-                <p>We recommend booking at least 7-10 days before your event, depending on the size. For larger events, we suggest booking as early as possible to ensure availability.</p>
+                <p>We recommend booking at least 7-10 days before your event, depending on the size. Desserts need a minimum of two weeks' notice. For larger events, we suggest booking as early as possible to ensure availability.</p>
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">
@@ -27,12 +27,12 @@ include __DIR__ . '/includes/header.php';
             
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">Do you offer vegetarian or vegan options?</h2>
-                <p>Yes! We offer vegetarian and vegan options, including garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and grilled vegetable platters. See the <a href="<?php echo BASE_URL; ?>vegetables.php">vegetable menu</a> for pan pricing. Please let us know about any dietary restrictions when you request a quote, and we'll work with you to create a menu that accommodates everyone.</p>
+                <p>Yes. Vegetarian entrees include stuffed polenta with smoked tomato sauce, pasta primavera, curried vegetable stew, and eggplant parmesan. Vegetable sides — garlic asparagus, ratatouille, stir fry vegetables, grilled vegetable platters, and more — are listed separately. See <a href="<?php echo BASE_URL; ?>vegetables.php#vegetarian-options">vegetarian options</a> and the <a href="<?php echo BASE_URL; ?>vegetables.php">vegetable menu</a> for pan pricing. Please let us know about any dietary restrictions when you request a quote, and we'll work with you to create a menu that accommodates everyone.</p>
             </div>
             
             <div class="card" style="margin-bottom: 2rem;">
                 <h2 class="card-title">Do you offer desserts?</h2>
-                <p>Yes. We offer cake shooters, cupcakes, celebration cakes, brownies and bars, and Rice Krispie treats, with custom flavors, fillings, and decorations. See the <a href="<?php echo BASE_URL; ?>desserts.php">dessert menu</a> for starting prices.</p>
+                <p>Yes. We offer cake shooters, cupcakes, celebration cakes, brownies and bars, and Rice Krispie treats, with custom flavors, fillings, and decorations. Desserts require a minimum of two weeks' notice. See the <a href="<?php echo BASE_URL; ?>desserts.php">dessert menu</a> for starting prices.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">

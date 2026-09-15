@@ -13,6 +13,9 @@ include __DIR__ . '/includes/header.php';
             <p style="font-size: 1.1rem;">
                 Finish your event with house-made catering desserts. Cake shooters, cupcakes, celebration cakes, brownies, bars, and Rice Krispie treats are available in standard or catering-size quantities. Customize flavors, fillings, and decorations to match your event.
             </p>
+            <p style="font-size: 1.1rem; font-weight: 600; margin-top: 1rem;">
+                Desserts require a minimum of two weeks' notice.
+            </p>
         </div>
 
         <div style="margin-top: 3rem;">
