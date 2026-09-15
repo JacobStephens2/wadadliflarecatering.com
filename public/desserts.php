@@ -16,7 +16,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Cake Shooters</h2>
+            <h2 class="section-subtitle" style="text-align: center;">Cake Shooters</h2>
             <div class="card" style="max-width: 800px; margin: 0 auto;">
                 <p>Layers of cake, filling &amp; frosting served in individual 5oz dessert cups.</p>
                 <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary-red); margin-top: 1rem;">Starting at $44/dozen</p>
@@ -38,7 +38,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Cupcakes</h2>
+            <h2 class="section-subtitle" style="text-align: center;">Cupcakes</h2>
             <div class="grid grid-2">
                 <div class="card">
                     <h3 class="card-title">Classic</h3>
@@ -72,7 +72,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Cakes</h2>
+            <h2 class="section-subtitle" style="text-align: center;">Cakes</h2>
             <div class="card" style="max-width: 800px; margin: 0 auto;">
                 <p>6–12 inch rounds, 2–3 layers. Available as celebration cakes, custom cakes &amp; catering centerpiece cakes, in standard or catering-size quantities.</p>
                 <div class="grid grid-2" style="margin-top: 1.5rem;">
@@ -106,7 +106,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Brownies &amp; Bars</h2>
+            <h2 class="section-subtitle" style="text-align: center;">Brownies &amp; Bars</h2>
             <div class="card" style="max-width: 700px; margin: 0 auto;">
                 <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary-red);">Starting at $36/dozen</p>
                 <ul style="margin-top: 1rem; padding-left: 1.5rem; line-height: 1.8;">
@@ -119,7 +119,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 class="section-subtitle">Rice Krispie Treats</h2>
+            <h2 class="section-subtitle" style="text-align: center;">Rice Krispie Treats</h2>
             <div class="card" style="max-width: 700px; margin: 0 auto;">
                 <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary-red);">Starting at $30/dozen</p>
                 <ul style="margin-top: 1rem; padding-left: 1.5rem; line-height: 1.8;">
