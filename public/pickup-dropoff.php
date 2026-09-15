@@ -56,12 +56,17 @@ include __DIR__ . '/includes/header.php';
                 
                 <div class="card">
                     <h3 class="card-title">Vegetables</h3>
-                    <p>Garlic asparagus, ratatouille, eggplant parmesan, stir fry vegetables, and more — priced by half pan, full shallow pan, and full deep pan.</p>
+                    <p>Garlic asparagus, ratatouille, stir fry vegetables, and more — priced by half pan, full shallow pan, and full deep pan.</p>
                     <a href="<?php echo BASE_URL; ?>vegetables.php" class="btn" style="margin-top: 1rem;">View Menu</a>
                 </div>
                 <div class="card">
+                    <h3 class="card-title">Vegetarian Options</h3>
+                    <p>Vegetarian entrees including eggplant parmesan, stuffed polenta, pasta primavera, and curried vegetable stew.</p>
+                    <a href="<?php echo BASE_URL; ?>vegetables.php#vegetarian-options" class="btn" style="margin-top: 1rem;">View Menu</a>
+                </div>
+                <div class="card">
                     <h3 class="card-title">Desserts</h3>
-                    <p>Cake shooters, cupcakes, brownies, bars, and Rice Krispie treats priced by the dozen; celebration cakes priced per cake. Custom flavors and decorations available.</p>
+                    <p>Cake shooters, cupcakes, brownies, bars, and Rice Krispie treats priced by the dozen; celebration cakes priced per cake. Custom flavors and decorations available. Minimum two weeks' notice.</p>
                     <a href="<?php echo BASE_URL; ?>desserts.php" class="btn" style="margin-top: 1rem;">View Menu</a>
                 </div>
                 <div class="card">
