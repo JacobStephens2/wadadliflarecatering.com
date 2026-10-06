@@ -47,6 +47,9 @@ function getImageCategories($imageData) {
     $categories = [];
     $filename = $imageData['file'];
     $lower = strtolower($filename);
+    if (strpos($lower, 'dessert_') === 0) {
+        return ['desserts'];
+    }
     
     // Charcuterie (also wedding)
     if (strpos($lower, 'charcuterie') !== false) {
@@ -128,6 +131,7 @@ function generateAltText($imageData) {
         <?php if (!empty($images)): ?>
         <div class="gallery-filters">
             <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="desserts">Desserts</button>
             <button class="filter-btn" data-filter="charcuterie">Charcuterie</button>
             <button class="filter-btn" data-filter="appetizers">Appetizers</button>
             <button class="filter-btn" data-filter="bbq">BBQ</button>
@@ -159,4 +163,3 @@ function generateAltText($imageData) {
 </section>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
-

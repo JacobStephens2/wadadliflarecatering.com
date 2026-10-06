@@ -18,6 +18,26 @@ include __DIR__ . '/includes/header.php';
             </p>
         </div>
 
+        <h2 class="section-subtitle" style="text-align: center;">Dessert Gallery</h2>
+        <div class="gallery-grid dessert-gallery">
+            <?php
+            $dessertPhotos = [
+                ['dessert_table_display.webp', 'Dessert table with cake shooters and cupcakes', 600, 450],
+                ['dessert_cake_shooters_and_cupcakes.webp', 'Cake shooters and cupcakes arranged on tiered stands', 600, 450],
+                ['dessert_cups_display.webp', 'Individual dessert cups displayed on a pink dessert table', 600, 450],
+                ['dessert_pastel_flower_cupcakes.webp', 'Cupcakes decorated with pastel buttercream flowers', 421, 600],
+                ['dessert_floral_cupcake_arrangement.webp', 'Floral cupcakes arranged around a birthday message', 600, 450],
+                ['dessert_swan_celebration_cake.webp', 'Celebration cake decorated with swans and flowers', 450, 600],
+                ['dessert_floral_birthday_cake.webp', 'Mint green birthday cake decorated with pink flowers', 450, 600],
+                ['dessert_21st_birthday_cake.webp', 'White piped birthday cake with gold candles and a 21 topper', 517, 600],
+            ];
+            foreach ($dessertPhotos as [$file, $alt, $width, $height]): ?>
+            <button type="button" class="gallery-item" aria-label="View photo: <?php echo htmlspecialchars($alt); ?>">
+                <img src="<?php echo GALLERY_URL . htmlspecialchars($file); ?>" alt="<?php echo htmlspecialchars($alt); ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" loading="lazy">
+            </button>
+            <?php endforeach; ?>
+        </div>
+
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle" style="text-align: center;">Cake Shooters</h2>
             <div class="card" style="max-width: 800px; margin: 0 auto;">
