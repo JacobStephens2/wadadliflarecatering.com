@@ -626,6 +626,22 @@ main {
     transform: scale(1.1);
 }
 
+.dessert-gallery .gallery-item {
+    padding: 0;
+    border: 0;
+    background: var(--light-gray);
+}
+
+.dessert-gallery .gallery-item img,
+.gallery-item[data-categories~="desserts"] img {
+    object-fit: contain;
+}
+
+.dessert-gallery .gallery-item:focus-visible {
+    outline: 3px solid var(--primary-red);
+    outline-offset: 3px;
+}
+
 .gallery-filters {
     display: flex;
     flex-wrap: wrap;
@@ -1093,4 +1109,3 @@ footer {
         font-size: 35px;
     }
 }
-
