@@ -140,7 +140,8 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 <div class="card">
                     <h3 class="card-title">Herb Roasted Potatoes</h3>
-                    <p>Half Pan - $30<br>Full Shallow Pan - $55<br>Full Deep Pan - $110</p>
+                    <p>Half Pan - $30<br>Full Shallow Pan - $55<br>Full Deep Pan - $140</p>
+                    <p style="margin-top: 0.75rem;"><a href="<?php echo BASE_URL; ?>starches.php">See all starch options</a></p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">BBQ Beans</h3>

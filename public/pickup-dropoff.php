@@ -60,6 +60,11 @@ include __DIR__ . '/includes/header.php';
                     <a href="<?php echo BASE_URL; ?>vegetables.php" class="btn" style="margin-top: 1rem;">View Menu</a>
                 </div>
                 <div class="card">
+                    <h3 class="card-title">Starches</h3>
+                    <p>Rice, potatoes, mac and cheese, and baked ziti priced by half pan, full shallow pan, and full deep pan.</p>
+                    <a href="<?php echo BASE_URL; ?>starches.php" class="btn" style="margin-top: 1rem;">View Menu</a>
+                </div>
+                <div class="card">
                     <h3 class="card-title">Vegetarian Options</h3>
                     <p>Vegetarian entrees including eggplant parmesan, stuffed polenta, pasta primavera, and curried vegetable stew.</p>
                     <a href="<?php echo BASE_URL; ?>vegetables.php#vegetarian-options" class="btn" style="margin-top: 1rem;">View Menu</a>
@@ -112,5 +117,4 @@ include __DIR__ . '/includes/header.php';
 </section>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
-
 
