@@ -24,6 +24,7 @@
                 <ul>
                     <li><a href="<?php echo BASE_URL; ?>about.php">About Chef Jamie</a></li>
                     <li><a href="<?php echo BASE_URL; ?>vegetables.php">Vegetables</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>starches.php">Starches</a></li>
                     <li><a href="<?php echo BASE_URL; ?>desserts.php">Desserts</a></li>
                     <li><a href="<?php echo BASE_URL; ?>quote-request.php">Request a Quote</a></li>
                     <li><a href="<?php echo BASE_URL; ?>reviews.php#leave-a-review">Leave a Review</a></li>
@@ -42,7 +43,6 @@
     <script src="<?php echo JS_URL; ?>main.js?v=<?php echo $jsVersion; ?>"></script>
 </body>
 </html>
-
 
 
 
