@@ -355,6 +355,9 @@ if (document.querySelector('.gallery-item')) {
 
 // Form validation
 function validateForm(form) {
+    if (form.dataset.submitting === 'true') {
+        return false;
+    }
     const requiredFields = form.querySelectorAll('[required]');
     let isValid = true;
     
@@ -377,6 +380,12 @@ function validateForm(form) {
         }
     });
     
+    if (isValid) {
+        form.dataset.submitting = 'true';
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(button => {
+            button.disabled = true;
+        });
+    }
     return isValid;
 }
 

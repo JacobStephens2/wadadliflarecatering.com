@@ -9,56 +9,11 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once PRIVATE_PATH . '/includes/db.php';
-    require_once PRIVATE_PATH . '/includes/email.php';
-    require_once PRIVATE_PATH . '/includes/spam_protection.php';
+    require_once PRIVATE_PATH . '/includes/form_submission.php';
 
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
-    $message = trim($_POST['message'] ?? '');
-
-    // 1. Honeypot check
-    if (check_honeypot()) {
-        error_log("Honeypot triggered on contact form - IP: {$_SERVER['REMOTE_ADDR']}");
-        $success = true; // Fake success to avoid revealing filtering
-    }
-    // 2. Rate limit check
-    elseif (!check_rate_limit('contact', 3)) {
-        $error = 'Please wait before submitting again.';
-    }
-    // 3. Turnstile verification
-    elseif (!verify_turnstile($_POST['cf-turnstile-response'] ?? '')) {
-        $error = 'Verification failed. Please try again.';
-    }
-    // 4. Content spam filter
-    elseif (is_spam_content($message, $name) || isSpamMessage($message, $name, $email)) {
-        error_log("Spam contact form submission blocked - Email: $email, Name: $name");
-        $success = true; // Fake success
-    }
-    // 5. Standard field validation
-    elseif (empty($name) || empty($email) || empty($message)) {
-        $error = 'Please fill in all required fields.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
-    }
-    // 6. Send via Resend (SMTP)
-    else {
-        try {
-            // Save to database
-            $stmt = $pdo->prepare("INSERT INTO contact_submissions (name, email, phone, message) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $email, $phone, $message]);
-
-            // Send email
-            if (sendContactEmail($name, $email, $phone, $message)) {
-                $success = true;
-            } else {
-                $error = 'Your message was saved but we had trouble sending the email. We will still receive your message.';
-            }
-        } catch (Exception $e) {
-            error_log("Contact form error: " . $e->getMessage());
-            $error = 'Sorry, there was an error processing your message. Please try again or call us directly.';
-        }
-    }
+    $result = process_form_submission($pdo, 'contact', $_POST);
+    $success = $result['success'];
+    $error = $result['error'];
 
     // Periodically clean up stale rate limit files
     purge_stale_rate_limits();
@@ -134,22 +89,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" required value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
+                        <input type="text" id="name" name="name" maxlength="255" required value="<?php echo isset($_POST['name']) ? htmlspecialchars(is_string($_POST['name']) ? $_POST['name'] : '') : ''; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                        <input type="email" id="email" name="email" maxlength="255" required value="<?php echo isset($_POST['email']) ? htmlspecialchars(is_string($_POST['email']) ? $_POST['email'] : '') : ''; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
+                        <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo isset($_POST['phone']) ? htmlspecialchars(is_string($_POST['phone']) ? $_POST['phone'] : '') : ''; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="message">Message *</label>
-                        <textarea id="message" name="message" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
+                        <textarea id="message" name="message" maxlength="65535" required><?php echo isset($_POST['message']) ? htmlspecialchars(is_string($_POST['message']) ? $_POST['message'] : '') : ''; ?></textarea>
                     </div>
                     
                     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

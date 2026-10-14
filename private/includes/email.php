@@ -82,37 +82,42 @@ function sendEmailPHPMailer($to, $subject, $message, $fromEmail, $fromName, $smt
 /**
  * Check if message contains spam patterns
  */
-function isSpamMessage($message, $name = '', $email = '') {
-    $text = strtolower($message . ' ' . $name . ' ' . $email);
-    
-    // Common spam patterns from contactpageads.com and similar services
+function isSpamMessage($message, $name = '', $email = ''): ?string {
+    $text = $message . ' ' . $name . ' ' . $email;
     $spamPatterns = [
         'contactpageads\.com',
-        'limited.*run.*opportunity',
         'send your ad to.*million.*sites',
         '\$49.*million.*sites',
-        'delivery network.*reliable.*aggressive',
-        'competitors.*take.*visibility',
-        'secure your campaign',
-        'price.*reset',
         'million sites.*\$49',
-        'campaign.*needs',
     ];
-    
     foreach ($spamPatterns as $pattern) {
         if (preg_match('/' . $pattern . '/i', $text)) {
-            return true;
+            return 'Mass advertising solicitation';
         }
     }
-    
-    return false;
+    return null;
 }
 
 /**
- * Send contact form email
+ * Build a plain notification subject from the submitter name.
  */
-function sendContactEmail($name, $email, $phone, $message) {
-    $subject = "New Contact Form Submission from $name";
+function notificationSubject(string $prefix, string $name, ?string $flagReason): string {
+    $name = preg_replace('/[\x00-\x1F\x7F]+/', ' ', strip_tags($name));
+    return ($flagReason !== null ? '[Possible spam] ' : '') . $prefix . $name;
+}
+
+function escapeEmailField($value): string {
+    return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/** Send contact form email, escaping all submitted HTML fields. */
+function sendContactEmail($name, $email, $phone, $message, ?string $flagReason = null) {
+    $subject = notificationSubject('New Contact Form Submission from ', $name, $flagReason);
+    $replyTo = $email;
+    $replyToName = preg_replace('/[\r\n]+/', ' ', $name);
+    $name = escapeEmailField($name);
+    $email = escapeEmailField($email);
+    $phone = escapeEmailField($phone);
     $emailBody = "
     <html>
     <head>
@@ -142,7 +147,7 @@ function sendContactEmail($name, $email, $phone, $message) {
                 </div>
                 <div class='field'>
                     <span class='label'>Message:</span><br>
-                    " . nl2br(htmlspecialchars($message)) . "
+                    " . nl2br(escapeEmailField($message)) . "
                 </div>
             </div>
         </div>
@@ -151,15 +156,18 @@ function sendContactEmail($name, $email, $phone, $message) {
     ";
     
     // Set reply-to to the submitter's email so replies go directly to them
-    return sendEmail(CONTACT_EMAIL, $subject, $emailBody, null, null, $email, $name);
+    return sendEmail(CONTACT_EMAIL, $subject, $emailBody, null, null, $replyTo, $replyToName);
 }
 
 /**
  * Send quote request email
  */
-function sendQuoteRequestEmail($data) {
-    $subject = "New Quote Request from {$data['name']}";
+function sendQuoteRequestEmail($data, ?string $flagReason = null) {
+    $subject = notificationSubject('New Quote Request from ', $data['name'], $flagReason);
+    $replyTo = $data['email'];
+    $replyToName = preg_replace('/[\r\n]+/', ' ', $data['name']);
     $eventDate = $data['event_date'] ? date('F j, Y', strtotime($data['event_date'])) : 'Not specified';
+    $data = array_map('escapeEmailField', $data);
     
     $emailBody = "
     <html>
@@ -202,7 +210,7 @@ function sendQuoteRequestEmail($data) {
                 </div>
                 <div class='field'>
                     <span class='label'>Message:</span><br>
-                    " . nl2br(htmlspecialchars($data['message'])) . "
+                    " . nl2br($data['message']) . "
                 </div>
             </div>
         </div>
@@ -211,6 +219,6 @@ function sendQuoteRequestEmail($data) {
     ";
     
     // Set reply-to to the submitter's email so replies go directly to them
-    return sendEmail(CONTACT_EMAIL, $subject, $emailBody, null, null, $data['email'], $data['name']);
+    return sendEmail(CONTACT_EMAIL, $subject, $emailBody, null, null, $replyTo, $replyToName);
 }
 
