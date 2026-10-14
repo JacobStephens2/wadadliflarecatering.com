@@ -10,7 +10,7 @@ $starchOptions = [
     ['Spinach Rice', 30, 60, 120],
     ['Brown Rice', 35, 70, 140],
     ['Blended Rice', 40, 75, 150],
-    ['Herb Roasted Potatoes', 30, 55, 140],
+    ['Herb Roasted Potatoes', 25, 45, 100],
     ['Creamy Garlic Potatoes', 40, 60, 120],
     ['Rustic Mashed Potatoes', 40, 60, 120],
     ['Scalloped Potatoes', 40, 60, 120],
