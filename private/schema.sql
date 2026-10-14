@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(50),
     message TEXT NOT NULL,
+    flag_reason VARCHAR(255) NULL,
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_email_submitted_at (email, submitted_at),
     INDEX idx_submitted_at (submitted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -25,7 +27,9 @@ CREATE TABLE IF NOT EXISTS quote_requests (
     guest_count INT,
     location VARCHAR(255),
     message TEXT,
+    flag_reason VARCHAR(255) NULL,
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_email_submitted_at (email, submitted_at),
     INDEX idx_submitted_at (submitted_at),
     INDEX idx_event_date (event_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

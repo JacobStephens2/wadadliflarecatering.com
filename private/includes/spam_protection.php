@@ -45,39 +45,26 @@ function check_rate_limit(string $form_name, int $max_per_hour = 3): bool {
 }
 
 /**
- * Content-based spam filtering.
- * Returns true if the content looks like spam.
+ * Content heuristics flag a lead for review; they never reject it.
  */
-function is_spam_content(string $message, string $name): bool {
-    $message_lower = strtolower($message);
-    $name_lower = strtolower($name);
-
-    // Check for URLs in message (legitimate catering inquiries almost never include URLs)
-    if (preg_match('/https?:\/\//i', $message)) {
-        return true;
+function is_spam_content(string $message, string $name): ?string {
+    if (preg_match('/https?:\/\//i', $message . ' ' . $name)) {
+        return 'Contains a URL';
     }
-
-    // Check for common spam phrases
-    $spam_phrases = [
-        '% off', 'percent off', 'free shipping', 'limited time',
-        'act now', 'click here', 'buy now', 'order now',
-        'special offer', 'discount', 'unsubscribe',
-        'bitcoin', 'crypto', 'viagra', 'casino',
-        'seo', 'web traffic', 'backlink', 'ranking',
-        'posture corrector', 'weight loss',
-    ];
-    foreach ($spam_phrases as $phrase) {
-        if (str_contains($message_lower, $phrase)) {
-            return true;
-        }
+    if (preg_match('/\b(?:seo services|buy backlinks|viagra|posture corrector)\b/i', $message . ' ' . $name)) {
+        return 'Unrelated advertising';
     }
+    return null;
+}
 
-    // Gibberish name detection (consonant clusters with no vowels)
-    if (preg_match('/[bcdfghjklmnpqrstvwxyz]{5,}/i', $name)) {
-        return true;
-    }
-
-    return false;
+/**
+ * One structured line per rejection; never include submitted content.
+ */
+function log_form_rejection(string $form, string $reason): void {
+    error_log('Form rejection ' . json_encode([
+        'form' => $form, 'reason' => $reason,
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+    ], JSON_UNESCAPED_SLASHES));
 }
 
 /**
@@ -90,9 +77,10 @@ function verify_turnstile(string $token): bool {
         return false;
     }
 
-    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, stream_context_create([
+    $response = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, stream_context_create([
         'http' => [
             'method' => 'POST',
+            'timeout' => 10,
             'header' => 'Content-Type: application/x-www-form-urlencoded',
             'content' => http_build_query([
                 'secret' => $secret_key,
@@ -103,7 +91,6 @@ function verify_turnstile(string $token): bool {
     ]));
 
     if ($response === false) {
-        error_log('Turnstile verification request failed');
         return false;
     }
 

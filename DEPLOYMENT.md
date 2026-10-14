@@ -138,3 +138,23 @@ Pages returning 200 does not prove `.env` was read - most of the site renders
 fine without it. Load `/quote-request` and confirm a `data-sitekey` attribute is
 present instead. That value comes from `TURNSTILE_SITE_KEY`, so it only appears
 if the file was read successfully.
+
+## Issue #7 form migration
+
+Before deploying the form changes (including merging the PR, which triggers
+production deployment), back up the database and apply
+`private/migrations/007-form-correctness.sql` once to the existing database:
+
+```bash
+mysql --host="$DB_HOST" --user="$DB_USER" --password "$DB_NAME" \
+  < private/migrations/007-form-correctness.sql
+```
+
+Use the configured database credentials; the client prompts for the password.
+The migration adds nullable `flag_reason` columns and email/time indexes without
+rewriting existing leads. Existing application code still works with the added
+columns, so apply the schema before code. A code rollback can leave them in place.
+New installations use `private/schema.sql` and do not run this migration.
+
+Duplicate suppression uses MySQL named locks on the existing connection; the
+application database user must be able to call `GET_LOCK` and `RELEASE_LOCK`.
