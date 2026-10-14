@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
+require_once PRIVATE_PATH . '/includes/form_submission.php';
 $pageTitle = 'Contact';
 $pageDescription = 'Contact Wadadli Flare Catering. Phone, email, and contact form.';
 include __DIR__ . '/includes/header.php';
@@ -9,7 +10,6 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once PRIVATE_PATH . '/includes/db.php';
-    require_once PRIVATE_PATH . '/includes/form_submission.php';
 
     $result = process_form_submission($pdo, 'contact', $_POST);
     $success = $result['success'];
@@ -89,22 +89,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" maxlength="255" required value="<?php echo isset($_POST['name']) ? htmlspecialchars(is_string($_POST['name']) ? $_POST['name'] : '') : ''; ?>">
+                        <input type="text" id="name" name="name" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'name'); ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" maxlength="255" required value="<?php echo isset($_POST['email']) ? htmlspecialchars(is_string($_POST['email']) ? $_POST['email'] : '') : ''; ?>">
+                        <input type="email" id="email" name="email" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'email'); ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo isset($_POST['phone']) ? htmlspecialchars(is_string($_POST['phone']) ? $_POST['phone'] : '') : ''; ?>">
+                        <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo escaped_form_value($_POST, 'phone'); ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="message">Message *</label>
-                        <textarea id="message" name="message" maxlength="65535" required><?php echo isset($_POST['message']) ? htmlspecialchars(is_string($_POST['message']) ? $_POST['message'] : '') : ''; ?></textarea>
+                        <textarea id="message" name="message" maxlength="65535" required><?php echo escaped_form_value($_POST, 'message'); ?></textarea>
                     </div>
                     
                     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

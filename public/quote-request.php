@@ -46,17 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="name">Your Name *</label>
-                    <input type="text" id="name" name="name" maxlength="255" required value="<?php echo isset($_POST['name']) ? htmlspecialchars(is_string($_POST['name']) ? $_POST['name'] : '') : ''; ?>">
+                    <input type="text" id="name" name="name" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'name'); ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" maxlength="255" required value="<?php echo isset($_POST['email']) ? htmlspecialchars(is_string($_POST['email']) ? $_POST['email'] : '') : ''; ?>">
+                    <input type="email" id="email" name="email" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'email'); ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo isset($_POST['phone']) ? htmlspecialchars(is_string($_POST['phone']) ? $_POST['phone'] : '') : ''; ?>">
+                    <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo escaped_form_value($_POST, 'phone'); ?>">
                 </div>
                 
                 <div class="form-group">
@@ -71,22 +71,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label for="event_date">Event Date</label>
-                    <input type="date" id="event_date" name="event_date" value="<?php echo isset($_POST['event_date']) ? htmlspecialchars(is_string($_POST['event_date']) ? $_POST['event_date'] : '') : ''; ?>">
+                    <input type="date" id="event_date" name="event_date" value="<?php echo escaped_form_value($_POST, 'event_date'); ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="guest_count">Number of Guests</label>
-                    <input type="number" id="guest_count" name="guest_count" min="1" value="<?php echo isset($_POST['guest_count']) ? htmlspecialchars(is_string($_POST['guest_count']) ? $_POST['guest_count'] : '') : ''; ?>">
+                    <input type="number" id="guest_count" name="guest_count" min="1" value="<?php echo escaped_form_value($_POST, 'guest_count'); ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="location">Event Location</label>
-                    <input type="text" id="location" name="location" maxlength="255" placeholder="City, venue name, or address" value="<?php echo isset($_POST['location']) ? htmlspecialchars(is_string($_POST['location']) ? $_POST['location'] : '') : ''; ?>">
+                    <input type="text" id="location" name="location" maxlength="255" placeholder="City, venue name, or address" value="<?php echo escaped_form_value($_POST, 'location'); ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="message">Additional Details</label>
-                    <textarea id="message" name="message" maxlength="65535" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo isset($_POST['message']) ? htmlspecialchars(is_string($_POST['message']) ? $_POST['message'] : '') : ''; ?></textarea>
+                    <textarea id="message" name="message" maxlength="65535" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo escaped_form_value($_POST, 'message'); ?></textarea>
                 </div>
                 
                 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

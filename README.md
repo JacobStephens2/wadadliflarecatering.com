@@ -19,4 +19,5 @@ schema, preserves an existing lead through the migration, and runs both form
 POST pipelines. It stops its server and removes its temporary data on exit.
 SMTP and Turnstile are replaced only at their external boundaries; no production
 credentials are loaded and no emails are delivered. To run one scenario, pass
-`legitimate`, `migration`, `flagged`, `rejections`, `validation`, or `duplicates`.
+`legitimate`, `migration`, `flagged`, `rejections`, `validation`, `duplicates`,
+`nul-date`, or `replayed-token`.

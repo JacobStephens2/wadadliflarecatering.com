@@ -160,6 +160,32 @@ try {
             expect(count($emails()) === $before + 1, 'Concurrent duplicate sends one email');
         }
     };
+    $tests['nul-date'] = function () use ($post, $quote) {
+        $quote['event_date'] = '2026-10-14' . chr(0) . 'junk';
+        $result = $post('quote', $quote);
+        expect(str_contains($result['html'], 'alert-error'), 'Malformed date needs validation feedback');
+        expect(substr_count($result['log'], 'Form rejection') === 1, 'Malformed date has one rejection log');
+        foreach (['quote', 'validation', $result['ip']] as $text) {
+            expect(str_contains($result['log'], $text), 'Malformed date needs form, validation reason and IP');
+        }
+    };
+    $tests['replayed-token'] = function () use ($post, $contact, $quote, $pdo, $emails) {
+        foreach (['contact' => $contact, 'quote' => $quote] as $form => $input) {
+            $input['email'] = "replay-$form@example.com";
+            $before = count($emails());
+            $first = $post($form, $input, 'pass');
+            $second = $post($form, $input, 'fail');
+            expect(str_contains($first['html'], 'alert-success'), 'First POST succeeds');
+            expect(str_contains($second['html'], 'alert-success'), 'Identical retry with consumed token still sees success');
+            expect(str_contains($second['log'], 'duplicate'), 'Identical retry is logged as duplicate');
+            $table = $form === 'quote' ? 'quote_requests' : 'contact_submissions';
+            expect($pdo->query("SELECT COUNT(*) FROM $table WHERE email='replay-$form@example.com'")->fetchColumn() == 1, 'Retry keeps one saved row');
+            expect(count($emails()) === $before + 1, 'Retry keeps one notification');
+            $input['message'] .= ' changed content';
+            $third = $post($form, $input, 'fail');
+            expect(str_contains($third['html'], 'alert-error') && str_contains($third['log'], 'turnstile'), 'Changed content still requires Turnstile');
+        }
+    };
     $selected = $argv[1] ?? null;
     expect($selected === null || isset($tests[$selected]), 'Unknown test selection');
     foreach ($tests as $name => $test) {
