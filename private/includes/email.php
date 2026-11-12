@@ -10,6 +10,14 @@ require_once __DIR__ . '/../../public/includes/config.php';
 require_once __DIR__ . '/env.php';
 
 /**
+ * Quote a display name so reserved address-list characters stay one phrase.
+ */
+function quotedAddressPhrase(string $name): string {
+    $name = preg_replace('/[\r\n]+/', ' ', $name) ?? '';
+    return '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $name) . '"';
+}
+
+/**
  * Send email using SMTP (Resend)
  */
 function sendEmail($to, $subject, $message, $fromEmail = null, $fromName = null, $replyTo = null, $replyToName = null) {
@@ -32,7 +40,7 @@ function sendEmail($to, $subject, $message, $fromEmail = null, $fromName = null,
     } else {
         // Fallback to basic mail() function
         $headers = "From: $fromName <$fromEmail>\r\n";
-        $headers .= "Reply-To: $replyToName <$replyTo>\r\n";
+        $headers .= 'Reply-To: ' . quotedAddressPhrase((string)$replyToName) . " <$replyTo>\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         return mail($to, $subject, $message, $headers);
     }

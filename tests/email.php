@@ -1,4 +1,21 @@
 <?php
+if (($argv[1] ?? '') === 'mail-fallback') {
+    define('ENV_LOADED', true); // Never load production credentials in tests.
+    require __DIR__ . '/../private/includes/email.php';
+    if (class_exists('PHPMailer\PHPMailer\PHPMailer', false)) {
+        fwrite(STDERR, "PHPMailer is loaded; mail() fallback was not exercised\n");
+        exit(3);
+    }
+    $name = 'attacker@example.com,';
+    $address = 'submitter@example.com';
+    $sent = sendContactEmail($name, $address, '', '');
+    $sent = sendQuoteRequestEmail([
+        'name' => $name, 'email' => $address, 'phone' => '', 'event_type' => 'Wedding',
+        'event_date' => '', 'guest_count' => '', 'location' => '', 'message' => '',
+    ]) && $sent;
+    exit($sent ? 0 : 1);
+}
+
 require __DIR__ . '/support/mail_transport.php';
 define('ENV_LOADED', true); // Never load production credentials in tests.
 require __DIR__ . '/../private/includes/email.php';
@@ -33,4 +50,38 @@ try {
     echo "PASS email escaping and subjects\n";
 } finally {
     unlink($file);
+}
+
+$directory = sys_get_temp_dir() . '/wadadli-mail-fallback-' . bin2hex(random_bytes(6));
+mkdir($directory, 0700);
+$capture = $directory . '/capture.sh';
+$stdin = $directory . '/mail-stdin.txt';
+file_put_contents($capture, "#!/bin/sh\ncat >> " . escapeshellarg($stdin) . "\nexit 0\n");
+chmod($capture, 0700);
+try {
+    $process = proc_open(
+        [PHP_BINARY, '-d', 'sendmail_path=' . $capture, '-d', 'mail.add_x_header=0', __FILE__, 'mail-fallback'],
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes
+    );
+    $stdout = stream_get_contents($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    expect(proc_close($process) === 0, 'mail() fallback failed: ' . $stderr . $stdout);
+    $raw = str_replace("\r\n", "\n", (string)file_get_contents($stdin));
+    preg_match_all('/^Reply-To: .*$/m', $raw, $matches);
+    $expected = 'Reply-To: "attacker@example.com," <submitter@example.com>';
+    expect($matches[0] === [$expected, $expected], 'Reply-To display name must stay one address phrase: ' . json_encode($matches[0]));
+    echo "PASS mail() Reply-To display name stays one address phrase\n";
+} finally {
+    if (is_file($capture)) {
+        unlink($capture);
+    }
+    if (is_file($stdin)) {
+        unlink($stdin);
+    }
+    if (is_dir($directory)) {
+        rmdir($directory);
+    }
 }
