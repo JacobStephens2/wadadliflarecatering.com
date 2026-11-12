@@ -1,22 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/../private/includes/pan_menu.php';
 $pageTitle = 'Starches';
 $pageDescription = 'Catering starch options from Wadadli Flare: rice, potatoes, mac and cheese, and baked ziti, with half pan, full shallow pan, and full deep pan pricing.';
 include __DIR__ . '/includes/header.php';
-
-$starchOptions = [
-    ['Jasmine Rice', 30, 60, 120],
-    ['Yellow Rice', 30, 60, 120],
-    ['Spinach Rice', 30, 60, 120],
-    ['Brown Rice', 35, 70, 140],
-    ['Blended Rice', 40, 75, 150],
-    ['Herb Roasted Potatoes', 25, 45, 100],
-    ['Creamy Garlic Potatoes', 40, 60, 120],
-    ['Rustic Mashed Potatoes', 40, 60, 120],
-    ['Scalloped Potatoes', 40, 60, 120],
-    ['Mac & Cheese', 50, 100, 140],
-    ['Baked Ziti', 50, 100, 140],
-];
 ?>
 
 <section class="section">
@@ -28,12 +15,7 @@ $starchOptions = [
         </p>
 
         <div class="grid grid-2" style="margin-top: 3rem;">
-            <?php foreach ($starchOptions as [$name, $halfPan, $fullShallowPan, $fullDeepPan]): ?>
-            <div class="card">
-                <h2 class="card-title"><?php echo htmlspecialchars($name); ?></h2>
-                <p>Half Pan - $<?php echo $halfPan; ?><br>Full Shallow Pan - $<?php echo $fullShallowPan; ?><br>Full Deep Pan - $<?php echo $fullDeepPan; ?></p>
-            </div>
-            <?php endforeach; ?>
+            <?php echo render_pan_menu('starches'); ?>
         </div>
 
         <div style="margin-top: 3rem; text-align: center;">

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/../private/includes/pan_menu.php';
 $pageTitle = 'BBQ Experience';
 $pageDescription = 'Authentic BBQ catering with smoked meats, traditional sides, and classic barbecue flavors. Perfect for summer BBQs and special events.';
 include __DIR__ . '/includes/header.php';
@@ -130,36 +131,7 @@ include __DIR__ . '/includes/header.php';
         <div style="margin-top: 3rem;">
             <h2 class="section-subtitle">Hot Sides</h2>
             <div class="grid grid-2">
-                <div class="card">
-                    <h3 class="card-title">Mac & Cheese</h3>
-                    <p>Half Pan - $50<br>Full Shallow Pan - $100<br>Full Deep Pan - $140</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Rice (Jasmine / Bean / Yellow)</h3>
-                    <p>Half Pan - $30<br>Full Shallow Pan - $60<br>Full Deep Pan - $120</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Herb Roasted Potatoes</h3>
-                    <p>Half Pan - $25<br>Full Shallow Pan - $45<br>Full Deep Pan - $100</p>
-                    <p style="margin-top: 0.75rem;"><a href="<?php echo BASE_URL; ?>starches.php">See all starch options</a></p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">BBQ Beans</h3>
-                    <p>Full Shallow Pan - $70<br>Full Deep Pan - $100</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Fried Plantain</h3>
-                    <p>Half Pan - $50<br>Full Shallow Pan - $100<br>Full Deep Pan - $150</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Cabbage & Carrot</h3>
-                    <p>Half Pan - $45<br>Full Shallow Pan - $80<br>Full Deep Pan - $120</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Vegetable Medley</h3>
-                    <p>Half Pan - $40<br>Full Shallow Pan - $85<br>Full Deep Pan - $140</p>
-                    <p style="margin-top: 0.75rem;"><a href="<?php echo BASE_URL; ?>vegetables.php">See all vegetable options</a></p>
-                </div>
+                <?php echo render_pan_menu('hot-sides'); ?>
             </div>
         </div>
         
