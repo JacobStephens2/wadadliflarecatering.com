@@ -220,14 +220,17 @@ PHP;
             $first = $post($form, $input, 'pass');
             $second = $post($form, $input, 'fail');
             expect(str_contains($first['html'], 'alert-success'), 'First POST succeeds');
-            expect(str_contains($second['html'], 'alert-success'), 'Identical retry with consumed token still sees success');
-            expect(str_contains($second['log'], 'duplicate'), 'Identical retry is logged as duplicate');
+            expect(str_contains($second['html'], 'alert-error'), 'Consumed-token retry does not take the duplicate success path');
+            expect(str_contains($second['html'], 'Verification failed. Please try again.'), 'Consumed-token retry shows the Turnstile error');
+            expect(str_contains($second['log'], 'turnstile'), 'Consumed-token retry is logged as turnstile');
+            expect(!str_contains($second['log'], 'duplicate'), 'Consumed-token retry is not logged as a duplicate');
             $table = $form === 'quote' ? 'quote_requests' : 'contact_submissions';
             expect($pdo->query("SELECT COUNT(*) FROM $table WHERE email='replay-$form@example.com'")->fetchColumn() == 1, 'Retry keeps one saved row');
             expect(count($emails()) === $before + 1, 'Retry keeps one notification');
             $input['message'] .= ' changed content';
             $third = $post($form, $input, 'fail');
             expect(str_contains($third['html'], 'alert-error') && str_contains($third['log'], 'turnstile'), 'Changed content still requires Turnstile');
+            expect($pdo->query("SELECT COUNT(*) FROM $table WHERE email='replay-$form@example.com'")->fetchColumn() == 1, 'Rejected changed content adds no row');
         }
     };
     $tests['db-outage'] = function () use ($directory, $post, $contact, $quote, $emails) {
