@@ -1,23 +1,18 @@
 <?php
+use WadadliFlare\LeadIntake;
+
 require_once __DIR__ . '/includes/config.php';
-require_once PRIVATE_PATH . '/includes/form_submission.php';
+require_once __DIR__ . '/includes/lead_intake.php';
+
+$intake = lead_intake();
+$formState = $intake->handlePageRequest('quote', $_SERVER, $_POST);
+$success = $formState['success'];
+$error = $formState['error'];
+$values = $formState['values'];
+
 $pageTitle = 'Request a Quote';
 $pageDescription = 'Request a catering quote for your event. Fill out our form and we will get back to you with pricing and details.';
 include __DIR__ . '/includes/header.php';
-
-$success = false;
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once PRIVATE_PATH . '/includes/db.php';
-
-    $result = process_form_submission($pdo, 'quote', $_POST);
-    $success = $result['success'];
-    $error = $result['error'];
-
-    // Periodically clean up stale rate limit files
-    purge_stale_rate_limits();
-}
 ?>
 
 <section class="section">
@@ -34,63 +29,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <?php elseif ($error): ?>
             <div class="alert alert-error">
-                <?php echo htmlspecialchars($error); ?>
+                <?php echo htmlspecialchars($error, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
             </div>
             <?php endif; ?>
             
             <form method="POST" action="" onsubmit="return validateForm(this);" class="card" style="padding: 2rem;">
-                <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                    <label for="website_url">Leave this empty</label>
-                    <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off" value="">
-                </div>
-
                 <div class="form-group">
                     <label for="name">Your Name *</label>
-                    <input type="text" id="name" name="name" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'name'); ?>">
+                    <input type="text" id="name" name="name" maxlength="255" required value="<?php echo $values['name']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'email'); ?>">
+                    <input type="email" id="email" name="email" maxlength="255" required value="<?php echo $values['email']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo escaped_form_value($_POST, 'phone'); ?>">
+                    <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo $values['phone']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="event_type">Event Type *</label>
                     <select id="event_type" name="event_type" required>
                         <option value="">Select an event type</option>
-                        <?php foreach (QUOTE_EVENT_TYPES as $eventType): ?>
-                        <option value="<?php echo htmlspecialchars($eventType); ?>" <?php echo ($_POST['event_type'] ?? '') === $eventType ? 'selected' : ''; ?>><?php echo htmlspecialchars($eventType); ?></option>
+                        <?php foreach (LeadIntake::QUOTE_EVENT_TYPES as $eventType): ?>
+                        <?php $escapedType = htmlspecialchars($eventType, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
+                        <option value="<?php echo $escapedType; ?>" <?php echo $values['event_type'] === $escapedType ? 'selected' : ''; ?>><?php echo $escapedType; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="event_date">Event Date</label>
-                    <input type="date" id="event_date" name="event_date" value="<?php echo escaped_form_value($_POST, 'event_date'); ?>">
+                    <input type="date" id="event_date" name="event_date" value="<?php echo $values['event_date']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="guest_count">Number of Guests</label>
-                    <input type="number" id="guest_count" name="guest_count" min="1" value="<?php echo escaped_form_value($_POST, 'guest_count'); ?>">
+                    <input type="number" id="guest_count" name="guest_count" min="1" value="<?php echo $values['guest_count']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="location">Event Location</label>
-                    <input type="text" id="location" name="location" maxlength="255" placeholder="City, venue name, or address" value="<?php echo escaped_form_value($_POST, 'location'); ?>">
+                    <input type="text" id="location" name="location" maxlength="255" placeholder="City, venue name, or address" value="<?php echo $values['location']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="message">Additional Details</label>
-                    <textarea id="message" name="message" maxlength="65535" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo escaped_form_value($_POST, 'message'); ?></textarea>
+                    <textarea id="message" name="message" maxlength="65535" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo $values['message']; ?></textarea>
                 </div>
                 
-                <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-                <div class="cf-turnstile" data-sitekey="<?php echo defined('TURNSTILE_SITE_KEY') ? TURNSTILE_SITE_KEY : ''; ?>" data-theme="light"></div>
+                <?php echo $intake->renderSpamGuards(defined('TURNSTILE_SITE_KEY') ? (string)TURNSTILE_SITE_KEY : ''); ?>
 
                 <button type="submit" class="btn">Submit Quote Request</button>
             </form>

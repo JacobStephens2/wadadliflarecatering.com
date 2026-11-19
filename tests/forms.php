@@ -1,5 +1,5 @@
 <?php
-// Starts and stops its own disposable MySQL server. Never uses production credentials.
+// Starts and stops its own disposable MySQL/MariaDB server. Never uses production credentials.
 function expect($condition, $message) {
     if (!$condition) { throw new RuntimeException($message); }
 }
@@ -13,12 +13,27 @@ function command(array $command): string {
 }
 $directory = sys_get_temp_dir() . '/wadadli-forms-' . bin2hex(random_bytes(6));
 mkdir($directory, 0700);
+$rateDir = $directory . '/rate_limits';
+mkdir($rateDir, 0700);
 $server = null;
-$rateFiles = [];
 try {
-    command(['/usr/sbin/mysqld', '--no-defaults', '--initialize-insecure', '--datadir=' . $directory . '/data', '--log-error=' . $directory . '/init.log']);
+    $isMariaDb = str_contains(command(['/usr/sbin/mysqld', '--version']), 'MariaDB');
+    if ($isMariaDb) {
+        mkdir($directory . '/data', 0700);
+        command(['mysql_install_db', '--no-defaults', '--datadir=' . $directory . '/data', '--auth-root-authentication-method=normal']);
+    } else {
+        command(['/usr/sbin/mysqld', '--no-defaults', '--initialize-insecure', '--datadir=' . $directory . '/data', '--log-error=' . $directory . '/init.log']);
+    }
     $socket = $directory . '/mysql.sock';
-    $server = proc_open(['/usr/sbin/mysqld', '--no-defaults', '--datadir=' . $directory . '/data', '--socket=' . $socket, '--skip-networking', '--mysqlx=0', '--pid-file=' . $directory . '/mysql.pid', '--log-error=' . $directory . '/mysql.log'], [1 => ['file', $directory . '/stdout', 'w'], 2 => ['file', $directory . '/stderr', 'w']], $pipes);
+    $serverCommand = [
+        '/usr/sbin/mysqld', '--no-defaults', '--datadir=' . $directory . '/data',
+        '--socket=' . $socket, '--skip-networking',
+        '--pid-file=' . $directory . '/mysql.pid', '--log-error=' . $directory . '/mysql.log',
+    ];
+    if (!$isMariaDb) {
+        $serverCommand[] = '--mysqlx=0';
+    }
+    $server = proc_open($serverCommand, [1 => ['file', $directory . '/stdout', 'w'], 2 => ['file', $directory . '/stderr', 'w']], $pipes);
     $pdo = null;
     for ($attempt = 0; $attempt < 100; $attempt++) {
         try { $pdo = new PDO("mysql:unix_socket=$socket", 'root', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); break; }
@@ -28,19 +43,54 @@ try {
     $schema = command(['git', 'show', 'master:private/schema.sql']);
     $pdo->exec(str_replace('wadadli_flare', 'wadadli_forms_test', $schema));
     $pdo->exec("INSERT INTO contact_submissions (name, email, message) VALUES ('Existing', 'existing@example.com', 'Existing lead')");
-    if (file_exists(__DIR__ . '/../private/migrations/007-form-correctness.sql')) {
+    if ($pdo->query("SHOW COLUMNS FROM contact_submissions LIKE 'flag_reason'")->fetchColumn() === false && file_exists(__DIR__ . '/../private/migrations/007-form-correctness.sql')) {
         $pdo->exec(file_get_contents(__DIR__ . '/../private/migrations/007-form-correctness.sql'));
     }
     $mailFile = $directory . '/mail.jsonl';
+    $wiringPath = __DIR__ . '/../public/includes/lead_intake.php';
+    $runnerCode = <<<'PHP'
+define('ENV_LOADED', true);
+[, $wiring, $page, $tempRateDir, $mailLog, $turnstileMode] = $argv;
+require $wiring;
+$dbConfig = [
+    'host' => getenv('DB_HOST') ?: 'localhost',
+    'name' => getenv('DB_NAME') ?: 'wadadli_flare',
+    'user' => getenv('DB_USER') ?: 'root',
+    'pass' => getenv('DB_PASS') ?: '',
+];
+\lead_intake(new \WadadliFlare\LeadIntake(
+    static fn(): PDO => \open_database($dbConfig),
+    static fn(string $token, string $clientIp): bool => $turnstileMode === 'pass',
+    static function (array $message) use ($mailLog): bool {
+        file_put_contents($mailLog, json_encode([
+            'subject' => $message['subject'],
+            'body' => $message['body'],
+        ]) . "\n", FILE_APPEND);
+        return true;
+    },
+    CONTACT_EMAIL,
+    $tempRateDir
+));
+$_POST = json_decode(stream_get_contents(STDIN), true);
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_SERVER['REMOTE_ADDR'] = getenv('TEST_IP') ?: 'unknown';
+require $page;
+PHP;
     $ipCounter = 0;
-    $startPost = function ($form, $data, $turnstile = 'pass', $ip = null) use ($directory, $socket, $mailFile, &$ipCounter, &$rateFiles) {
+    $startPost = function ($form, $data, $turnstile = 'pass', $ip = null, $dbHostOverride = null) use ($socket, $rateDir, $mailFile, $wiringPath, $runnerCode, &$ipCounter) {
         $ip = $ip ?? '198.18.' . intdiv(++$ipCounter, 250) . '.' . ($ipCounter % 250);
-        $rateFiles[] = __DIR__ . '/../private/rate_limits/' . md5($ip . $form) . '.json';
+        $pagePath = __DIR__ . '/../public/' . ($form === 'contact' ? 'contact' : 'quote-request') . '.php';
         $environment = array_merge(getenv(), [
-            'DB_HOST' => "localhost;unix_socket=$socket", 'DB_NAME' => 'wadadli_forms_test', 'DB_USER' => 'root', 'DB_PASS' => '',
-            'TURNSTILE_SECRET' => 'test-only', 'TEST_TURNSTILE' => $turnstile, 'TEST_IP' => $ip, 'TEST_MAIL_FILE' => $mailFile,
+            'DB_HOST' => $dbHostOverride ?? "localhost;unix_socket=$socket", 'DB_NAME' => 'wadadli_forms_test', 'DB_USER' => 'root', 'DB_PASS' => '',
+            'TEST_IP' => $ip,
         ]);
-        $process = proc_open([PHP_BINARY, __DIR__ . '/support/form_post.php', $form], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, $environment);
+        $process = proc_open(
+            [PHP_BINARY, '-r', $runnerCode, $wiringPath, $pagePath, $rateDir, $mailFile, $turnstile],
+            [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            null,
+            $environment
+        );
         fwrite($pipes[0], json_encode($data)); fclose($pipes[0]);
         return [$process, $pipes, $ip];
     };
@@ -51,7 +101,7 @@ try {
         expect(proc_close($process) === 0, 'Form POST crashed: ' . $log);
         return ['html' => $html, 'log' => $log, 'ip' => $ip];
     };
-    $post = fn($form, $data, $turnstile = 'pass', $ip = null) => $finishPost($startPost($form, $data, $turnstile, $ip));
+    $post = fn($form, $data, $turnstile = 'pass', $ip = null, $dbHostOverride = null) => $finishPost($startPost($form, $data, $turnstile, $ip, $dbHostOverride));
     $emails = fn() => file_exists($mailFile) ? array_map(fn($line) => json_decode($line, true), file($mailFile)) : [];
     $contact = ['name' => 'Lynch', 'email' => 'lynch@example.com', 'phone' => '', 'message' => 'Do you offer a discount for 200 guests?', 'cf-turnstile-response' => 'valid'];
     $quote = array_merge($contact, ['event_type' => 'Wedding', 'event_date' => '', 'guest_count' => '200', 'location' => 'Elverson']);
@@ -186,6 +236,23 @@ try {
             expect(str_contains($third['html'], 'alert-error') && str_contains($third['log'], 'turnstile'), 'Changed content still requires Turnstile');
         }
     };
+    $tests['db-outage'] = function () use ($directory, $post, $contact, $quote, $emails) {
+        $missingSocket = "localhost;unix_socket=$directory/missing-mysql.sock";
+        foreach (['contact' => $contact, 'quote' => $quote] as $form => $input) {
+            $input['name'] = 'Pat <Chef>';
+            $input['email'] = "outage-$form@example.com";
+            $input['message'] = 'Hold "my" spot';
+            $before = count($emails());
+            $result = $post($form, $input, 'pass', null, $missingSocket);
+            expect(str_contains($result['html'], '<!DOCTYPE html>') && str_contains($result['html'], '</html>'), "$form DB outage renders complete HTML page");
+            expect(str_contains($result['html'], '<header>') && str_contains($result['html'], '<footer>'), "$form DB outage includes header and footer");
+            expect(str_contains($result['html'], 'alert-error') && str_contains($result['html'], 'Sorry, there was an error processing your request.'), "$form DB outage shows standard processing error");
+            expect(str_contains($result['html'], 'Pat &lt;Chef&gt;') && str_contains($result['html'], 'Hold &quot;my&quot; spot'), "$form DB outage preserves escaped inputs");
+            expect(substr_count($result['log'], 'Form rejection') === 1 && str_contains($result['log'], '"reason":"processing"'), "$form DB outage logs processing rejection");
+            expect(!str_contains($result['log'], 'Hold "my" spot'), "$form DB outage never logs user content");
+            expect(count($emails()) === $before, "$form DB outage sends no email");
+        }
+    };
     $selected = $argv[1] ?? null;
     expect($selected === null || isset($tests[$selected]), 'Unknown test selection');
     foreach ($tests as $name => $test) {
@@ -194,6 +261,5 @@ try {
     }
 } finally {
     if (is_resource($server)) { proc_terminate($server); proc_close($server); }
-    foreach (array_unique($rateFiles) as $file) { if (file_exists($file)) { unlink($file); } }
     command(['rm', '-rf', $directory]);
 }

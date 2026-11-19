@@ -5,6 +5,7 @@
 require_once __DIR__ . '/private/includes/db.php';
 
 try {
+    $pdo = open_database();
     // Count total leads
     $stmt = $pdo->query("SELECT COUNT(*) as total FROM quote_requests");
     $count = $stmt->fetch();
