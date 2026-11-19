@@ -1,32 +1,37 @@
 <?php
 /**
  * Database Connection
- * Connects to MySQL database using credentials from .env file
+ * Connects to MySQL database using injected configuration or credentials from .env file
  */
 
-// Load environment variables using phpdotenv
-require_once __DIR__ . '/env.php';
+/**
+ * Open a lazy PDO MySQL connection, throwing PDOException on failure.
+ */
+function open_database(array $config = []): PDO {
+    if ($config === []) {
+        require_once __DIR__ . '/env.php';
+        $readEnv = static fn(string $key): string => (string)($_ENV[$key] ?? getenv($key) ?: '');
+        $config = [
+            'host' => $readEnv('DB_HOST'),
+            'name' => $readEnv('DB_NAME'),
+            'user' => $readEnv('DB_USER'),
+            'pass' => $readEnv('DB_PASS'),
+        ];
+    }
 
-// Database configuration
-$dbHost = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
-$dbName = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?: 'wadadli_flare';
-$dbUser = $_ENV['DB_USER'] ?? getenv('DB_USER') ?: 'root';
-$dbPass = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '';
+    $dbHost = ($config['host'] ?? '') !== '' ? (string)$config['host'] : 'localhost';
+    $dbName = ($config['name'] ?? '') !== '' ? (string)$config['name'] : 'wadadli_flare';
+    $dbUser = ($config['user'] ?? '') !== '' ? (string)$config['user'] : 'root';
+    $dbPass = (string)($config['pass'] ?? '');
 
-try {
-    $pdo = new PDO(
+    return new PDO(
         "mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4",
         $dbUser,
         $dbPass,
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false
+            PDO::ATTR_EMULATE_PREPARES => false,
         ]
     );
-} catch (PDOException $e) {
-    error_log("Database connection failed: " . $e->getMessage());
-    die("Database connection failed. Please try again later.");
 }
-
-

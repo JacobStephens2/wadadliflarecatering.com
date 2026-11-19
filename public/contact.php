@@ -1,23 +1,16 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once PRIVATE_PATH . '/includes/form_submission.php';
+require_once __DIR__ . '/includes/lead_intake.php';
+
+$intake = lead_intake();
+$formState = $intake->handlePageRequest('contact', $_SERVER, $_POST);
+$success = $formState['success'];
+$error = $formState['error'];
+$values = $formState['values'];
+
 $pageTitle = 'Contact';
 $pageDescription = 'Contact Wadadli Flare Catering. Phone, email, and contact form.';
 include __DIR__ . '/includes/header.php';
-
-$success = false;
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once PRIVATE_PATH . '/includes/db.php';
-
-    $result = process_form_submission($pdo, 'contact', $_POST);
-    $success = $result['success'];
-    $error = $result['error'];
-
-    // Periodically clean up stale rate limit files
-    purge_stale_rate_limits();
-}
 ?>
 
 <section class="section">
@@ -30,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <?php elseif ($error): ?>
         <div class="alert alert-error" style="margin-top: 2rem;">
-            <?php echo htmlspecialchars($error); ?>
+            <?php echo htmlspecialchars($error, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
         </div>
         <?php endif; ?>
         
@@ -82,33 +75,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2 class="section-subtitle">Send Us a Message</h2>
                 
                 <form method="POST" action="" onsubmit="return validateForm(this);">
-                    <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                        <label for="website_url">Leave this empty</label>
-                        <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off" value="">
-                    </div>
-
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'name'); ?>">
+                        <input type="text" id="name" name="name" maxlength="255" required value="<?php echo $values['name']; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" maxlength="255" required value="<?php echo escaped_form_value($_POST, 'email'); ?>">
+                        <input type="email" id="email" name="email" maxlength="255" required value="<?php echo $values['email']; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo escaped_form_value($_POST, 'phone'); ?>">
+                        <input type="tel" id="phone" name="phone" maxlength="50" value="<?php echo $values['phone']; ?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="message">Message *</label>
-                        <textarea id="message" name="message" maxlength="65535" required><?php echo escaped_form_value($_POST, 'message'); ?></textarea>
+                        <textarea id="message" name="message" maxlength="65535" required><?php echo $values['message']; ?></textarea>
                     </div>
                     
-                    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-                    <div class="cf-turnstile" data-sitekey="<?php echo defined('TURNSTILE_SITE_KEY') ? TURNSTILE_SITE_KEY : ''; ?>" data-theme="light"></div>
+                    <?php echo $intake->renderSpamGuards(TURNSTILE_SITE_KEY); ?>
 
                     <button type="submit" class="btn">Send Message</button>
                 </form>
