@@ -44,6 +44,47 @@ final class InMemoryLeadPdo extends PDO {
     }
 }
 
+/**
+ * Counts database opens, Turnstile calls, and whether a lock query exists while Turnstile runs.
+ */
+final class LeadIntakeProbe {
+    public int $opens = 0;
+    public int $verifyCalls = 0;
+    public ?int $opensDuringVerify = null;
+    public bool $lockDuringVerify = false;
+    public int $mailCalls = 0;
+
+    public function __construct(
+        public readonly InMemoryLeadPdo $pdo,
+        private readonly bool $turnstilePasses,
+    ) {}
+
+    public function intake(string $rateDir): LeadIntake {
+        return new LeadIntake(
+            function (): PDO {
+                $this->opens++;
+                return $this->pdo;
+            },
+            function (string $token, string $ip): bool {
+                $this->verifyCalls++;
+                $this->opensDuringVerify = $this->opens;
+                foreach ($this->pdo->queries as $query) {
+                    if (str_starts_with($query['query'], 'SELECT GET_LOCK(')) {
+                        $this->lockDuringVerify = true;
+                    }
+                }
+                return $this->turnstilePasses;
+            },
+            function (array $message): bool {
+                $this->mailCalls++;
+                return true;
+            },
+            'owner@example.com',
+            $rateDir
+        );
+    }
+}
+
 function expect(bool $condition, string $message): void {
     if (!$condition) {
         throw new RuntimeException($message);
@@ -268,9 +309,11 @@ try {
     expect(!file_exists($staleFile), 'Rate limiting purges >2h stale files internally');
     expect(file_exists($freshOtherFile), 'Rate limiting keeps fresh files');
     $clearLogs();
+    $queriesBeforeBlocked = count($pdo->queries);
     $blocked = $rateIntake->submit('contact', array_merge($contact, ['email' => 'ok4@example.com']), $rateIp);
     expect($blocked === ['success' => false, 'error' => 'Please wait before submitting again.'], '4th request within hour is rate limited');
     expect(str_contains($readLogs(), '"reason":"rate limit"'), 'Rate limit rejection is logged');
+    expect(count($pdo->queries) === $queriesBeforeBlocked, 'Rate limit rejection does not open the database or take a lock');
 
     // Concurrent flock verification across 4 parallel subprocesses on a fresh IP.
     $concurrentIp = '198.51.102.20';
@@ -415,30 +458,111 @@ try {
     expect(!str_contains($outageLog, 'SECRET_DSN_LEAK') && !str_contains($outageLog, 'PRIVATE_USER_TEXT'), 'DB outage never logs exception text or submitted values');
     echo "PASS graceful DB outage handling\n";
 
-    // 10. Duplicate suppression bypasses rate limit, Turnstile, INSERT, and mail.
-    $dupPdo = new InMemoryLeadPdo();
-    $dupPdo->duplicateResult = 99;
-    $dupTurnstile = 0;
-    $dupMail = 0;
-    $dupIntake = new LeadIntake(
-        $dupPdo,
-        static function (string $token, string $ip) use (&$dupTurnstile): bool {
-            $dupTurnstile++;
-            return true;
-        },
-        static function (array $message) use (&$dupMail): bool {
-            $dupMail++;
-            return true;
-        },
-        'owner@example.com',
-        $rateDir
-    );
-    $clearLogs();
-    $dupRes = $dupIntake->submit('contact', $contact, '198.51.107.1');
-    expect($dupRes === ['success' => true, 'error' => ''], 'Duplicate returns fake success');
-    expect($dupTurnstile === 0 && $dupMail === 0 && $dupPdo->inserts === [], 'Duplicate bypasses Turnstile, insert, and mail');
-    expect(str_contains($readLogs(), '"reason":"duplicate"'), 'Duplicate logs duplicate rejection');
-    echo "PASS duplicate suppression and lock release\n";
+    // 10. Rate limit and Turnstile finish before any database open, advisory lock, or duplicate lookup.
+    // An exact duplicate stays one save and one notification only after both checks.
+    // A missing or rejected Turnstile token never takes that success path.
+    foreach (['contact' => $contact, 'quote' => $quote] as $form => $payload) {
+        $limited = new LeadIntakeProbe(new InMemoryLeadPdo(), true);
+        $limitIntake = $limited->intake($rateDir);
+        $limitIp = $form === 'quote' ? '198.51.108.2' : '198.51.108.1';
+        for ($i = 0; $i < 3; $i++) {
+            $slot = $limitIntake->submit($form, array_merge($payload, ['email' => "slot-$form-$i@example.com"]), $limitIp);
+            expect($slot['success'] === true, "$form rate-limit slot $i must succeed");
+        }
+        $opensAfterSlots = $limited->opens;
+        $turnstileAfterSlots = $limited->verifyCalls;
+        $limited->pdo->duplicateResult = 99;
+        $clearLogs();
+        $limitedDuplicate = $limitIntake->submit($form, $payload, $limitIp);
+        expect(
+            $limitedDuplicate === ['success' => false, 'error' => 'Please wait before submitting again.'],
+            "$form rate limit blocks the duplicate success path"
+        );
+        expect($limited->opens === $opensAfterSlots, "$form rate-limited duplicate does not open the database");
+        expect($limited->verifyCalls === $turnstileAfterSlots, "$form rate-limited duplicate does not call Turnstile");
+        expect(str_contains($readLogs(), '"reason":"rate limit"'), "$form rate-limited duplicate logs rate limit");
+        expect(!str_contains($readLogs(), '"reason":"duplicate"'), "$form rate-limited duplicate is not treated as a duplicate");
+
+        $rejectedProbe = new LeadIntakeProbe(new InMemoryLeadPdo(), false);
+        $rejectedProbe->pdo->duplicateResult = 99;
+        $clearLogs();
+        $rejected = $rejectedProbe->intake($rateDir)->submit(
+            $form,
+            $payload,
+            $form === 'quote' ? '198.51.108.4' : '198.51.108.3'
+        );
+        expect(
+            $rejected === ['success' => false, 'error' => 'Verification failed. Please try again.'],
+            "$form rejected Turnstile does not take the duplicate success path"
+        );
+        expect(
+            $rejectedProbe->verifyCalls === 1 && $rejectedProbe->opensDuringVerify === 0 && $rejectedProbe->lockDuringVerify === false,
+            "$form Turnstile finishes before the database opens or the advisory lock is taken"
+        );
+        expect(
+            $rejectedProbe->opens === 0 && $rejectedProbe->mailCalls === 0 && $rejectedProbe->pdo->inserts === [],
+            "$form rejected Turnstile does not open the database, insert, or send mail"
+        );
+        expect(str_contains($readLogs(), '"reason":"turnstile"') && !str_contains($readLogs(), '"reason":"duplicate"'), "$form rejected Turnstile logs turnstile, not duplicate");
+
+        $missingProbe = new LeadIntakeProbe(new InMemoryLeadPdo(), true);
+        $missingProbe->pdo->duplicateResult = 99;
+        $missingPayload = $payload;
+        unset($missingPayload['cf-turnstile-response']);
+        $clearLogs();
+        $missing = $missingProbe->intake($rateDir)->submit(
+            $form,
+            $missingPayload,
+            $form === 'quote' ? '198.51.108.6' : '198.51.108.5'
+        );
+        expect(
+            $missing === ['success' => false, 'error' => 'Verification failed. Please try again.'],
+            "$form missing Turnstile token does not take the duplicate success path"
+        );
+        expect(
+            $missingProbe->verifyCalls === 0 && $missingProbe->opens === 0 && $missingProbe->pdo->queries === [],
+            "$form missing Turnstile token skips the verifier and the database"
+        );
+        expect(str_contains($readLogs(), '"reason":"turnstile"') && !str_contains($readLogs(), '"reason":"duplicate"'), "$form missing Turnstile token logs turnstile, not duplicate");
+
+        $duplicateProbe = new LeadIntakeProbe(new InMemoryLeadPdo(), true);
+        $duplicateProbe->pdo->duplicateResult = 99;
+        $clearLogs();
+        $duplicate = $duplicateProbe->intake($rateDir)->submit(
+            $form,
+            $payload,
+            $form === 'quote' ? '198.51.108.8' : '198.51.108.7'
+        );
+        expect($duplicate === ['success' => true, 'error' => ''], "$form exact duplicate returns success after the checks");
+        expect(
+            $duplicateProbe->verifyCalls === 1 && $duplicateProbe->opensDuringVerify === 0 && $duplicateProbe->lockDuringVerify === false,
+            "$form duplicate Turnstile finishes before the database opens or the advisory lock is taken"
+        );
+        expect(
+            $duplicateProbe->opens === 1 && $duplicateProbe->mailCalls === 0 && $duplicateProbe->pdo->inserts === [],
+            "$form exact duplicate opens the database once and does not insert or send mail"
+        );
+        $lockQueries = array_values(array_filter(
+            $duplicateProbe->pdo->queries,
+            static fn(array $query): bool => str_starts_with($query['query'], 'SELECT GET_LOCK(') || str_starts_with($query['query'], 'SELECT RELEASE_LOCK(')
+        ));
+        expect(
+            count($lockQueries) === 2
+            && str_starts_with($lockQueries[0]['query'], 'SELECT GET_LOCK(')
+            && str_starts_with($lockQueries[1]['query'], 'SELECT RELEASE_LOCK('),
+            "$form duplicate takes the advisory lock and releases it"
+        );
+        $table = $form === 'quote' ? 'quote_requests' : 'contact_submissions';
+        $sawLookup = false;
+        foreach ($duplicateProbe->pdo->queries as $query) {
+            if (str_starts_with($query['query'], 'SELECT id FROM ') && str_contains($query['query'], $table)) {
+                $sawLookup = true;
+            }
+        }
+        expect($sawLookup, "$form duplicate lookup reads $table");
+        expect(str_contains($readLogs(), '"reason":"duplicate"'), "$form duplicate logs duplicate");
+    }
+    echo "PASS rate limit and Turnstile before duplicate database work\n";
 
     // 11. Public Contact and Quote pages render cleanly with REQUEST_METHOD unset and zero PHP warnings.
     foreach (['contact.php', 'quote-request.php'] as $page) {

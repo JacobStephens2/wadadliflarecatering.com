@@ -126,41 +126,33 @@ final class LeadIntake {
         $validationError = $this->validateData($form, $data, $malformed);
         $saved = $this->toDatabasePayload($form, $data);
         $flagReason = null;
-        $lock = null;
-        $pdo = null;
 
         try {
+            if (!$this->checkRateLimit($form, $ip)) {
+                $this->logRejection($form, 'rate limit', $ip);
+                return ['success' => false, 'error' => 'Please wait before submitting again.'];
+            }
+            $token = $input['cf-turnstile-response'] ?? '';
+            if (!is_string($token) || $token === '' || !($this->verifyTurnstile)($token, $ip)) {
+                $this->logRejection($form, 'turnstile', $ip);
+                return ['success' => false, 'error' => 'Verification failed. Please try again.'];
+            }
+            if ($validationError !== '') {
+                $this->logRejection($form, 'validation', $ip);
+                return ['success' => false, 'error' => $validationError];
+            }
+
+            $pdo = $this->openPdo();
+            $lock = $this->acquireLock($pdo, $form, $data['email']);
             try {
-                if ($validationError === '') {
-                    $pdo = $this->openPdo();
-                    // Serialize through verification and save. A retry may reuse an already
-                    // consumed Turnstile token; only exact saved leads bypass the gates.
-                    $lock = $this->acquireLock($pdo, $form, $data['email']);
-                    if ($this->isDuplicateSubmission($pdo, $form, $saved)) {
-                        $this->logRejection($form, 'duplicate', $ip);
-                        return ['success' => true, 'error' => ''];
-                    }
-                }
-                if (!$this->checkRateLimit($form, $ip)) {
-                    $this->logRejection($form, 'rate limit', $ip);
-                    return ['success' => false, 'error' => 'Please wait before submitting again.'];
-                }
-                $token = $input['cf-turnstile-response'] ?? '';
-                if (!is_string($token) || $token === '' || !($this->verifyTurnstile)($token, $ip)) {
-                    $this->logRejection($form, 'turnstile', $ip);
-                    return ['success' => false, 'error' => 'Verification failed. Please try again.'];
-                }
-                if ($validationError !== '') {
-                    $this->logRejection($form, 'validation', $ip);
-                    return ['success' => false, 'error' => $validationError];
+                if ($this->isDuplicateSubmission($pdo, $form, $saved)) {
+                    $this->logRejection($form, 'duplicate', $ip);
+                    return ['success' => true, 'error' => ''];
                 }
                 $flagReason = $this->detectSpamReason($data);
-                $pdo = $pdo ?? $this->openPdo();
                 $this->saveSubmission($pdo, $form, $saved, $flagReason);
             } finally {
-                if ($lock !== null && $pdo !== null) {
-                    $this->releaseLock($pdo, $lock);
-                }
+                $this->releaseLock($pdo, $lock);
             }
         } catch (\Throwable) {
             // Database/lock/filesystem exceptions can contain submitted values; do not log their text.
