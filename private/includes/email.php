@@ -22,6 +22,9 @@ function strip_header_line_breaks(string $value): string {
 /**
  * Send an outbound email message using injected SMTP configuration.
  *
+ * Pass $mailer = false to force the mail() fallback even when Composer/PHPMailer is present,
+ * or pass a PHPMailer-compatible object to inject an SMTP client directly.
+ *
  * @param array{
  *     to: string,
  *     subject: string,
@@ -41,17 +44,21 @@ function strip_header_line_breaks(string $value): string {
  *     from_name?: string,
  * } $smtp
  */
-function send_email(array $message, array $smtp = [], ?object $mailer = null): bool {
+function send_email(array $message, array $smtp = [], object|false|null $mailer = null): bool {
     $defaultFromEmail = (string)($smtp['from_email'] ?? 'wadadliflare.catering@gmail.com');
     $defaultFromName = (string)($smtp['from_name'] ?? 'Wadadli Flare Catering');
-
-    $to = strip_header_line_breaks((string)($message['to'] ?? ''));
-    $subject = strip_header_line_breaks((string)($message['subject'] ?? ''));
-    $body = (string)($message['body'] ?? '');
     $fromEmail = strip_header_line_breaks((string)($message['from_email'] ?? $defaultFromEmail));
     $fromName = (string)($message['from_name'] ?? $defaultFromName);
-    $replyTo = strip_header_line_breaks((string)($message['reply_to'] ?? $fromEmail));
-    $replyToName = (string)($message['reply_to_name'] ?? $fromName);
+
+    $normalized = [
+        'to' => strip_header_line_breaks((string)($message['to'] ?? '')),
+        'subject' => strip_header_line_breaks((string)($message['subject'] ?? '')),
+        'body' => (string)($message['body'] ?? ''),
+        'from_email' => $fromEmail,
+        'from_name' => $fromName,
+        'reply_to' => strip_header_line_breaks((string)($message['reply_to'] ?? $fromEmail)),
+        'reply_to_name' => (string)($message['reply_to_name'] ?? $fromName),
+    ];
 
     if ($mailer === null) {
         if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer', false)) {
@@ -65,41 +72,31 @@ function send_email(array $message, array $smtp = [], ?object $mailer = null): b
         }
     }
 
-    if ($mailer !== null) {
-        return send_email_smtp(
-            $mailer,
-            $to,
-            $subject,
-            $body,
-            $fromEmail,
-            $fromName,
-            $replyTo,
-            $replyToName,
-            $smtp
-        );
+    if (is_object($mailer)) {
+        return send_email_smtp($mailer, $normalized, $smtp);
     }
 
-    $headers = 'From: ' . quoted_address_phrase($fromName) . " <$fromEmail>\r\n";
-    $headers .= 'Reply-To: ' . quoted_address_phrase($replyToName) . " <$replyTo>\r\n";
+    $headers = 'From: ' . quoted_address_phrase($normalized['from_name']) . " <{$normalized['from_email']}>\r\n";
+    $headers .= 'Reply-To: ' . quoted_address_phrase($normalized['reply_to_name']) . " <{$normalized['reply_to']}>\r\n";
     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
-    return mail($to, $subject, $body, $headers);
+    return mail($normalized['to'], $normalized['subject'], $normalized['body'], $headers);
 }
 
 /**
- * Deliver an email through a PHPMailer-compatible SMTP client.
+ * Deliver a normalized email message through a PHPMailer-compatible SMTP client.
+ *
+ * @param array{
+ *     to: string,
+ *     subject: string,
+ *     body: string,
+ *     from_email: string,
+ *     from_name: string,
+ *     reply_to: string,
+ *     reply_to_name: string,
+ * } $message
  */
-function send_email_smtp(
-    object $mailer,
-    string $to,
-    string $subject,
-    string $body,
-    string $fromEmail,
-    string $fromName,
-    string $replyTo,
-    string $replyToName,
-    array $smtp
-): bool {
+function send_email_smtp(object $mailer, array $message, array $smtp): bool {
     $smtpHost = (string)($smtp['host'] ?? 'smtp.resend.com');
     $smtpPort = (int)($smtp['port'] ?? 587);
     $smtpUser = (string)($smtp['user'] ?? '');
@@ -115,14 +112,14 @@ function send_email_smtp(
         $mailer->SMTPSecure = $smtpEncryption;
         $mailer->Port = $smtpPort;
 
-        $mailer->setFrom($fromEmail, $fromName);
-        $mailer->addAddress($to);
-        $mailer->addReplyTo($replyTo, $replyToName);
+        $mailer->setFrom($message['from_email'], $message['from_name']);
+        $mailer->addAddress($message['to']);
+        $mailer->addReplyTo($message['reply_to'], $message['reply_to_name']);
 
         $mailer->isHTML(true);
-        $mailer->Subject = $subject;
-        $mailer->Body = $body;
-        $mailer->AltBody = strip_tags($body);
+        $mailer->Subject = $message['subject'];
+        $mailer->Body = $message['body'];
+        $mailer->AltBody = strip_tags($message['body']);
 
         return (bool)$mailer->send();
     } catch (\Throwable $e) {

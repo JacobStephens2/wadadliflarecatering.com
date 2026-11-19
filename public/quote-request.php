@@ -80,7 +80,7 @@ include __DIR__ . '/includes/header.php';
                     <textarea id="message" name="message" maxlength="65535" rows="5" placeholder="Tell us about your event, dietary restrictions, preferred cuisine styles, or any special requests..."><?php echo $values['message']; ?></textarea>
                 </div>
                 
-                <?php echo $intake->renderSpamGuards(defined('TURNSTILE_SITE_KEY') ? (string)TURNSTILE_SITE_KEY : ''); ?>
+                <?php echo $intake->renderSpamGuards(TURNSTILE_SITE_KEY); ?>
 
                 <button type="submit" class="btn">Submit Quote Request</button>
             </form>

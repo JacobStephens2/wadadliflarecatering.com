@@ -465,6 +465,26 @@ try {
         expect(str_contains($html, '</html>'), "$page renders complete HTML");
     }
     echo "PASS Contact and Quote pages render cleanly with unset REQUEST_METHOD\n";
+
+    // 12. Turnstile HTTP adapter rejects empty secret, empty token, and disabled fopen without global wrapper hacks.
+    $turnstileCheckProc = proc_open(
+        [
+            PHP_BINARY,
+            '-d', 'allow_url_fopen=0',
+            '-r', 'define("ENV_LOADED", true); require $argv[1]; exit((verify_turnstile_http("", "tok", "1.2.3.4") === false && verify_turnstile_http("sec", "", "1.2.3.4") === false && verify_turnstile_http("sec", "tok", "1.2.3.4") === false) ? 0 : 1);',
+            __DIR__ . '/../public/includes/lead_intake.php',
+        ],
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        null,
+        []
+    );
+    stream_get_contents($pipes[1]);
+    $tsErr = (string)stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    expect(proc_close($turnstileCheckProc) === 0 && $tsErr === '', "verify_turnstile_http failure path check failed: $tsErr");
+    echo "PASS Turnstile HTTP adapter safely rejects missing inputs and failed HTTP calls\n";
 } finally {
     ini_set('error_log', $previousLog === false ? '' : $previousLog);
     array_map('unlink', glob($rateDir . '/*') ?: []);

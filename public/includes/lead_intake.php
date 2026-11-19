@@ -52,12 +52,6 @@ function lead_intake(?LeadIntake $override = null): LeadIntake {
         return $instance;
     }
 
-    $dbConfig = [
-        'host' => $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost',
-        'name' => $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?: 'wadadli_flare',
-        'user' => $_ENV['DB_USER'] ?? getenv('DB_USER') ?: 'root',
-        'pass' => $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '',
-    ];
     $smtpConfig = [
         'host' => $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: 'smtp.resend.com',
         'port' => $_ENV['SMTP_PORT'] ?? getenv('SMTP_PORT') ?: 587,
@@ -70,7 +64,7 @@ function lead_intake(?LeadIntake $override = null): LeadIntake {
     $turnstileSecret = defined('TURNSTILE_SECRET') ? TURNSTILE_SECRET : '';
 
     $instance = new LeadIntake(
-        static fn(): PDO => open_database($dbConfig),
+        static fn(): PDO => open_database(),
         static fn(string $token, string $clientIp): bool => verify_turnstile_http($turnstileSecret, $token, $clientIp),
         static fn(array $message): bool => send_email($message, $smtpConfig),
         CONTACT_EMAIL,

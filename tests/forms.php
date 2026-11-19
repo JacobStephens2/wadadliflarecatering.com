@@ -52,14 +52,8 @@ try {
 define('ENV_LOADED', true);
 [, $wiring, $page, $tempRateDir, $mailLog, $turnstileMode] = $argv;
 require $wiring;
-$dbConfig = [
-    'host' => getenv('DB_HOST') ?: 'localhost',
-    'name' => getenv('DB_NAME') ?: 'wadadli_flare',
-    'user' => getenv('DB_USER') ?: 'root',
-    'pass' => getenv('DB_PASS') ?: '',
-];
 \lead_intake(new \WadadliFlare\LeadIntake(
-    static fn(): PDO => \open_database($dbConfig),
+    static fn(): PDO => \open_database(),
     static fn(string $token, string $clientIp): bool => $turnstileMode === 'pass',
     static function (array $message) use ($mailLog): bool {
         file_put_contents($mailLog, json_encode([

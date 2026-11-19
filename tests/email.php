@@ -1,10 +1,7 @@
 <?php
 if (($argv[1] ?? '') === 'mail-fallback') {
     require __DIR__ . '/../private/includes/email.php';
-    if (class_exists('PHPMailer\PHPMailer\PHPMailer', false)) {
-        fwrite(STDERR, "PHPMailer is loaded; mail() fallback was not exercised\n");
-        exit(3);
-    }
+    $mailer = ($argv[2] ?? 'forced') === 'auto' ? null : false;
     $sent = send_email(
         [
             'to' => 'owner@example.com',
@@ -16,8 +13,13 @@ if (($argv[1] ?? '') === 'mail-fallback') {
         [
             'from_email' => 'noreply@example.com',
             'from_name' => 'Wadadli, "Flare" \\ Catering',
-        ]
+        ],
+        $mailer
     );
+    if (class_exists('PHPMailer\PHPMailer\PHPMailer', false)) {
+        fwrite(STDERR, "PHPMailer was loaded during mail() fallback\n");
+        exit(3);
+    }
     exit($sent ? 0 : 1);
 }
 
@@ -29,7 +31,7 @@ function expect(bool $condition, string $message): void {
     }
 }
 
-// 1. mail() fallback quotes both From and Reply-To display names without Composer on disk.
+// 1. mail() fallback quotes both From and Reply-To display names (both forced and when Composer is absent).
 $directory = sys_get_temp_dir() . '/wadadli-mail-fallback-' . bin2hex(random_bytes(6));
 mkdir($directory, 0700);
 $capture = $directory . '/capture.sh';
@@ -37,38 +39,46 @@ $stdin = $directory . '/mail-stdin.txt';
 file_put_contents($capture, "#!/bin/sh\ncat >> " . escapeshellarg($stdin) . "\nexit 0\n");
 chmod($capture, 0700);
 try {
-    $process = proc_open(
-        [PHP_BINARY, '-d', 'sendmail_path=' . $capture, '-d', 'mail.add_x_header=0', __FILE__, 'mail-fallback'],
-        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-        $pipes
-    );
-    $stdout = stream_get_contents($pipes[1]);
-    $stderr = stream_get_contents($pipes[2]);
-    fclose($pipes[1]);
-    fclose($pipes[2]);
-    expect(proc_close($process) === 0, 'mail() fallback failed: ' . $stderr . $stdout);
-    $raw = str_replace("\r\n", "\n", (string)file_get_contents($stdin));
-    preg_match_all('/^From: .*$/m', $raw, $fromMatches);
-    preg_match_all('/^Reply-To: .*$/m', $raw, $replyToMatches);
-    expect(
-        $fromMatches[0] === ['From: "Wadadli, \"Flare\" \\\\ Catering" <noreply@example.com>'],
-        'From display name must be RFC-quoted: ' . json_encode($fromMatches[0])
-    );
-    expect(
-        $replyToMatches[0] === ['Reply-To: "attacker@example.com," <submitter@example.com>'],
-        'Reply-To display name must stay one address phrase: ' . json_encode($replyToMatches[0])
-    );
+    mkdir($directory . '/novendor/private/includes', 0700, true);
+    mkdir($directory . '/novendor/tests', 0700, true);
+    copy(__DIR__ . '/../private/includes/email.php', $directory . '/novendor/private/includes/email.php');
+    copy(__FILE__, $directory . '/novendor/tests/email.php');
+
+    foreach ([[__FILE__, 'forced'], [$directory . '/novendor/tests/email.php', 'auto']] as [$script, $mode]) {
+        file_put_contents($stdin, '');
+        $process = proc_open(
+            [PHP_BINARY, '-d', 'sendmail_path=' . $capture, '-d', 'mail.add_x_header=0', $script, 'mail-fallback', $mode],
+            [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes
+        );
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        expect(proc_close($process) === 0, "mail() fallback ($mode) failed: $stderr$stdout");
+        $raw = str_replace("\r\n", "\n", (string)file_get_contents($stdin));
+        preg_match_all('/^From: .*$/m', $raw, $fromMatches);
+        preg_match_all('/^Reply-To: .*$/m', $raw, $replyToMatches);
+        expect(
+            $fromMatches[0] === ['From: "Wadadli, \"Flare\" \\\\ Catering" <noreply@example.com>'],
+            "From display name ($mode) must be RFC-quoted: " . json_encode($fromMatches[0])
+        );
+        expect(
+            $replyToMatches[0] === ['Reply-To: "attacker@example.com," <submitter@example.com>'],
+            "Reply-To display name ($mode) must stay one address phrase: " . json_encode($replyToMatches[0])
+        );
+    }
     echo "PASS mail() From and Reply-To display names are RFC-quoted\n";
 } finally {
-    if (is_file($capture)) {
-        unlink($capture);
-    }
-    if (is_file($stdin)) {
-        unlink($stdin);
-    }
-    if (is_dir($directory)) {
-        rmdir($directory);
-    }
+    if (is_file($capture)) { unlink($capture); }
+    if (is_file($stdin)) { unlink($stdin); }
+    @unlink($directory . '/novendor/private/includes/email.php');
+    @unlink($directory . '/novendor/tests/email.php');
+    @rmdir($directory . '/novendor/private/includes');
+    @rmdir($directory . '/novendor/private');
+    @rmdir($directory . '/novendor/tests');
+    @rmdir($directory . '/novendor');
+    if (is_dir($directory)) { rmdir($directory); }
 }
 
 // 2. Injected SMTP mailer path runs without Composer autoloader on disk and isolates failures.

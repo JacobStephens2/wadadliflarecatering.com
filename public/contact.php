@@ -95,7 +95,7 @@ include __DIR__ . '/includes/header.php';
                         <textarea id="message" name="message" maxlength="65535" required><?php echo $values['message']; ?></textarea>
                     </div>
                     
-                    <?php echo $intake->renderSpamGuards(defined('TURNSTILE_SITE_KEY') ? (string)TURNSTILE_SITE_KEY : ''); ?>
+                    <?php echo $intake->renderSpamGuards(TURNSTILE_SITE_KEY); ?>
 
                     <button type="submit" class="btn">Send Message</button>
                 </form>

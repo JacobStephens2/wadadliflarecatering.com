@@ -10,17 +10,18 @@
 function open_database(array $config = []): PDO {
     if ($config === []) {
         require_once __DIR__ . '/env.php';
+        $readEnv = static fn(string $key): string => (string)($_ENV[$key] ?? getenv($key) ?: '');
         $config = [
-            'host' => $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost',
-            'name' => $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?: 'wadadli_flare',
-            'user' => $_ENV['DB_USER'] ?? getenv('DB_USER') ?: 'root',
-            'pass' => $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '',
+            'host' => $readEnv('DB_HOST'),
+            'name' => $readEnv('DB_NAME'),
+            'user' => $readEnv('DB_USER'),
+            'pass' => $readEnv('DB_PASS'),
         ];
     }
 
-    $dbHost = (string)($config['host'] ?? 'localhost');
-    $dbName = (string)($config['name'] ?? 'wadadli_flare');
-    $dbUser = (string)($config['user'] ?? 'root');
+    $dbHost = ($config['host'] ?? '') !== '' ? (string)$config['host'] : 'localhost';
+    $dbName = ($config['name'] ?? '') !== '' ? (string)$config['name'] : 'wadadli_flare';
+    $dbUser = ($config['user'] ?? '') !== '' ? (string)$config['user'] : 'root';
     $dbPass = (string)($config['pass'] ?? '');
 
     return new PDO(
