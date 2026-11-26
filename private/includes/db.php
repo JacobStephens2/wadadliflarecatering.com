@@ -5,7 +5,8 @@
  */
 
 /**
- * Open a lazy PDO MySQL connection, throwing PDOException on failure.
+ * Open a lazy PDO MySQL connection.
+ * Throws PDOException before connecting when the user or password is missing or empty.
  */
 function open_database(array $config = []): PDO {
     if ($config === []) {
@@ -21,8 +22,11 @@ function open_database(array $config = []): PDO {
 
     $dbHost = ($config['host'] ?? '') !== '' ? (string)$config['host'] : 'localhost';
     $dbName = ($config['name'] ?? '') !== '' ? (string)$config['name'] : 'wadadli_flare';
-    $dbUser = ($config['user'] ?? '') !== '' ? (string)$config['user'] : 'root';
+    $dbUser = (string)($config['user'] ?? '');
     $dbPass = (string)($config['pass'] ?? '');
+    if ($dbUser === '' || $dbPass === '') {
+        throw new PDOException('Database credentials are required');
+    }
 
     return new PDO(
         "mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4",

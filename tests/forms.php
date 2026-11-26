@@ -43,6 +43,30 @@ try {
     $schema = command(['git', 'show', 'master:private/schema.sql']);
     $pdo->exec(str_replace('wadadli_flare', 'wadadli_forms_test', $schema));
     $pdo->exec("INSERT INTO contact_submissions (name, email, message) VALUES ('Existing', 'existing@example.com', 'Existing lead')");
+    require_once __DIR__ . '/../private/includes/db.php';
+    $dbPassword = bin2hex(random_bytes(16));
+    $pdo->exec("ALTER USER 'root'@'localhost' IDENTIFIED BY " . $pdo->quote($dbPassword));
+    $opened = open_database([
+        'host' => "localhost;unix_socket=$socket",
+        'name' => 'wadadli_forms_test',
+        'user' => 'root',
+        'pass' => $dbPassword,
+    ]);
+    expect($opened->query('SELECT DATABASE()')->fetchColumn() === 'wadadli_forms_test', 'Non-empty password opens the disposable database');
+    $defaultNameRefused = false;
+    try {
+        open_database([
+            'host' => "localhost;unix_socket=$socket",
+            'user' => 'root',
+            'pass' => $dbPassword,
+        ]);
+    } catch (PDOException $error) {
+        $defaultNameRefused = true;
+        expect(str_contains($error->getMessage(), 'wadadli_flare'), 'Empty database name must still default to wadadli_flare: ' . $error->getMessage());
+        expect(!str_contains($error->getMessage(), $dbPassword), 'Database error must not contain the password');
+    }
+    expect($defaultNameRefused, 'Empty database name must not select the disposable database');
+    echo "PASS database credentials\n";
     if ($pdo->query("SHOW COLUMNS FROM contact_submissions LIKE 'flag_reason'")->fetchColumn() === false && file_exists(__DIR__ . '/../private/migrations/007-form-correctness.sql')) {
         $pdo->exec(file_get_contents(__DIR__ . '/../private/migrations/007-form-correctness.sql'));
     }
@@ -71,11 +95,11 @@ $_SERVER['REMOTE_ADDR'] = getenv('TEST_IP') ?: 'unknown';
 require $page;
 PHP;
     $ipCounter = 0;
-    $startPost = function ($form, $data, $turnstile = 'pass', $ip = null, $dbHostOverride = null) use ($socket, $rateDir, $mailFile, $wiringPath, $runnerCode, &$ipCounter) {
+    $startPost = function ($form, $data, $turnstile = 'pass', $ip = null, $dbHostOverride = null) use ($socket, $rateDir, $mailFile, $wiringPath, $runnerCode, $dbPassword, &$ipCounter) {
         $ip = $ip ?? '198.18.' . intdiv(++$ipCounter, 250) . '.' . ($ipCounter % 250);
         $pagePath = __DIR__ . '/../public/' . ($form === 'contact' ? 'contact' : 'quote-request') . '.php';
         $environment = array_merge(getenv(), [
-            'DB_HOST' => $dbHostOverride ?? "localhost;unix_socket=$socket", 'DB_NAME' => 'wadadli_forms_test', 'DB_USER' => 'root', 'DB_PASS' => '',
+            'DB_HOST' => $dbHostOverride ?? "localhost;unix_socket=$socket", 'DB_NAME' => 'wadadli_forms_test', 'DB_USER' => 'root', 'DB_PASS' => $dbPassword,
             'TEST_IP' => $ip,
         ]);
         $process = proc_open(
