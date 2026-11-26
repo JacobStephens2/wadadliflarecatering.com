@@ -79,18 +79,24 @@ function authors(array $reviews): array {
     return array_map(static fn(array $review): string => $review['author'], $reviews);
 }
 
-function php_page_output(string $code, array $arguments): string {
+/** @return array{0: int, 1: string, 2: string} Exit code, stdout, stderr. */
+function php_run(string $code, array $arguments): array {
     $process = proc_open([
         PHP_BINARY, '-d', 'allow_url_fopen=0', '-d', 'allow_url_include=0',
         '-d', 'disable_functions=mail,curl_exec,curl_multi_exec,fsockopen,pfsockopen,stream_socket_client',
         '-r', $code, ...$arguments,
     ], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, []);
-    expect(is_resource($process), 'PHP page subprocess must start');
+    expect(is_resource($process), 'PHP subprocess must start');
     $output = (string) stream_get_contents($pipes[1]);
     $errors = (string) stream_get_contents($pipes[2]);
     fclose($pipes[1]);
     fclose($pipes[2]);
-    expect(proc_close($process) === 0 && $errors === '', 'PHP page subprocess must succeed without warnings: ' . $errors);
+    return [proc_close($process), $output, $errors];
+}
+
+function php_page_output(string $code, array $arguments): string {
+    [$exit, $output, $errors] = php_run($code, $arguments);
+    expect($exit === 0 && $errors === '', 'PHP page subprocess must succeed without warnings: ' . $errors);
     return $output;
 }
 
@@ -432,19 +438,6 @@ PHP;
 
     // 17. Refresh script: same stdout lines, stderr lines and exit codes as before,
     // driven end to end through the production wiring file with a fake fetch.
-    $runPhp = static function (string $code, array $arguments): array {
-        $process = proc_open([
-            PHP_BINARY, '-d', 'allow_url_fopen=0', '-d', 'allow_url_include=0',
-            '-d', 'disable_functions=mail,curl_exec,curl_multi_exec,fsockopen,pfsockopen,stream_socket_client',
-            '-r', $code, ...$arguments,
-        ], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, []);
-        expect(is_resource($process), 'PHP script subprocess must start');
-        $output = (string) stream_get_contents($pipes[1]);
-        $errors = (string) stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-        return [proc_close($process), $output, $errors];
-    };
     $scriptRunner = <<<'PHP'
 define('ENV_LOADED', true);
 set_error_handler(static fn(): bool => true);
@@ -465,7 +458,7 @@ require $script;
 PHP;
     $scriptArgs = [__DIR__ . '/../private/includes/reviews_factory.php', __DIR__ . '/../private/refresh-google-reviews.php'];
     [$cachePath, $capturedPath] = $paths();
-    [$exit, $out, $err] = $runPhp($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'new']);
+    [$exit, $out, $err] = php_run($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'new']);
     expect($exit === 0 && $err === '', 'Refresh script success exits 0 without stderr: ' . $err);
     expect($out === "Cached 1 Google review (place rating 4.7 from 5 ratings)\n"
         . "NEW: captured 1 review not seen before:\n"
@@ -473,20 +466,46 @@ PHP;
         . "Note: Google reports 5 ratings but the site can show 1. 4 reviews has never appeared in the API.\n", 'Refresh script success stdout is unchanged: ' . $out);
     [$cachePath, $capturedPath] = $paths();
     write_json($capturedPath, ['reviews' => [stored_review('Fresh', 'google', strtotime('2025-06-17T14:33:48Z'), 'fresh text')]]);
-    [$exit, $out, $err] = $runPhp($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'nonew']);
+    [$exit, $out, $err] = php_run($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'nonew']);
     expect($exit === 0 && $err === '', 'Refresh script no-new exits 0');
     expect($out === "Cached 1 Google review (place rating 4.7 from 1 ratings)\nNo new reviews. 1 held in the capture store.\n", 'Refresh script no-new stdout is unchanged: ' . $out);
     [$cachePath, $capturedPath] = $paths();
-    [$exit, $out, $err] = $runPhp($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'fail']);
+    [$exit, $out, $err] = php_run($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'fail']);
     expect($exit === 1 && $out === '' && $err === "Google reviews refresh failed: Places is down\n", 'Refresh script fetch failure stderr and exit are unchanged: ' . $err);
     [$cachePath, $capturedPath] = $paths();
     mkdir(dirname($capturedPath), 0775, true);
     mkdir($capturedPath, 0775, true);
-    [$exit, $out, $err] = $runPhp($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'new']);
+    [$exit, $out, $err] = php_run($scriptRunner, [...$scriptArgs, $cachePath, $capturedPath, 'new']);
     expect($exit === 1, 'Refresh script harvest failure exits 1');
     expect($out === "Cached 1 Google review (place rating 4.7 from 5 ratings)\n", 'Cached-count line prints before the harvest failure');
     expect($err === 'Could not update the captured-review store: Could not write ' . $capturedPath . "\n", 'Refresh script harvest failure stderr is unchanged: ' . $err);
     echo "PASS refresh script stdout, stderr and exit codes\n";
+
+    // 18. A harvest failure does not re-read the broken store for the report:
+    // the failed capture's own read is the only read (and the only warning).
+    [$cachePath, $capturedPath] = $paths();
+    mkdir(dirname($capturedPath), 0775, true);
+    mkdir($capturedPath, 0775, true);
+    $harvestReads = 0;
+    set_error_handler(static function (int $severity, string $message) use (&$harvestReads): bool {
+        if (str_contains($message, 'file_get_contents()')) {
+            $harvestReads++;
+        }
+        return true;
+    });
+    try {
+        $reviews = new Reviews(static fn(): array => [
+            'rating' => 5.0, 'userRatingCount' => 1, 'googleMapsUri' => '',
+            'reviews' => [api_review('Fresh', 'fresh text', '2025-06-17T14:33:48Z')],
+        ], $cachePath, $capturedPath, []);
+        $report = $reviews->refresh();
+    } finally {
+        restore_error_handler();
+    }
+    expect($report['capture_error'] !== null, 'Directory harvest path still reports a capture error');
+    expect($harvestReads === 1, "Harvest store is read exactly once across a failed refresh, got $harvestReads");
+    expect($report['captured_total'] === 0, 'Unreadable harvest store totals zero from the single read');
+    echo "PASS harvest failure reads the store once\n";
 
     echo "ALL PASS\n";
 } finally {

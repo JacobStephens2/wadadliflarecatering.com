@@ -27,8 +27,11 @@ namespace WadadliFlare;
  * place to land.
  */
 final class Reviews {
+    private const JSON_FLAGS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+
     private ?array $cache = null;
     private bool $cacheLoaded = false;
+    private ?array $captured = null;
     private ?array $merged = null;
 
     /**
@@ -49,6 +52,9 @@ final class Reviews {
      * author_url, photo_url, rating, text, time, precision, live, date_label.
      *
      * @param string|null $source 'google', 'facebook', or null for everything.
+     * @return list<array{source: string, author: string, author_url: string,
+     *                    photo_url: string, rating: int, text: string, time: int,
+     *                    precision: string, live: bool, date_label: string}>
      */
     public function list(?string $source = null): array {
         $records = array_map(
@@ -89,8 +95,14 @@ final class Reviews {
      * untouched. A harvest-store failure is reported in the report instead,
      * so the caller can print the cached-count line first and then fail.
      *
-     * @return array{cached_count: int, rating: mixed, user_rating_count: mixed,
-     *               added: array, captured_total: int, capture_error: ?string,
+     * @return array{cached_count: int, rating: int|float|null,
+     *               user_rating_count: int|null,
+     *               added: list<array{source: string, author: string,
+     *                                 author_url: string, photo_url: string,
+     *                                 rating: int, text: string, time: int,
+     *                                 precision: string, live: bool,
+     *                                 date_label: string}>,
+     *               captured_total: int, capture_error: ?string,
      *               shown_google: int, total_ratings: int}
      * @throws \RuntimeException if the fetch fails or the cache cannot be written.
      */
@@ -113,14 +125,11 @@ final class Reviews {
             'reviews' => $reviews,
         ];
 
-        $dir = dirname($this->cachePath);
-        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
-            throw new \RuntimeException('Could not create cache directory ' . $dir);
-        }
+        self::ensureDirectory(dirname($this->cachePath), 'cache');
 
         // Write to a temp file and rename so a page request never reads a half-written file.
         $tmp = $this->cachePath . '.tmp';
-        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $json = json_encode($payload, self::JSON_FLAGS);
         if ($json === false || file_put_contents($tmp, $json) === false) {
             throw new \RuntimeException('Could not write cache file ' . $tmp);
         }
@@ -193,11 +202,17 @@ final class Reviews {
      * reviews instead of only ever showing whichever 5 Google favours.
      */
     private function readCaptured(): array {
-        if (!is_readable($this->capturedPath)) {
-            return [];
+        // Read once per instance, like the live cache: the merged list, the
+        // capture step, and the refresh report all describe the same store,
+        // and a failed capture must not re-read (and re-warn on) a broken file.
+        if ($this->captured === null) {
+            $this->captured = [];
+            if (is_readable($this->capturedPath)) {
+                $decoded = json_decode((string) file_get_contents($this->capturedPath), true);
+                $this->captured = is_array($decoded['reviews'] ?? null) ? $decoded['reviews'] : [];
+            }
         }
-        $decoded = json_decode((string) file_get_contents($this->capturedPath), true);
-        return is_array($decoded['reviews'] ?? null) ? $decoded['reviews'] : [];
+        return $this->captured;
     }
 
     /**
@@ -231,10 +246,7 @@ final class Reviews {
             return [];
         }
 
-        $reviews = array_values($byIdentity);
-        usort($reviews, function ($a, $b) {
-            return ($b['time'] ?? 0) <=> ($a['time'] ?? 0);
-        });
+        $reviews = self::sortNewestFirst(array_values($byIdentity));
 
         $payload = [
             'note' => 'Machine-maintained by refresh-google-reviews.php. Every Google review ever returned by the Places API, kept so none is lost when it drops out of the API\'s 5-review window.',
@@ -242,15 +254,14 @@ final class Reviews {
             'reviews' => $reviews,
         ];
 
-        $dir = dirname($this->capturedPath);
-        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
-            throw new \RuntimeException('Could not create data directory ' . $dir);
-        }
+        self::ensureDirectory(dirname($this->capturedPath), 'data');
 
-        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $json = json_encode($payload, self::JSON_FLAGS);
         if ($json === false || file_put_contents($this->capturedPath, $json, LOCK_EX) === false) {
             throw new \RuntimeException('Could not write ' . $this->capturedPath);
         }
+
+        $this->captured = $reviews;
 
         return $added;
     }
@@ -273,12 +284,21 @@ final class Reviews {
             }
         }
 
-        $merged = array_values($merged);
-        usort($merged, function ($a, $b) {
-            return ($b['time'] ?? 0) <=> ($a['time'] ?? 0);
-        });
+        return self::sortNewestFirst(array_values($merged));
+    }
 
-        return $merged;
+    private static function sortNewestFirst(array $reviews): array {
+        usort($reviews, static fn(array $a, array $b): int => ($b['time'] ?? 0) <=> ($a['time'] ?? 0));
+        return $reviews;
+    }
+
+    /**
+     * @throws \RuntimeException if the directory cannot be created.
+     */
+    private static function ensureDirectory(string $dir, string $label): void {
+        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+            throw new \RuntimeException('Could not create ' . $label . ' directory ' . $dir);
+        }
     }
 
     /**

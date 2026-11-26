@@ -23,7 +23,8 @@ function fetch_google_place_http(): array {
         throw new RuntimeException('GOOGLE_PLACES_API_KEY is not set in private/.env');
     }
 
-    $url = 'https://places.googleapis.com/v1/places/ChIJKfbIeN9nxokR6Jbbm66babk';
+    $placeId = 'ChIJKfbIeN9nxokR6Jbbm66babk';
+    $url = 'https://places.googleapis.com/v1/places/' . $placeId;
 
     $ch = curl_init($url);
     curl_setopt_array($ch, [

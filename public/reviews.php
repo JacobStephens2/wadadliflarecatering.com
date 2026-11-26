@@ -5,10 +5,9 @@ require_once PRIVATE_PATH . '/includes/reviews_factory.php';
 $pageTitle = 'Reviews';
 $pageDescription = 'Read reviews from our satisfied customers. See what people are saying about Wadadli Flare Catering.';
 
-$reviews = reviews();
-$googleReviews = $reviews->list('google');
-$facebookReviews = $reviews->list('facebook');
-$googleSummary = $reviews->googleRatingSummary();
+$googleReviews = reviews()->list('google');
+$facebookReviews = reviews()->list('facebook');
+$googleSummary = reviews()->googleRatingSummary();
 
 include __DIR__ . '/includes/header.php';
 ?>
