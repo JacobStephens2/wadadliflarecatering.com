@@ -14,6 +14,19 @@ php tests/email.php
 node tests/submit-button.cjs
 ```
 
+Database credential checks (PHP 8.3 with PDO MySQL; no server, Composer,
+credentials or network):
+
+```bash
+php tests/database.php
+```
+
+`open_database()` refuses a missing or empty user or password, whether those
+values come from the environment or from a config array, before it connects.
+The refusal names neither value. A non-empty user and password are still
+passed to the server, and an empty host or database name still uses the
+current default.
+
 End-to-end form regression checks (PHP 8.3 with PDO MySQL and mbstring, plus
 MySQL/MariaDB server binary at `/usr/sbin/mysqld`):
 
