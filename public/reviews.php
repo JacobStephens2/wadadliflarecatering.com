@@ -1,13 +1,14 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once PRIVATE_PATH . '/includes/google_reviews.php';
+require_once PRIVATE_PATH . '/includes/reviews_factory.php';
 
 $pageTitle = 'Reviews';
 $pageDescription = 'Read reviews from our satisfied customers. See what people are saying about Wadadli Flare Catering.';
 
-$googleReviews = get_reviews('google');
-$facebookReviews = get_reviews('facebook');
-$googleSummary = get_google_rating_summary();
+$reviews = reviews();
+$googleReviews = $reviews->list('google');
+$facebookReviews = $reviews->list('facebook');
+$googleSummary = $reviews->googleRatingSummary();
 
 include __DIR__ . '/includes/header.php';
 ?>

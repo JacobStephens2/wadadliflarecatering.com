@@ -6,9 +6,9 @@
  * returns 5 reviews and ranks them by relevance, so older reviews drop out of
  * the live feed permanently. Anything captured here keeps showing regardless.
  *
- * Live Google reviews are merged over this list by
- * private/includes/google_reviews.php; a live review with the same author
- * replaces its archive copy.
+ * Live Google reviews are merged over this list by the Reviews module
+ * (private/includes/Reviews.php, wired in reviews_factory.php); a live
+ * review with the same author and source replaces its archive copy.
  *
  * Fields:
  *   source     - 'google' or 'facebook'
