@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once PRIVATE_PATH . '/includes/google_reviews.php';
+require_once PRIVATE_PATH . '/includes/reviews_factory.php';
 $pageTitle = 'Home';
 $pageDescription = 'Wadadli Flare Catering - Professional catering services in Pennsylvania. American, French, Italian, BBQ, and Caribbean cuisine. Serving Twin Valley, West Chester, and Main Line.';
 $bodyClass = 'home-page';
@@ -122,7 +122,7 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <h2 class="section-title">What Our Customers Say</h2>
         <div class="grid grid-2">
-            <?php foreach (array_slice(get_reviews(), 0, 2) as $review): ?>
+            <?php foreach (array_slice(reviews()->list(), 0, 2) as $review): ?>
                 <?php include __DIR__ . '/includes/review-card.php'; ?>
             <?php endforeach; ?>
         </div>

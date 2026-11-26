@@ -42,3 +42,20 @@ order, pan sizes, prices, heading levels, escaping and related links. Page
 checks run in isolated PHP subprocesses with `ENV_LOADED` defined before the
 site bootstrap, an empty environment, remote file access disabled, and mail
 and network functions disabled.
+
+Reviews regression checks (PHP 8.3 with DOM support; no Composer, database,
+credentials or network access required):
+
+```bash
+php tests/reviews.php
+```
+
+Checks the Reviews module through its interface with a fake Google Places
+fetch and a temporary directory: curated/captured/live precedence and
+ordering, source filtering, display-ready record shape and date labels, the
+rating summary, and the whole refresh cycle (atomic cache write, harvest
+capture, edited-wording replacement, failure handling, and the
+unseen-review gap), plus the refresh script's output lines and exit codes.
+Page checks render the home page and the reviews page in isolated PHP
+subprocesses the same way as the Pan menu checks, with the module's test
+override pointed at the same temporary directory.
